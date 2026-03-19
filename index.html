@@ -1,0 +1,2336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Knox World's Greatest Shave - The Complete Story</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Syne:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+/* --- PRES STYLES --- */
+
+:root {
+  --bg:      #000000;
+  --bg2:     #08080a;
+  --bg3:     #101014;
+  --border:  rgba(255,255,255,0.06);
+  --border2: rgba(255,255,255,0.1);
+  --blue:    #3b82f6;
+  --blue2:   #60a5fa;
+  --blue-deep:#1d4ed8;
+  --text:    #f8fafc;
+  --muted:   #94a3b8;
+  --muted2:  #64748b;
+  --red:     #ef4444;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'Syne',sans-serif;font-weight:400;
+  overflow-x:hidden;line-height:1.6;
+}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  padding:18px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(9,9,13,0.9);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+}
+.nav-mark{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;color:var(--blue2);text-transform:uppercase;}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{font-size:12px;font-weight:500;letter-spacing:.06em;color:var(--muted);text-decoration:none;text-transform:uppercase;transition:color .2s;}
+.nav-links a:hover{color:var(--text);}
+
+/* HERO */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  justify-content:flex-end;padding:140px 48px 80px;
+  position:relative;overflow:hidden;
+}
+.hero-glow1{position:absolute;top:-20%;right:-10%;width:60vw;height:60vw;max-width:800px;background:radial-gradient(circle,rgba(59,130,246,.08) 0%,transparent 65%);pointer-events:none;}
+.hero-glow2{position:absolute;bottom:0;left:20%;width:50vw;height:50vw;max-width:600px;background:radial-gradient(circle,rgba(37,99,235,.06) 0%,transparent 65%);pointer-events:none;}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;color:var(--blue2);text-transform:uppercase;margin-bottom:28px;opacity:0;animation:riseIn .6s .2s ease forwards;}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(60px,8.5vw,130px);font-weight:700;line-height:.95;margin-bottom:32px;max-width:900px;opacity:0;animation:riseIn .7s .35s ease forwards;}
+.hero-title .ital{font-style:italic;color:var(--blue2);}
+.hero-title .line2{display:block;color:var(--muted2);font-weight:400;font-style:italic;}
+.hero-body{font-size:16px;color:var(--muted2);line-height:1.75;max-width:520px;margin-bottom:56px;opacity:0;animation:riseIn .7s .5s ease forwards;}
+.hero-bottom{display:flex;align-items:flex-end;justify-content:space-between;opacity:0;animation:riseIn .7s .65s ease forwards;}
+.hero-nums{display:flex;gap:52px;}
+.hnum{font-family:'Cormorant Garamond',serif;font-size:46px;font-weight:700;color:var(--blue2);line-height:1;}
+.hlabel{font-size:11px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:6px;}
+.scroll-hint{display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--muted);font-size:10px;letter-spacing:.15em;text-transform:uppercase;}
+.scroll-line{width:1px;height:48px;background:linear-gradient(to bottom,var(--blue),transparent);animation:pulse 2s ease-in-out infinite;}
+
+/* BAND */
+.band{
+  padding:88px 48px;
+  background:linear-gradient(135deg,rgba(59,130,246,.06),rgba(37,99,235,.06));
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  text-align:center;
+}
+.band-counter{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(72px,12vw,140px);font-weight:700;line-height:1;
+  background:linear-gradient(135deg,var(--blue),#60a5fa 50%,#1e40af);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  margin-bottom:20px;
+}
+.band-sub{font-size:16px;color:var(--muted2);max-width:440px;margin:0 auto;line-height:1.7;}
+
+/* SECTIONS */
+.section{max-width:1120px;margin:0 auto;padding:100px 48px;}
+.slabel{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:var(--blue2);text-transform:uppercase;margin-bottom:14px;}
+.sheading{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,4.5vw,60px);font-weight:700;line-height:1.1;margin-bottom:16px;}
+.sintro{font-size:15px;color:var(--muted2);line-height:1.75;max-width:520px;margin-bottom:60px;}
+
+/* YEAR GRID */
+.year-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:56px;}
+.ycell{background:var(--bg2);padding:44px 36px;transition:background .2s;}
+.ycell:hover{background:var(--bg3);}
+.ytotal{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:700;color:var(--blue2);line-height:1;margin-bottom:10px;}
+.ydelta{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--blue);letter-spacing:.06em;margin-bottom:12px;}
+.ydesc{font-size:13px;color:var(--muted);line-height:1.55;}
+
+/* CHART */
+.chart-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:40px;}
+.chart-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:36px;flex-wrap:wrap;gap:16px;}
+.chart-ttl{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;}
+.toggles{display:flex;gap:8px;}
+.tog{padding:6px 18px;border-radius:20px;border:1px solid var(--border2);background:transparent;cursor:pointer;font-family:'Syne',sans-serif;font-size:12px;font-weight:600;letter-spacing:.04em;transition:all .2s;}
+.tog24{color:#475569;}.tog24.on{border-color:#475569;background:rgba(71,85,105,.15);}
+.tog25{color:#3b82f6;}.tog25.on{border-color:#2563eb;background:rgba(37,99,235,.15);}
+.tog26{color:#60a5fa;}.tog26.on{border-color:#3b82f6;background:rgba(59,130,246,.15);}
+.chart-wrap{position:relative;height:300px;}
+
+/* INSIGHTS */
+.ins-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+.ins-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:30px;transition:border-color .25s,transform .25s;}
+.ins-card:hover{border-color:rgba(59,130,246,.3);transform:translateY(-2px);}
+.ins-idx{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--blue);letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px;}
+.ins-body{font-size:15px;line-height:1.7;color:var(--text);}
+.ins-body strong{color:var(--blue2);font-weight:600;}
+.ins-pill{display:inline-block;margin-top:16px;padding:3px 12px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);border-radius:20px;font-size:10px;font-weight:600;letter-spacing:.07em;color:var(--blue2);text-transform:uppercase;}
+
+/* TEKWORO */
+.tk-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;}
+.tk-story{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--teal);border-radius:0 12px 12px 0;padding:44px;}
+.tk-quote{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;line-height:1.55;color:var(--text);margin-bottom:20px;}
+.tk-cite{font-size:12px;color:var(--muted);letter-spacing:.04em;font-style:normal;}
+.tk-body{margin-top:20px;padding-top:20px;border-top:1px solid var(--border);font-size:14px;color:var(--muted2);line-height:1.75;}
+.tk-stats{display:flex;flex-direction:column;gap:14px;}
+.tk-stat{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:24px 28px;display:flex;align-items:center;gap:20px;transition:border-color .2s;}
+.tk-stat:hover{border-color:rgba(44,207,160,.25);}
+.tk-num{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:700;color:var(--teal);line-height:1;min-width:90px;white-space:nowrap;}
+.tk-desc{font-size:13px;color:var(--muted2);line-height:1.55;}
+
+/* EFFICIENCY */
+.eff-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;}
+.eff-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:36px;}
+.eff-hdg{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;margin-bottom:24px;}
+.bar-row{margin-bottom:18px;}
+.bar-lbls{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px;}
+.bar-lbls span:last-child{color:var(--text);font-weight:600;}
+.bar-track{height:5px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:3px;transition:width 1.6s cubic-bezier(.16,1,.3,1);width:0;}
+.bcyan{background:linear-gradient(90deg,var(--blue-deep),var(--blue));}
+.bgold{background:linear-gradient(90deg,#1e3a8a,var(--blue));}
+.bgray{background:#4b5563;}
+.eff-rev{margin-top:24px;padding-top:24px;border-top:1px solid var(--border);}
+.eff-rev-lbl{font-size:12px;color:var(--muted);margin-bottom:4px;}
+.eff-rev-num{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:700;line-height:1;}
+.eff-rev-delta{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--teal);margin-top:4px;}
+.eff-stack{display:flex;flex-direction:column;gap:14px;}
+.verdict{background:var(--bg3);border-radius:10px;border-left:2px solid var(--blue);padding:18px 20px;font-size:13px;color:var(--muted);line-height:1.65;}
+.verdict strong{color:var(--text);}
+.trend-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:28px 32px;font-size:14px;color:var(--muted);line-height:1.7;}
+.trend-card strong{color:var(--text);}
+.tbad{color:var(--red);font-weight:600;}
+.tgood{color:var(--blue);font-weight:600;}
+.q-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:28px 32px;}
+.q-lbl{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--blue);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;}
+.q-txt{font-size:15px;line-height:1.65;color:var(--text);}
+.q-txt em{font-style:italic;color:var(--blue2);}
+
+/* NEXT */
+.next-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.ncard{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:28px;transition:border-color .2s;}
+.ncard:hover{border-color:var(--border2);}
+.ndate{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--blue);letter-spacing:.08em;margin-bottom:10px;}
+.ntitle{font-size:16px;font-weight:600;margin-bottom:8px;}
+.nbody{font-size:13px;color:var(--muted);line-height:1.55;}
+.nblue{border-color:rgba(59,130,246,.3);}
+.nbluec{background:rgba(59,130,246,.04);border-color:rgba(59,130,246,.2);}
+
+/* DIVIDER */
+.div{height:1px;background:var(--border);max-width:1120px;margin:0 auto;}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:36px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.fmark{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted2);letter-spacing:.06em;}
+.flink{font-size:12px;color:var(--blue);text-decoration:none;transition:opacity .2s;}
+.flink:hover{opacity:.7;}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease;}
+.reveal.vis{opacity:1;transform:none;}
+
+@keyframes riseIn{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:none;}}
+@keyframes pulse{0%,100%{opacity:.35;transform:scaleY(1);}50%{opacity:1;transform:scaleY(1.08);}}
+
+
+/* --- GROWTH STYLES --- */
+
+:root {
+  --bg: #000000;
+  --bg2: #08080a;
+  --bg3: #101014;
+  --border: rgba(255,255,255,0.06);
+  --blue: #3b82f6;
+  --blue2: #60a5fa;
+  --blue-deep: #1e40af;
+  --gray: #475569;
+  --text: #f8fafc;
+  --muted: #94a3b8;
+  --muted2: #64748b;
+  --c24: #475569;
+  --c25: #3b82f6;
+  --c26: #60a5fa;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-height:100vh;overflow-x:hidden;}
+
+/* HEADER */
+.header-gs{padding:64px 48px 40px;max-width:1200px;margin:0 auto;}
+.header-tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;color:var(--blue2);text-transform:uppercase;margin-bottom:20px;}
+.header-title{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,6vw,80px);font-weight:700;line-height:1.0;margin-bottom:16px;}
+.header-title em{font-style:italic;color:var(--blue);}
+.header-sub{font-size:15px;color:var(--muted);max-width:580px;line-height:1.7;}
+
+/* MAIN LAYOUT */
+.main{max-width:1200px;margin:0 auto;padding:0 48px 80px;display:grid;grid-template-columns:1fr 340px;gap:40px;align-items:start;}
+
+/* CANVAS SIDE */
+.canvas-side{}
+.year-tabs{display:flex;gap:0;margin-bottom:28px;border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.year-tab{flex:1;padding:12px;text-align:center;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;letter-spacing:.1em;color:var(--muted);background:var(--bg2);transition:all .2s;border:none;}
+.year-tab:hover{color:var(--text);}
+.year-tab.active-2024{background:rgba(71,85,105,.15);color:#94a3b8;}
+.year-tab.active-2025{background:rgba(59,130,246,.15);color:#93c5fd;}
+.year-tab.active-2026{background:rgba(30,64,175,.2);color:#60a5fa;}
+
+.chart-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:32px;}
+.chart-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:20px;}
+.chart-wrap{position:relative;height:260px;}
+.chart-sub{font-size:12px;color:var(--muted);margin-top:12px;text-align:center;font-family:'JetBrains Mono',monospace;}
+
+.dist-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:32px;margin-top:16px;}
+.dist-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:20px;}
+.dist-bars{}
+.dist-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.dist-tier{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);min-width:70px;}
+.dist-track{flex:1;height:6px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden;}
+.dist-fill{height:100%;border-radius:3px;transition:width .8s cubic-bezier(.16,1,.3,1);}
+.dist-count{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted2);min-width:28px;text-align:right;}
+
+/* STATS SIDE */
+.stats-side{}
+.year-heading{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:700;line-height:1;margin-bottom:6px;transition:color .4s;}
+.year-sub{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:32px;}
+
+.stat-stack{display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:20px;}
+.stat-cell{background:var(--bg2);padding:20px 22px;transition:background .2s;}
+.stat-cell:hover{background:var(--bg3);}
+.stat-val{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:700;line-height:1;margin-bottom:4px;transition:color .4s;}
+.stat-lbl{font-size:12px;color:var(--muted);line-height:1.4;}
+.stat-delta{font-family:'JetBrains Mono',monospace;font-size:11px;margin-top:5px;transition:color .4s;}
+
+.insight-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:16px;}
+.insight-heading{font-size:13px;font-weight:600;color:var(--text);margin-bottom:8px;}
+.insight-body{font-size:13px;color:var(--muted2);line-height:1.65;}
+
+.play-btn{width:100%;padding:14px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--text);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;cursor:pointer;letter-spacing:.04em;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.play-btn:hover{border-color:var(--blue);color:var(--blue);}
+.play-btn.playing{border-color:var(--blue2);color:var(--blue2);}
+
+/* TOOLTIP */
+#tt_gs{position:fixed;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;pointer-events:none;opacity:0;transition:opacity .15s;z-index:100;min-width:130px;}
+.tt-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;}
+.tt-amt{font-family:'JetBrains Mono',monospace;font-size:12px;}
+
+/* PROGRESS */
+.progress-wrap{max-width:1200px;margin:0 auto;padding:0 48px 8px;display:flex;align-items:center;gap:16px;}
+.progress-track{flex:1;height:2px;background:var(--border);border-radius:1px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--blue);border-radius:1px;transition:width .4s;}
+.progress-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.1em;min-width:60px;}
+
+
+/* --- PORT STYLES --- */
+
+:root {
+  --bg: #000000;
+  --bg2: #08080a;
+  --bg3: #101014;
+  --border: rgba(255,255,255,0.06);
+  --blue: #3b82f6;
+  --blue2: #60a5fa;
+  --blue-deep: #1e40af;
+  --gray: #475569;
+  --text: #f8fafc;
+  --muted: #94a3b8;
+  --muted2: #64748b;
+}
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* HEADER */
+.header-cp {
+  padding: 64px 48px 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.header-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: 0.2em;
+  color: var(--blue2); text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.header-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(40px, 6vw, 80px);
+  font-weight: 700; line-height: 1.0;
+  margin-bottom: 16px;
+}
+.header-title em { font-style: italic; color: var(--blue); }
+.header-sub {
+  font-size: 15px; color: var(--muted);
+  max-width: 560px; line-height: 1.7;
+}
+
+/* INSIGHT STRIP */
+.insight-strip {
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 48px 48px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.insight-cell {
+  background: var(--bg2);
+  padding: 28px 24px;
+  transition: background 0.2s;
+}
+.insight-cell:hover { background: var(--bg3); }
+.insight-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 38px; font-weight: 700;
+  line-height: 1; margin-bottom: 6px;
+}
+.insight-lbl {
+  font-size: 12px; color: var(--muted);
+  line-height: 1.4;
+}
+.insight-delta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--blue);
+  margin-top: 6px;
+}
+.blue2 { color: var(--blue2); }
+.blue { color: var(--blue); }
+.grayc { color: #64748b; }
+
+/* KEY INSIGHT */
+.key-insight {
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 48px 40px;
+}
+.insight-banner {
+  background: linear-gradient(135deg, rgba(59,130,246,.1), rgba(37,99,235,.07));
+  border: 1px solid rgba(59,130,246,.25);
+  border-radius: 12px;
+  padding: 24px 32px;
+  display: flex; align-items: center; gap: 24px;
+}
+.insight-icon {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 48px; font-weight: 700;
+  color: var(--blue2); white-space: nowrap;
+}
+.insight-text { font-size: 14px; color: var(--muted2); line-height: 1.65; }
+.insight-text strong { color: var(--text); }
+
+/* CONTROLS */
+.controls {
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 48px 24px;
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+.ctrl-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--muted);
+  letter-spacing: 0.1em; text-transform: uppercase;
+  margin-right: 4px;
+}
+.yr-btn {
+  padding: 7px 20px; border-radius: 20px;
+  border: 1px solid var(--border);
+  background: transparent; cursor: pointer;
+  font-family: 'Syne', sans-serif;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0.04em;
+  transition: all 0.2s;
+  color: var(--muted);
+}
+.yr-btn:hover { border-color: rgba(255,255,255,0.2); color: var(--text); }
+.yr-btn.active-all { border-color: rgba(255,255,255,0.2); color: var(--text); background: rgba(255,255,255,0.08); }
+.yr-btn.active-2024 { border-color: #475569; color: #94a3b8; background: rgba(71,85,105,0.15); }
+.yr-btn.active-2025 { border-color: #3b82f6; color: #93c5fd; background: rgba(59,130,246,0.12); }
+.yr-btn.active-2026 { border-color: #60a5fa; color: #bfdbfe; background: rgba(96,165,250,0.15); }
+
+.sort-sep { width: 1px; height: 20px; background: var(--border); margin: 0 4px; }
+
+/* CANVAS AREA */
+.canvas-wrap {
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 48px 16px;
+  position: relative;
+}
+#portraitCanvas {
+  width: 100%;
+  display: block;
+  cursor: crosshair;
+}
+
+/* LEGEND */
+.legend {
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 48px 16px;
+  display: flex; align-items: center; gap: 28px;
+  flex-wrap: wrap;
+}
+.leg-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
+.leg-dot { width: 10px; height: 10px; border-radius: 50%; }
+.leg-size {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11px; color: var(--muted); font-family: 'JetBrains Mono', monospace;
+}
+.leg-size-circles { display: flex; align-items: center; gap: 4px; }
+
+/* TOOLTIP */
+#tooltip_cp {
+  position: fixed;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 100;
+  min-width: 140px;
+}
+.tt-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.tt-amt { font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+.tt-yr { font-size: 11px; color: var(--muted); margin-top: 3px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+/* X AXIS */
+.axis-wrap {
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 48px 48px;
+}
+.axis-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--muted);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  text-align: center;
+  margin-top: 4px;
+}
+
+/* BOTTOM INSIGHT */
+.bottom-section {
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 48px 80px;
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+}
+.bottom-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 28px;
+}
+.bc-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--blue); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px; }
+.bc-val { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 700; color: var(--blue2); line-height: 1; margin-bottom: 8px; }
+.bc-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+
+.section#growth, .section#community { max-width: 1200px; padding: 100px 0; margin: 0 auto; }
+.section#growth .header-gs, .section#community .header-cp { padding-left: 48px; padding-right: 48px; }
+
+
+/* --- FTD STYLES --- */
+
+#follow-dollar {
+  --bg: #000000;
+  --bg2: #08080a;
+  --bg3: #101014;
+  --ink: #f8fafc;
+  --ink2: #cbd5e1;
+  --ink3: #94a3b8;
+  --blue: #3b82f6;
+  --blue2: #60a5fa;
+  --blue-glow: rgba(59,130,246,0.12);
+  --red: #ef4444;
+  --teal: #3b82f6;
+  --teal-light: rgba(59,130,246,0.1);
+  --border: rgba(26,24,20,0.1);
+  --border2: rgba(26,24,20,0.18);
+}
+
+
+
+
+#follow-dollar {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* CUSTOM CURSOR */
+.cursor {
+  position: fixed;
+  width: 10px; height: 10px;
+  background: var(--blue);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: transform 0.1s, width 0.2s, height 0.2s, opacity 0.2s;
+  mix-blend-mode: screen;
+}
+.cursor.big { width: 40px; height: 40px; opacity: 0.4; }
+
+/* LAYOUT */
+.page-wrap {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* STICKY CALCULATOR */
+.sticky-calc {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  background: var(--ink);
+  padding: 40px 32px;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid rgba(255,255,255,0.08);
+}
+.calc-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 0.18em;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.calc-amount {
+  font-family: 'Playfair Display', serif;
+  font-size: 42px; font-weight: 900;
+  color: var(--blue2);
+  line-height: 1;
+  margin-bottom: 6px;
+  transition: all 0.15s;
+}
+.calc-sublabel {
+  font-size: 12px;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 28px;
+  font-family: 'DM Mono', monospace;
+}
+
+/* SLIDER */
+.slider-wrap { margin-bottom: 32px; }
+#amtSlider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 3px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+}
+#amtSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--blue2);
+  cursor: pointer;
+  box-shadow: 0 0 0 4px rgba(59,130,246,0.2);
+  transition: box-shadow 0.2s;
+}
+#amtSlider::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 0 8px rgba(59,130,246,0.25);
+}
+.slider-range {
+  display: flex; justify-content: space-between;
+  margin-top: 8px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; color: rgba(255,255,255,0.25);
+}
+.slider-fill {
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold2));
+  border-radius: 2px;
+  margin-top: -3px;
+  pointer-events: none;
+  transition: width 0.05s;
+}
+
+/* CALC OUTPUTS */
+.calc-outputs { display: flex; flex-direction: column; gap: 1px; flex: 1; }
+.calc-out {
+  background: rgba(255,255,255,0.04);
+  border-radius: 8px;
+  padding: 14px 16px;
+  transition: background 0.2s;
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+}
+.calc-out:hover { background: rgba(255,255,255,0.08); }
+.calc-out-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px; font-weight: 700;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 3px;
+  transition: color 0.3s;
+}
+.calc-out-lbl {
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.4;
+}
+.calc-out-icon {
+  position: absolute;
+  right: 14px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  opacity: 0.15;
+}
+.calc-out.highlight .calc-out-val { color: var(--gold2); }
+.calc-source {
+  margin-top: 20px;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: rgba(255,255,255,0.2);
+  line-height: 1.6;
+  letter-spacing: 0.04em;
+}
+
+/* NARRATIVE SIDE */
+.narrative { padding: 0; }
+
+/* BEAT 1: HOOK */
+.beat-hook {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 64px;
+  position: relative;
+  overflow: hidden;
+}
+.beat-hook::before {
+  content: '';
+  position: absolute;
+  top: -100px; right: -100px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(181,131,26,0.08) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hook-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; letter-spacing: 0.2em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: riseIn 0.7s 0.3s ease forwards;
+}
+.hook-statement {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 3.5vw, 48px);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.35;
+  color: var(--ink);
+  max-width: 640px;
+  margin-bottom: 40px;
+  opacity: 0;
+  animation: riseIn 0.8s 0.5s ease forwards;
+}
+.hook-statement strong {
+  font-style: normal;
+  font-weight: 700;
+  color: var(--gold);
+}
+.hook-number {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(56px, 8vw, 100px);
+  font-weight: 900;
+  color: var(--ink);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+  opacity: 0;
+  animation: riseIn 0.8s 0.8s ease forwards;
+}
+.hook-number span { color: var(--gold); }
+.hook-#follow-dollar {
+  font-size: 16px;
+  color: var(--ink3);
+  max-width: 520px;
+  line-height: 1.75;
+  opacity: 0;
+  animation: riseIn 0.7s 1s ease forwards;
+}
+.scroll-cue {
+  position: absolute;
+  bottom: 40px; left: 64px;
+  display: flex; align-items: center; gap: 12px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 0.15em;
+  color: var(--ink3);
+  text-transform: uppercase;
+  opacity: 0;
+  animation: fadeIn 1s 2s ease forwards;
+}
+.scroll-line {
+  width: 40px; height: 1px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  animation: expandLine 1.5s 2s ease forwards;
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+/* BEAT 2: THE SPLIT */
+.beat {
+  padding: 80px 64px;
+  border-top: 1px solid var(--border);
+  position: relative;
+}
+.beat-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 0.18em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.beat-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 3vw, 42px);
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 20px;
+  max-width: 560px;
+}
+.beat-title em { font-style: italic; color: var(--blue2); }
+.beat-#follow-dollar {
+  font-size: 15px;
+  color: var(--ink2);
+  max-width: 520px;
+  line-height: 1.75;
+  margin-bottom: 48px;
+}
+
+/* DOLLAR SPLIT VISUAL */
+.dollar-split {
+  margin-bottom: 48px;
+}
+.split-track {
+  height: 48px;
+  background: var(--bg3);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  margin-bottom: 16px;
+  border: 1px solid var(--border);
+}
+.split-mission {
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal), #2a9a7c);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px; font-weight: 500;
+  color: #fff;
+  transition: width 1.2s cubic-bezier(0.16,1,0.3,1);
+  width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.split-cost {
+  height: 100%;
+  background: linear-gradient(90deg, #b5831a, var(--gold2));
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px; font-weight: 500;
+  color: rgba(255,255,255,0.9);
+  transition: width 1.2s cubic-bezier(0.16,1,0.3,1) 0.1s;
+  width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.split-labels {
+  display: flex; gap: 24px;
+}
+.split-lbl {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--ink2);
+}
+.split-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+}
+
+/* MISSION BREAKDOWN */
+.mission-breakdown {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px 32px;
+  margin-bottom: 32px;
+}
+.breakdown-row {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.breakdown-row:last-child { border-bottom: none; }
+.br-label { font-size: 14px; color: var(--ink2); }
+.br-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 700;
+  color: var(--teal);
+}
+.br-pct {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; color: var(--ink3);
+  margin-top: 2px;
+  text-align: right;
+}
+
+/* BEAT 3: HUMAN GRID */
+.beat-grid {
+  padding: 80px 64px;
+  border-top: 1px solid var(--border);
+}
+.grid-intro { margin-bottom: 48px; }
+.output-section { margin-bottom: 56px; }
+.output-heading {
+  display: flex; align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.output-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px; font-weight: 700;
+}
+.output-count {
+  font-family: 'DM Mono', monospace;
+  font-size: 32px; font-weight: 500;
+  color: var(--gold);
+}
+.output-desc {
+  font-size: 13px; color: var(--ink3);
+  margin-bottom: 20px;
+  line-height: 1.6;
+  max-width: 480px;
+}
+.icon-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  max-height: 180px;
+  overflow: hidden;
+  position: relative;
+}
+.icon-grid.expanded { max-height: none; }
+.icon-dot {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--teal-light);
+  border: 1px solid rgba(26,122,98,0.2);
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+  position: relative;
+  flex-shrink: 0;
+}
+.icon-dot:hover {
+  background: var(--teal);
+  transform: scale(1.3);
+  z-index: 10;
+}
+.icon-dot.blue-dot {
+  background: var(--blue-glow);
+  border-color: rgba(59,130,246,0.25);
+}
+.icon-dot.blue-dot:hover { background: var(--blue2); }
+.icon-dot.faded { opacity: 0.25; }
+.icon-dot[data-tip]:hover::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: #fff;
+  font-size: 11px;
+  font-family: 'DM Sans', sans-serif;
+  white-space: nowrap;
+  padding: 5px 10px;
+  border-radius: 5px;
+  pointer-events: none;
+  z-index: 100;
+}
+.grid-overflow-hint {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; color: var(--ink3);
+  margin-top: 8px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* BEAT 4: SCALE */
+.beat-scale {
+  padding: 80px 64px;
+  border-top: 1px solid var(--border);
+  background: var(--ink);
+  color: #fff;
+}
+.beat-scale .beat-tag { color: var(--gold2); }
+.beat-scale .beat-title { color: #fff; }
+.beat-scale .beat-#follow-dollar { color: rgba(255,255,255,0.6); }
+
+.scale-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 40px;
+}
+.scale-cell {
+  background: rgba(255,255,255,0.04);
+  padding: 32px 28px;
+  transition: background 0.2s;
+}
+.scale-cell:hover { background: rgba(255,255,255,0.08); }
+.scale-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 48px; font-weight: 900;
+  color: var(--gold2);
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.scale-lbl {
+  font-size: 13px;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.6;
+}
+.scale-lbl strong { color: rgba(255,255,255,0.9); }
+
+/* SOURCE FOOTER */
+.source-footer {
+  padding: 40px 64px;
+  border-top: 1px solid var(--border);
+  background: var(--bg2);
+}
+.source-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 0.15em;
+  color: var(--ink3);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.source-text {
+  font-size: 12px; color: var(--ink3);
+  line-height: 1.7;
+  max-width: 600px;
+}
+
+/* ANIMATIONS */
+@keyframes riseIn {
+  from { opacity:0; transform:translateY(24px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity:0; } to { opacity:0.7; }
+}
+@keyframes expandLine {
+  from { transform:scaleX(0); } to { transform:scaleX(1); }
+}
+@keyframes dotPop {
+  0%   { transform:scale(0); opacity:0; }
+  60%  { transform:scale(1.2); opacity:1; }
+  100% { transform:scale(1); opacity:1; }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.reveal.vis { opacity:1; transform:none; }
+
+#follow-dollar { position: relative; width: 100%; }
+
+</style>
+</head>
+<body>
+
+
+<nav>
+  <div class="nav-mark">CFC x Social Justice 2026</div>
+  <ul class="nav-links">
+    <li><a href="#data">The Data</a></li>
+    <li><a href="#growth">Growth</a></li>
+    <li><a href="#community">Community</a></li>
+    <li><a href="#insights">Analysis</a></li>
+    <li><a href="#follow-dollar">Follow the Dollar</a></li>
+    <li><a href="#efficiency">Efficiency</a></li>
+    <li><a href="#next">What's Next</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="hero-glow1"></div>
+  <div class="hero-glow2"></div>
+  <p class="hero-tag">Knox Grammar School / World's Greatest Shave</p>
+  <h1 class="hero-title">
+    Three years.<br>
+    <span class="ital">One community.</span>
+    <span class="line2">Unstoppable.</span>
+  </h1>
+  <p class="hero-body">Knox has raised over $365,000 for the Leukaemia Foundation across 2024, 2025, and 2026. This is the story of why the curve keeps getting steeper.</p>
+  <div class="hero-bottom">
+    <div class="hero-nums">
+      <div><div class="hnum">~$140k</div><div class="hlabel">2026 total</div></div>
+      <div><div class="hnum">+13%</div><div class="hlabel">vs last year</div></div>
+    </div>
+    <div class="scroll-hint">
+      <div class="scroll-line"></div>
+      scroll
+    </div>
+  </div>
+</div>
+
+<div class="band">
+  <div class="band-counter" id="bigCount">$365,590</div>
+  <p class="band-sub">Combined donations from Knox Grammar across three consecutive World's Greatest Shave campaigns.</p>
+</div>
+
+<div class="section" id="data">
+  <p class="slabel reveal">The Numbers</p>
+  <h2 class="sheading reveal">2026 is tracking<br>structurally ahead.</h2>
+  <p class="sintro reveal">At the same point in the campaign, Knox 2026 raised 31% more than 2025. This is not a coincidence. It is compounding.</p>
+
+  <div class="year-grid reveal">
+    <div class="ycell">
+      <div class="ytotal">$101,678</div>
+      <div class="ydelta">2024 baseline</div>
+      <div class="ydesc">The year the campaign began to scale structurally.</div>
+    </div>
+    <div class="ycell">
+      <div class="ytotal">$123,912</div>
+      <div class="ydelta">+22% vs 2024</div>
+      <div class="ydesc">2025 confirmed the upward shift was structural, not a fluke.</div>
+    </div>
+    <div class="ycell">
+      <div class="ytotal">~$140,000</div>
+      <div class="ydelta">+13% vs 2025</div>
+      <div class="ydesc">2026 was 31% ahead of 2025 at the same campaign point.</div>
+    </div>
+  </div>
+
+  <div class="chart-card reveal">
+    <div class="chart-top">
+      <div class="chart-ttl">Money raised by date, all three years</div>
+      <div class="toggles">
+        <button class="tog tog24 on" onclick="tog(0,this)">2024</button>
+        <button class="tog tog25 on" onclick="tog(1,this)">2025</button>
+        <button class="tog tog26 on" onclick="tog(2,this)">2026</button>
+      </div>
+    </div>
+    <div class="chart-wrap"><canvas id="mc"></canvas></div>
+  </div>
+</div>
+
+
+<div class="div"></div>
+<div class="section" id="growth">
+
+
+<div class="header-gs">
+  <p class="header-tag">Knox Grammar / World's Greatest Shave / Growth Story</p>
+  <h1 class="header-title">How a movement<br><em>compounds.</em></h1>
+  <p class="header-sub">Three years. More participants, higher medians, a wider base. Step through each year and watch the numbers shift in real time.</p>
+</div>
+
+<div class="progress-wrap">
+  <span class="progress-label" id="progLabel">2024</span>
+  <div class="progress-track"><div class="progress-fill" id="progFill" style="width:33%"></div></div>
+  <button class="play-btn" id="playBtn" onclick="togglePlayGS()" style="width:auto;padding:8px 20px;">Play all</button>
+</div>
+
+<div class="main">
+  <div class="canvas-side">
+    <div class="year-tabs">
+      <button class="year-tab active-2024" id="tab24" onclick="setYearGS('2024')">2024</button>
+      <button class="year-tab" id="tab25" onclick="setYearGS('2025')">2025</button>
+      <button class="year-tab" id="tab26" onclick="setYearGS('2026')">2026</button>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-label">Cumulative donations by date</div>
+      <div class="chart-wrap"><canvas id="lineChart"></canvas></div>
+      <div class="chart-sub" id="chartSub">Showing 2024 campaign trajectory</div>
+    </div>
+
+    <div class="dist-card">
+      <div class="dist-label">Donor distribution by giving tier</div>
+      <div class="dist-bars" id="distBars"></div>
+    </div>
+  </div>
+
+  <div class="stats-side">
+    <div class="year-heading" id="yearHeading" style="color:var(--c24)">2024</div>
+    <div class="year-sub" id="yearSub">Baseline year</div>
+
+    <div class="stat-stack">
+      <div class="stat-cell">
+        <div class="stat-val" id="statTotal" style="color:var(--c24)">$101,678</div>
+        <div class="stat-lbl">Total raised</div>
+        <div class="stat-delta" id="deltaTotal" style="color:var(--muted)">baseline</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-val" id="statPart" style="color:var(--c24)">131</div>
+        <div class="stat-lbl">Participants</div>
+        <div class="stat-delta" id="deltaPart" style="color:var(--muted)">baseline</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-val" id="statMedian" style="color:var(--c24)">$280</div>
+        <div class="stat-lbl">Median donation</div>
+        <div class="stat-delta" id="deltaMedian" style="color:var(--muted)">baseline</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-val" id="statTop10" style="color:var(--c24)">38%</div>
+        <div class="stat-lbl">Top 10 share of total</div>
+        <div class="stat-delta" id="deltaTop10" style="color:var(--muted)">baseline</div>
+      </div>
+    </div>
+
+    <div class="insight-card" id="insightCard">
+      <div class="insight-heading" id="insightHead">The campaign begins to scale.</div>
+      <div class="insight-body" id="insightBody">131 participants come together for the first time at this level. The top 10 fundraisers carry 38% of the total, showing a campaign still driven by a concentrated core.</div>
+    </div>
+
+    <button class="play-btn" id="playBtn2" onclick="togglePlayGS()">
+      <span id="playIcon">&#9654;</span> <span id="playLabel">Play through all years</span>
+    </button>
+  </div>
+</div>
+
+<div id="tt_gs">
+  <div class="tt-name" id="ttName_gs"></div>
+  <div class="tt-amt" id="ttAmt_gs"></div>
+</div>
+
+
+</div>
+<div class="div"></div>
+
+<div class="section" id="insights">
+  <p class="slabel reveal">CFC Member Analysis</p>
+  <h2 class="sheading reveal">What is driving<br>the growth?</h2>
+  <p class="sintro reveal">CFC members were asked to analyse the trend before this presentation. No prompting, no format, just real analysis from Knox students.</p>
+  <div class="ins-grid">
+    <div class="ins-card reveal">
+      <div class="ins-idx">Insight 01</div>
+      <div class="ins-body">The fundraising trajectory has taken a <strong>structural upward shift</strong> rather than a cyclical pattern. This signals improved participation elasticity and stronger early-stage engagement each year.</div>
+      <span class="ins-pill">Structural shift</span>
+    </div>
+    <div class="ins-card reveal">
+      <div class="ins-idx">Insight 02</div>
+      <div class="ins-body">A <strong>compounding awareness effect</strong> is occurring. As cohorts progress through Knox, their exposure accumulates, leading to lower resistance and higher conversion rates over time.</div>
+      <span class="ins-pill">Network effects</span>
+    </div>
+    <div class="ins-card reveal">
+      <div class="ins-idx">Insight 03</div>
+      <div class="ins-body">Senior students create a <strong>network multiplier effect,</strong> making participation visible and normalising donation behaviour for younger year groups who look up to them.</div>
+      <span class="ins-pill">Peer effects</span>
+    </div>
+    <div class="ins-card reveal">
+      <div class="ins-idx">Insight 04</div>
+      <div class="ins-body">To strengthen future campaigns, measure <strong>KPIs by year level:</strong> participation rate, donor retention rate, and average donation per participant. Total dollar growth can mask a shrinking donor base.</div>
+      <span class="ins-pill">Recommendation</span>
+    </div>
+  </div>
+</div>
+
+
+<div class="div"></div>
+<div class="section" id="community">
+
+
+<div class="header-cp">
+  <p class="header-tag">Knox Grammar / World's Greatest Shave / Community Portrait</p>
+  <h1 class="header-title">Every dot is<br><em>a person.</em></h1>
+  <p class="header-sub">441 fundraising participants across 2024, 2025, and 2026. Each circle is one Knox community member. Circle size is proportional to the amount they raised. This is not a school that donates. It is a community that gives.</p>
+</div>
+
+<div style="max-width:1200px;margin:0 auto;padding:0 48px 32px;">
+  <div class="insight-strip">
+    <div class="insight-cell">
+      <div class="insight-val grayc">131</div>
+      <div class="insight-lbl">Participants in 2024</div>
+      <div class="insight-delta">baseline year</div>
+    </div>
+    <div class="insight-cell">
+      <div class="insight-val blue">146</div>
+      <div class="insight-lbl">Participants in 2025</div>
+      <div class="insight-delta">+11% more people</div>
+    </div>
+    <div class="insight-cell">
+      <div class="insight-val blue2">164</div>
+      <div class="insight-lbl">Participants in 2026</div>
+      <div class="insight-delta">+25% vs 2024</div>
+    </div>
+    <div class="insight-cell">
+      <div class="insight-val" style="color:var(--teal)">136</div>
+      <div class="insight-lbl">Returned from 2024 to 2026</div>
+      <div class="insight-delta">sustained commitment</div>
+    </div>
+  </div>
+</div>
+
+<div class="key-insight">
+  <div class="insight-banner">
+    <div class="insight-icon">38% <span style="font-size:24px;color:var(--muted)">to</span> 28%</div>
+    <div class="insight-text">
+      <strong>The base is getting wider, not just taller.</strong> In 2024, the top 10 fundraisers accounted for 38% of all donations. By 2026 that share fell to 28%. The growth is not coming from a few big donors. It is coming from the whole community giving more. That is a more durable, more meaningful trend than a rising total alone.
+    </div>
+  </div>
+</div>
+
+<div class="controls">
+  <span class="ctrl-label">Filter</span>
+  <button class="yr-btn active-all" onclick="setYearCP('all', this)">All years</button>
+  <button class="yr-btn" onclick="setYearCP('2024', this)">2024 only</button>
+  <button class="yr-btn" onclick="setYearCP('2025', this)">2025 only</button>
+  <button class="yr-btn" onclick="setYearCP('2026', this)">2026 only</button>
+  <div class="sort-sep"></div>
+  <span class="ctrl-label">Sort</span>
+  <button class="yr-btn active-all" id="sortAmt" onclick="setSortCP('amount', this)">By amount</button>
+  <button class="yr-btn" id="sortAlpha" onclick="setSortCP('alpha', this)">A to Z</button>
+</div>
+
+<div class="canvas-wrap">
+  <canvas id="portraitCanvas"></canvas>
+</div>
+
+<div class="legend">
+  <div class="leg-item"><div class="leg-dot" style="background:#6b7280"></div>2024 participant</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#4a9eff"></div>2025 participant</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#60a5fa"></div>2026 participant</div>
+  <div class="sort-sep"></div>
+  <div class="leg-size">
+    Circle size
+    <div class="leg-size-circles">
+      <svg width="40" height="20"><circle cx="5" cy="10" r="3" fill="rgba(255,255,255,0.2)"/><circle cx="18" cy="10" r="6" fill="rgba(255,255,255,0.2)"/><circle cx="34" cy="10" r="9" fill="rgba(255,255,255,0.2)"/></svg>
+    </div>
+    proportional to donation amount
+  </div>
+</div>
+
+<div class="axis-wrap">
+  <div class="axis-label">Hover any circle to see the person's name and amount raised</div>
+</div>
+
+<div class="bottom-section">
+  <div class="bottom-card">
+    <div class="bc-tag">Median donation</div>
+    <div class="bc-val">$529</div>
+    <div class="bc-desc">The typical Knox fundraiser raised $529 in 2026, up from $280 in 2024. The middle of the community nearly doubled. Not just the top.</div>
+  </div>
+  <div class="bottom-card">
+    <div class="bc-tag">Average donation</div>
+    <div class="bc-val">$820</div>
+    <div class="bc-desc">Average raised per participant in 2026, up from $593 in 2024. Combined with more participants, this produced a 73% lift in total over two years.</div>
+  </div>
+  <div class="bottom-card">
+    <div class="bc-tag">Most improved</div>
+    <div class="bc-val">+$5,031</div>
+    <div class="bc-desc">The biggest personal growth from 2024 to 2026 was Christian Keane, who went from $1,237 to $6,268. The individual commitment story is as powerful as the aggregate.</div>
+  </div>
+</div>
+
+<div id="tooltip_cp">
+  <div class="tt-name" id="ttName_cp"></div>
+  <div class="tt-amt" id="ttAmt_cp"></div>
+  <div class="tt-yr" id
+<!-- FTD SECTION -->
+<div id="follow-dollar">
+
+
+<div class="cursor" id="cursor"></div>
+
+<div class="page-wrap">
+
+  <!-- NARRATIVE COLUMN -->
+  <div class="narrative">
+
+    <!-- BEAT 1: HOOK -->
+    <div class="beat-hook">
+      <p class="hook-tag">Knox Grammar / Follow the Dollar / World's Greatest Shave 2026</p>
+      <p class="hook-statement">
+        This year, a family relocated from regional New South Wales to stay near their child's hospital.
+        <strong>Knox paid for their accommodation.</strong>
+      </p>
+      <div class="hook-number">$<span id="hookAmt">140,000</span></div>
+      <p class="hook-body">
+        That is what Knox Grammar raised in 2026. Not an abstract total. Not a line on a spreadsheet.
+        A number that resolves into real people receiving real care. This page follows every dollar.
+      </p>
+      <div class="scroll-cue">
+        <div class="scroll-line"></div>
+        scroll to follow
+      </div>
+    </div>
+
+    <!-- BEAT 2: THE SPLIT -->
+    <div class="beat">
+      <p class="beat-tag reveal">How every dollar is allocated</p>
+      <h2 class="beat-title reveal">62.8 cents of every dollar<br><em>reaches the mission.</em></h2>
+      <p class="beat-body reveal">
+        In FY2024-25, the Leukaemia Foundation raised $29.2M and spent $10.86M on fundraising and operations.
+        That means 37.2 cents raised each dollar. The remaining 62.8 cents went directly to patient support,
+        research, and advocacy. This is a significant improvement from 53.5 cents the year before.
+      </p>
+
+      <div class="dollar-split reveal">
+        <div class="split-track" id="splitTrack">
+          <div class="split-mission" id="splitMission" style="width:0">62.8c to mission</div>
+          <div class="split-cost" id="splitCost" style="width:0">37.2c fundraising cost</div>
+        </div>
+        <div class="split-labels">
+          <div class="split-lbl"><div class="split-dot" style="background:var(--teal)"></div>Mission delivery: 62.8%</div>
+          <div class="split-lbl"><div class="split-dot" style="background:var(--gold2)"></div>Fundraising cost: 37.2%</div>
+        </div>
+      </div>
+
+      <div class="mission-breakdown reveal">
+        <div class="breakdown-row">
+          <div>
+            <div class="br-label">Patient support, accommodation and counselling</div>
+            <div style="font-size:12px;color:var(--ink3);margin-top:2px;">39,800 service instances delivered to 6,881 people</div>
+          </div>
+          <div style="text-align:right">
+            <div class="br-val">$13.5M</div>
+            <div class="br-pct">62.4% of mission spend</div>
+          </div>
+        </div>
+        <div class="breakdown-row">
+          <div>
+            <div class="br-label">Research grants and advocacy</div>
+            <div style="font-size:12px;color:var(--ink3);margin-top:2px;">Funding scientific breakthroughs for 135,000 Australians with blood cancer</div>
+          </div>
+          <div style="text-align:right">
+            <div class="br-val">$4.36M</div>
+            <div class="br-pct">20.2% of mission spend</div>
+          </div>
+        </div>
+        <div class="breakdown-row">
+          <div>
+            <div class="br-label">UWA Endowed Chair in Blood Cancer Research</div>
+            <div style="font-size:12px;color:var(--ink3);margin-top:2px;">Permanent research position, $3M matched by UWA</div>
+          </div>
+          <div style="text-align:right">
+            <div class="br-val">$3M</div>
+            <div class="br-pct">13.9% of mission spend</div>
+          </div>
+        </div>
+        <div class="breakdown-row" style="background:rgba(181,131,26,0.06);border-radius:6px;padding:14px 12px;margin-top:8px;border:none;">
+          <div class="br-label" style="font-weight:600;color:var(--ink)">Total mission expenditure FY25</div>
+          <div style="text-align:right">
+            <div class="br-val" style="font-size:26px;">$21.6M</div>
+            <div class="br-pct">Audited. Source: Leukaemia Foundation FY25 Accounts</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BEAT 3: HUMAN GRID -->
+    <div class="beat-grid">
+      <div class="grid-intro">
+        <p class="beat-tag reveal">What Knox's contribution becomes</p>
+        <h2 class="beat-title reveal">Each dot below<br><em>is a person.</em></h2>
+        <p class="beat-body reveal" style="margin-bottom:0">
+          Use the calculator on the right to adjust the donation amount.
+          Every dot updates. Each one represents a real service instance,
+          a real family, a real night of care. Hover to see what it means.
+        </p>
+      </div>
+
+      <!-- SERVICE INSTANCES -->
+      <div class="output-section reveal">
+        <div class="output-heading">
+          <div class="output-title">Service instances funded</div>
+          <div class="output-count" id="countInstances">413</div>
+        </div>
+        <p class="output-desc">
+          At $339 per service instance (FY25 audited: $13.5M across 39,800 instances),
+          Knox's donation covered approximately this many interactions with people living with blood cancer.
+          Counselling, financial support, accommodation, practical care.
+        </p>
+        <div class="icon-grid" id="gridInstances"></div>
+        <div class="grid-overflow-hint" id="hintInstances" onclick="toggleGrid('gridInstances','hintInstances')"></div>
+      </div>
+
+      <!-- ACCOMMODATION NIGHTS -->
+      <div class="output-section reveal">
+        <div class="output-heading">
+          <div class="output-title">Nights of accommodation</div>
+          <div class="output-count" id="countNights">389</div>
+        </div>
+        <p class="output-desc">
+          At $360 per night (derived from $13.5M patient support across 39,800 service instances,
+          weighted for accommodation cost), Knox funded roughly this many nights for families
+          forced to relocate for treatment.
+        </p>
+        <div class="icon-grid" id="gridNights"></div>
+        <div class="grid-overflow-hint" id="hintNights" onclick="toggleGrid('gridNights','hintNights')"></div>
+      </div>
+
+      <!-- FINANCIAL ASSISTANCE -->
+      <div class="output-section reveal">
+        <div class="output-heading">
+          <div class="output-title">Financial assistance awards</div>
+          <div class="output-count" id="countAwards">215</div>
+        </div>
+        <p class="output-desc">
+          In FY24, 866 individuals received financial assistance covering pharmaceuticals
+          and specialised equipment, at an estimated average of $650 per award.
+          Knox's contribution funds approximately this many awards.
+        </p>
+        <div class="icon-grid" id="gridAwards"></div>
+        <div class="grid-overflow-hint" id="hintAwards" onclick="toggleGrid('gridAwards','hintAwards')"></div>
+      </div>
+
+    </div>
+
+    <!-- BEAT 4: SCALE -->
+    <div class="beat-scale">
+      <p class="beat-tag reveal">Putting it in context</p>
+      <h2 class="beat-title reveal" style="max-width:540px">One school in Wahroonga.<br><em>Disproportionate impact.</em></h2>
+      <p class="beat-body reveal" style="max-width:520px">
+        Knox is not a corporate sponsor. It is a school community with a
+        culture of giving that has compounded over eight years. These numbers
+        show what that looks like at national scale.
+      </p>
+
+      <div class="scale-grid reveal">
+        <div class="scale-cell">
+          <div class="scale-num">1.2%</div>
+          <div class="scale-lbl"><strong>Of national WGS net revenue</strong> comes from Knox. One school. One community.</div>
+        </div>
+        <div class="scale-cell">
+          <div class="scale-num">16</div>
+          <div class="scale-lbl"><strong>Australians die from blood cancer</strong> every day. The Foundation's work runs against that number.</div>
+        </div>
+        <div class="scale-cell">
+          <div class="scale-num">$10k</div>
+          <div class="scale-lbl"><strong>Knox raised in 2018.</strong> Eight years later: $148,000. Philanthropic culture, once embedded, compounds.</div>
+        </div>
+        <div class="scale-cell">
+          <div class="scale-num">135,000</div>
+          <div class="scale-lbl"><strong>Australians currently living</strong> with blood cancer. By 2035 that number reaches 275,000.</div>
+        </div>
+        <div class="scale-cell" style="grid-column:1/-1; background:rgba(181,131,26,0.08); border-top:1px solid rgba(181,131,26,0.15);">
+          <div class="scale-num" style="font-size:36px;">63c</div>
+          <div class="scale-lbl" style="max-width:520px;">
+            <strong>Of every dollar Knox raised in 2026 reached the mission directly</strong>, up from 54 cents the year before.
+            The Foundation improved its fundraising efficiency by 15% in FY25 while simultaneously growing total mission spend by 9%.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SOURCE FOOTER -->
+    <div class="source-footer">
+      <div class="source-title">Data sources</div>
+      <div class="source-text">
+        All financial figures sourced from the Leukaemia Foundation of Australia FY2025 Audited Financial Accounts
+        (published October 2025, BDO Audit Pty Ltd) and the Leukaemia Foundation Annual Report 2024-25.
+        Knox participation data sourced from World's Greatest Shave fundraising records 2024-2026.
+        Impact estimates (service instance cost, accommodation night cost, financial assistance award value)
+        are derived from the Foundation's own reported expenditure divided by reported service volumes.
+        All illustrative hover descriptions are representative, not individual case studies.
+        This page was prepared by Capital Finance Club, Knox Grammar School, March 2026.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- STICKY CALCULATOR -->
+  <div class="sticky-calc">
+    <p class="calc-label">Live impact calculator</p>
+    <div class="calc-amount" id="calcDisplay">$140,000</div>
+    <div class="calc-sublabel">Knox Grammar 2026 total</div>
+
+    <div class="slider-wrap">
+      <div style="position:relative;">
+        <input type="range" id="amtSlider" min="1000" max="200000" value="140000" step="1000">
+        <div class="slider-fill" id="sliderFill"></div>
+      </div>
+      <div class="slider-range">
+        <span>$1,000</span>
+        <span>$200,000</span>
+      </div>
+    </div>
+
+    <div class="calc-outputs">
+      <div class="calc-out highlight">
+        <div class="calc-out-val" id="cOut1">413</div>
+        <div class="calc-out-lbl">service instances funded</div>
+        <div class="calc-out-icon">◎</div>
+      </div>
+      <div class="calc-out">
+        <div class="calc-out-val" id="cOut2">389</div>
+        <div class="calc-out-lbl">nights of accommodation</div>
+        <div class="calc-out-icon">⌂</div>
+      </div>
+      <div class="calc-out">
+        <div class="calc-out-val" id="cOut3">215</div>
+        <div class="calc-out-lbl">financial assistance awards</div>
+        <div class="calc-out-icon">◇</div>
+      </div>
+      <div class="calc-out">
+        <div class="calc-out-val" id="cOut4">28</div>
+        <div class="calc-out-lbl">chemotherapy courses (3 days each)</div>
+        <div class="calc-out-icon">+</div>
+      </div>
+      <div class="calc-out">
+        <div class="calc-out-val" id="cOut5">0.9x</div>
+        <div class="calc-out-lbl">average research grants funded</div>
+        <div class="calc-out-icon">✦</div>
+      </div>
+      <div class="calc-out">
+        <div class="calc-out-val" id="cOut6">83</div>
+        <div class="calc-out-lbl">people reached (of 6,881 served)</div>
+        <div class="calc-out-icon">♦</div>
+      </div>
+    </div>
+
+    <div class="calc-source">
+      Sources: LFA FY25 Audited Accounts.<br>
+      $339/service instance. $360/night.<br>
+      $650/assistance award. $5,000/chemo course.<br>
+      $154,000/research grant avg. 1.2% of $29.2M.
+    </div>
+  </div>
+
+</div>
+
+
+</div>
+<!-- END FTD -->
+
+<div class="div"></div>
+="ttYr_cp"></div>
+</div>
+
+
+</div>
+
+<div class="div"></div>
+
+<div class="section" id="efficiency">
+  <p class="slabel reveal">CFC Financial Analysis</p>
+  <h2 class="sheading reveal">Is the Leukaemia<br>Foundation efficient?</h2>
+  <p class="sintro reveal">CFC members went beyond the cause and read the annual report. Here is the FY2024-25 breakdown, in plain terms.</p>
+  <div class="eff-grid reveal">
+    <div class="eff-card">
+      <div class="eff-hdg">Revenue and allocation</div>
+      <div class="bar-row">
+        <div class="bar-lbls"><span>Mission programs</span><span>$21.6M / 55%</span></div>
+        <div class="bar-track"><div class="bar-fill bblue" data-w="55"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-lbls"><span>Fundraising and admin</span><span>$15.6M / 40%</span></div>
+        <div class="bar-track"><div class="bar-fill bblue2" data-w="40"></div></div>
+      </div>
+        <div class="bar-row">
+          <div class="bar-lbls"><span>Operating surplus</span><span>$1.9M / 5%</span></div>
+          <div class="bar-track"><div class="bar-fill bgray" data-w="5"></div></div>
+        </div>
+      <div class="eff-rev">
+        <div class="eff-rev-lbl">Total revenue FY24-25</div>
+        <div class="eff-rev-num">$39.2M</div>
+        <div class="eff-rev-delta">+30% vs prior year</div>
+      </div>
+    </div>
+    <div class="eff-stack">
+      <div class="trend-card"><strong>The trend that matters.</strong> In FY23-24, the Foundation ran a <span class="tbad">$5.8M deficit.</span> In FY24-25, it flipped to a <span class="tgood">$4.9M surplus.</span> Fundraising costs fell while revenue grew 30%. Each dollar raised now costs less to raise.</div>
+      <div class="verdict"><strong>CFC verdict:</strong> Based on the FY24-25 financials, the Leukaemia Foundation is financially stable and improving. 55% of revenue reaching the mission directly is reasonable for a national charity of this scale. Worth monitoring whether that ratio improves.</div>
+      <div class="q-card">
+        <div class="q-lbl">Key open question</div>
+        <div class="q-txt">Is growth driven by <em>more participants</em> or <em>larger average donations?</em> The answer determines how sustainable the trajectory really is.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="div"></div>
+
+<div class="section" id="next">
+  <p class="slabel reveal">Coming Up</p>
+  <h2 class="sheading reveal">The campaign is not<br>over yet.</h2>
+  <p class="sintro reveal">World's Greatest Shave is on 20 March, two days from now. Here is what Social Justice has planned for the rest of term and beyond.</p>
+  <div class="next-grid reveal">
+    <div class="ncard nblue">
+      <div class="ndate">20 March 2026 / This Friday</div>
+      <div class="ntitle">World's Greatest Shave</div>
+      <div class="nbody">The shave event itself. Knox 2026 is tracking to close at approximately $140,000, a new record.</div>
+    </div>
+    <div class="ncard">
+      <div class="ndate">Last 2-3 weeks of Term 1</div>
+      <div class="ntitle">Easter Egg and Instant Noodle Drive</div>
+      <div class="nbody">Donations for Wesley Mission and Ku-ring-gai Neighbourhood Centre. Details from Social Justice soon.</div>
+    </div>
+    <div class="ncard">
+      <div class="ndate">5 June 2026 / Term 2</div>
+      <div class="ntitle">World Environment Day</div>
+      <div class="nbody">KEST event. Social Justice's calendar extends well beyond Term 1, with a full year of impact ahead.</div>
+    </div>
+    <div class="ncard">
+      <div class="ndate">14-20 June 2026</div>
+      <div class="ntitle">Refugee Week</div>
+      <div class="nbody">A week of events supporting refugees and asylum seekers. One of Social Justice's major Term 2 initiatives.</div>
+    </div>
+    <div class="ncard">
+      <div class="ndate">4 September 2026</div>
+      <div class="ntitle">Legacy Day</div>
+      <div class="nbody">Honouring the legacy of Australian veterans and their families. Jersey Day on the same date.</div>
+    </div>
+  </div>
+</div>
+
+
+
+<footer>
+  <span class="fmark">Capital Finance Club x Social Justice / Knox Grammar 2026</span>
+</footer>
+
+<script>
+
+const labels=['Feb 7','Feb 10','Feb 13','Feb 16','Feb 19','Feb 22','Feb 25','Feb 28','Mar 3','Mar 6','Mar 9','Mar 13'];
+const ds24=[78,5426,8817,14127,17764,19333,27574,34492,44341,54110,63916,81647];
+const ds25=[60,6000,11500,20000,26000,40208,46000,55000,66000,77490,83000,108000];
+const ds26=[0,100,3253,11124,27304,46773,65000,80804,90956,100000,108000,null];
+
+const chart=new Chart(document.getElementById('mc').getContext('2d'),{
+  type:'line',
+  data:{labels,datasets:[
+    {label:'2024',data:ds24,borderColor:'#475569',backgroundColor:'rgba(71,85,105,.04)',borderWidth:1.5,pointRadius:2,pointHoverRadius:5,tension:.4,fill:false},
+    {label:'2025',data:ds25,borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.04)',borderWidth:1.5,pointRadius:2,pointHoverRadius:5,tension:.4,fill:false},
+    {label:'2026',data:ds26,borderColor:'#60a5fa',backgroundColor:'rgba(96,165,250,.07)',borderWidth:2.5,pointRadius:3,pointHoverRadius:6,tension:.4,fill:true,spanGaps:false}
+  ]},
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    interaction:{mode:'index',intersect:false},
+    plugins:{
+      legend:{display:false},
+      tooltip:{backgroundColor:'#17171f',borderColor:'rgba(255,255,255,.08)',borderWidth:1,titleColor:'#ece8df',bodyColor:'#787880',padding:12,
+        callbacks:{label:c=>c.parsed.y===null?null:'  '+c.dataset.label+': $'+c.parsed.y.toLocaleString()}}
+    },
+    scales:{
+      x:{ticks:{color:'#787880',font:{size:11,family:'Syne'}},grid:{color:'rgba(255,255,255,.03)'},border:{color:'rgba(255,255,255,.06)'}},
+      y:{ticks:{color:'#787880',font:{size:11,family:'JetBrains Mono'},callback:v=>'$'+(v/1000).toFixed(0)+'k'},grid:{color:'rgba(255,255,255,.03)'},border:{color:'rgba(255,255,255,.06)'}}
+    }
+  }
+});
+
+function tog(idx,btn){
+  const m=chart.getDatasetMeta(idx);m.hidden=!m.hidden;
+  btn.classList.toggle('on',!m.hidden);btn.style.opacity=m.hidden?.3:1;
+  chart.update();
+}
+
+const ro=new IntersectionObserver((entries)=>{
+  entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('vis'),i*80);ro.unobserve(e.target);}});
+},{threshold:.08,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+
+const barObs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll('.bar-fill').forEach(b=>b.style.width=b.dataset.w+'%');barObs.unobserve(e.target);}});
+},{threshold:.25});
+document.querySelectorAll('.eff-grid').forEach(el=>barObs.observe(el));
+
+const cEl=document.getElementById('bigCount');
+new IntersectionObserver((entries)=>{
+  if(entries[0].isIntersecting){
+    const s=Date.now();
+    (function step(){const t=Math.min((Date.now()-s)/1800,1),e=1-Math.pow(1-t,3);cEl.textContent='$'+Math.floor(e*365590).toLocaleString();if(t<1)requestAnimationFrame(step);})();
+  }
+},{threshold:.5}).observe(cEl);
+
+
+
+// GROWTH SCRIPTS
+(function(){
+
+// DATA
+const DAILY = {
+  labels: ['Feb 7','Feb 10','Feb 13','Feb 16','Feb 19','Feb 22','Feb 25','Feb 28','Mar 3','Mar 6','Mar 9','Mar 13'],
+  '2024': [78,5426,8817,14127,17764,19333,27574,34492,44341,54110,63916,81647],
+  '2025': [60,6000,11500,20000,26000,40208,46000,55000,66000,77490,83000,108000],
+  '2026': [0,100,3253,11124,27304,46773,65000,80804,90956,100000,108000,null]
+};
+
+const DIST = {
+  '2024': { tiers:['under $100','$100-250','$250-500','$500-1k','$1k-2k','$2k-5k','$5k+'], counts:[27,17,25,30,19,10,3], pcts:[21,13,19,23,15,8,2] },
+  '2025': { tiers:['under $100','$100-250','$250-500','$500-1k','$1k-2k','$2k-5k','$5k+'], counts:[24,18,22,35,22,12,3], pcts:[16,12,15,24,15,8,2] },
+  '2026': { tiers:['under $100','$100-250','$250-500','$500-1k','$1k-2k','$2k-5k','$5k+'], counts:[27,24,26,43,29,12,3], pcts:[16,15,16,26,18,7,2] }
+};
+
+const STATS = {
+  '2024': { total:'$101,678', participants:131, median:'$280', avg:'$593', top10:'38%', color:'var(--c24)', colorHex:'#475569', heading:'The campaign begins to scale.', body:'131 participants come together for the first time at this level. The top 10 fundraisers carry 38% of the total, showing a campaign still driven by a concentrated core.' },
+  '2025': { total:'$123,912', participants:146, median:'$314', avg:'$630', top10:'33%', color:'var(--c25)', colorHex:'#3b82f6', heading:'The base starts to widen.', body:'15 more participants join. The top 10 share drops from 38% to 33%. The median lifts from $280 to $314. This is not just growth. It is the base strengthening.' },
+  '2026': { total:'~$140,000', participants:164, median:'$529', avg:'$820', top10:'28%', color:'var(--c26)', colorHex:'#60a5fa', heading:'A community, fully formed.', body:'The top 10 share falls to 28%. The median nearly doubles to $529. 33 more participants than 2024. The growth is now broad-based. This is what a compounding community looks like.' }
+};
+
+const SUBTITLES = {
+  '2024': 'Showing 2024 campaign trajectory',
+  '2025': 'Showing 2024 vs 2025 trajectories',
+  '2026': 'Showing all three years together'
+};
+
+const COLORS = { '2024':'#475569', '2025':'#3b82f6', '2026':'#60a5fa' };
+const PROG = { '2024': '33%', '2025': '66%', '2026': '100%' };
+const PROG_LABELS = { '2024': '2024', '2025': '2025', '2026': '2026' };
+
+let currentYear = '2024';
+let playInterval = null;
+let isPlaying = false;
+
+// CHART
+const ctx = document.getElementById('lineChart').getContext('2d');
+const lineChart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: DAILY.labels,
+    datasets: [
+      { label:'2024', data:DAILY['2024'], borderColor:'#475569', backgroundColor:'rgba(71,85,105,0.05)', borderWidth:1.5, pointRadius:2, tension:.4, fill:false },
+      { label:'2025', data:DAILY['2025'], borderColor:'#3b82f6', backgroundColor:'rgba(59,130,246,0.05)', borderWidth:1.5, pointRadius:2, tension:.4, fill:false },
+      { label:'2026', data:DAILY['2026'], borderColor:'#60a5fa', backgroundColor:'rgba(96,165,250,0.08)', borderWidth:2.5, pointRadius:3, tension:.4, fill:false, spanGaps:false }
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    interaction:{ mode:'index', intersect:false },
+    plugins:{
+      legend:{ display:false },
+      tooltip:{
+        backgroundColor:'#17171f', borderColor:'rgba(255,255,255,.08)', borderWidth:1,
+        titleColor:'#ece8df', bodyColor:'#787880', padding:10,
+        callbacks:{ label: c => c.parsed.y===null?null:'  '+c.dataset.label+': $'+c.parsed.y.toLocaleString() }
+      }
+    },
+    scales:{
+      x:{ ticks:{color:'#787880',font:{size:10,family:'Syne'}}, grid:{color:'rgba(255,255,255,.03)'}, border:{color:'rgba(255,255,255,.05)'} },
+      y:{ ticks:{color:'#787880',font:{size:10,family:'JetBrains Mono'},callback:v=>'$'+(v/1000).toFixed(0)+'k'}, grid:{color:'rgba(255,255,255,.03)'}, border:{color:'rgba(255,255,255,.05)'} }
+    },
+    animation:{ duration:600 }
+  }
+});
+
+function updateChart(yr) {
+  lineChart.data.datasets[0].hidden = false;
+  lineChart.data.datasets[1].hidden = yr === '2024';
+  lineChart.data.datasets[2].hidden = yr !== '2026';
+  lineChart.update();
+  document.getElementById('chartSub').textContent = SUBTITLES[yr];
+}
+
+function buildDistBars(yr) {
+  const d = DIST[yr];
+  const col = COLORS[yr];
+  const container = document.getElementById('distBars');
+  container.innerHTML = '';
+  d.tiers.forEach((tier, i) => {
+    const row = document.createElement('div');
+    row.className = 'dist-row';
+    row.innerHTML = `
+      <span class="dist-tier">${tier}</span>
+      <div class="dist-track"><div class="dist-fill" style="background:${col}; width:0%" data-w="${d.pcts[i]}"></div></div>
+      <span class="dist-count">${d.counts[i]}</span>
+    `;
+    container.appendChild(row);
+  });
+  // Animate bars
+  setTimeout(() => {
+    container.querySelectorAll('.dist-fill').forEach(b => b.style.width = b.dataset.w + '%');
+  }, 60);
+}
+
+function updateStats(yr) {
+  const s = STATS[yr];
+  document.getElementById('yearHeading').textContent = yr;
+  document.getElementById('yearHeading').style.color = s.color;
+  document.getElementById('statTotal').textContent = s.total;
+  document.getElementById('statTotal').style.color = s.color;
+  document.getElementById('statPart').textContent = s.participants;
+  document.getElementById('statPart').style.color = s.color;
+  document.getElementById('statMedian').textContent = s.median;
+  document.getElementById('statMedian').style.color = s.color;
+  document.getElementById('statTop10').textContent = s.top10;
+  document.getElementById('statTop10').style.color = s.color;
+  document.getElementById('insightHead').textContent = s.heading;
+  document.getElementById('insightBody').textContent = s.body;
+
+  // Deltas
+  if (yr === '2024') {
+    ['deltaTotal','deltaPart','deltaMedian','deltaTop10'].forEach(id => {
+      document.getElementById(id).textContent = 'baseline';
+      document.getElementById(id).style.color = 'var(--muted)';
+    });
+    document.getElementById('yearSub').textContent = 'Baseline year';
+  } else if (yr === '2025') {
+    document.getElementById('deltaTotal').textContent = '+22% vs 2024';
+    document.getElementById('deltaPart').textContent = '+15 participants vs 2024';
+    document.getElementById('deltaMedian').textContent = '+12% vs 2024';
+    document.getElementById('deltaTop10').textContent = 'Down from 38%';
+    document.getElementById('yearSub').textContent = 'Second year';
+    ['deltaTotal','deltaPart','deltaMedian','deltaTop10'].forEach(id => {
+      document.getElementById(id).style.color = 'var(--c25)';
+    });
+  } else {
+    document.getElementById('deltaTotal').textContent = '+38% vs 2024';
+    document.getElementById('deltaPart').textContent = '+33 participants vs 2024';
+    document.getElementById('deltaMedian').textContent = '+89% vs 2024';
+    document.getElementById('deltaTop10').textContent = 'Down from 38% to 28%';
+    document.getElementById('yearSub').textContent = 'Third year';
+    ['deltaTotal','deltaPart','deltaMedian','deltaTop10'].forEach(id => {
+      document.getElementById(id).style.color = 'var(--c26)';
+    });
+  }
+}
+
+function updateTabs(yr) {
+  ['2024','2025','2026'].forEach(y => {
+    const tab = document.getElementById('tab'+y.slice(2));
+    tab.className = 'year-tab';
+    if (y === yr) tab.classList.add('active-'+y);
+  });
+}
+
+function updateProgress(yr) {
+  document.getElementById('progFill').style.width = PROG[yr];
+  document.getElementById('progLabel').textContent = PROG_LABELS[yr];
+}
+
+function setYear(yr) {
+  currentYear = yr;
+  updateChart(yr);
+  buildDistBars(yr);
+  updateStats(yr);
+  updateTabs(yr);
+  updateProgress(yr);
+}
+
+function togglePlay() {
+  if (isPlaying) {
+    stopPlay();
+  } else {
+    startPlay();
+  }
+}
+
+function startPlay() {
+  isPlaying = true;
+  const btns = [document.getElementById('playBtn'), document.getElementById('playBtn2')];
+  btns.forEach(b => b.classList.add('playing'));
+  document.getElementById('playLabel').textContent = 'Pause';
+  document.getElementById('playIcon').textContent = '\u23F8';
+
+  setYear('2024');
+  let idx = 0;
+  const years = ['2024','2025','2026'];
+  playInterval = setInterval(() => {
+    idx++;
+    if (idx >= years.length) { stopPlay(); return; }
+    setYear(years[idx]);
+  }, 2400);
+}
+
+function stopPlay() {
+  isPlaying = false;
+  clearInterval(playInterval);
+  const btns = [document.getElementById('playBtn'), document.getElementById('playBtn2')];
+  btns.forEach(b => b.classList.remove('playing'));
+  document.getElementById('playLabel').textContent = 'Play through all years';
+  document.getElementById('playIcon').innerHTML = '&#9654;';
+}
+
+// Init
+setYear('2024');
+
+
+window.setYearGS = setYear;
+window.togglePlayGS = togglePlay;
+})();
+
+
+// PORTRAIT SCRIPTS
+(function(){
+
+const DATA_2024 = [{"name":"Ethan K","amt":5463},{"name":"Ishan P","amt":5390},{"name":"Sam and Mr Leggo","amt":3103},{"name":"Aden S","amt":2522},{"name":"Yulsig C","amt":2395},{"name":"Tom M","amt":2318},{"name":"Caleb K","amt":2181},{"name":"Dylan B","amt":2165},{"name":"Austin D","amt":2153},{"name":"Benjamin L","amt":2085},{"name":"Korben Pitman","amt":1933},{"name":"Harold L","amt":1792},{"name":"Mohammad A","amt":1737},{"name":"Max Chung","amt":1407},{"name":"Howard C","amt":1367},{"name":"Harry Olbourne","amt":1360},{"name":"Trevor T","amt":1337},{"name":"Hugh W","amt":1260},{"name":"Christian Keane","amt":1237},{"name":"Freddie A","amt":1214},{"name":"Ollie O","amt":1046},{"name":"Angus W","amt":1033},{"name":"Lewis Christie","amt":1000},{"name":"Ayaan W","amt":953},{"name":"Benjamin L","amt":897},{"name":"Jaydon H","amt":884},{"name":"Alex Chen","amt":865},{"name":"Max K","amt":851},{"name":"William P","amt":791},{"name":"Kellen M","amt":789},{"name":"Nathaniel L","amt":788},{"name":"Derek Z","amt":788},{"name":"Josh K","amt":784},{"name":"Shyan E","amt":749},{"name":"Alex Z","amt":739},{"name":"Leo S","amt":644},{"name":"Carson N","amt":602},{"name":"Lachlan O","amt":595},{"name":"Jesse A","amt":592},{"name":"Ollie R","amt":583},{"name":"Alex B","amt":579},{"name":"Alex X","amt":578},{"name":"Archie U","amt":575},{"name":"Nick Z","amt":563},{"name":"James P","amt":514},{"name":"Jerry P","amt":469},{"name":"Mani Khanna-Boyle","amt":461},{"name":"Joshua H","amt":455},{"name":"Noah Ellis","amt":443},{"name":"Jacob Cartwright","amt":406},{"name":"Aman Qadri","amt":392},{"name":"Ian and Max","amt":384},{"name":"Charlie R","amt":369},{"name":"Seth D","amt":357},{"name":"Danny S","amt":350},{"name":"Ariyan R","amt":340},{"name":"Tony L","amt":326},{"name":"Jimmy A","amt":313},{"name":"William K","amt":312},{"name":"Arthur B","amt":310},{"name":"Remy L","amt":309},{"name":"mitchell W","amt":308},{"name":"Zayn Cheema","amt":300},{"name":"Kabir D","amt":296},{"name":"Harry D","amt":290},{"name":"Rayan Q","amt":280},{"name":"Tony W","amt":270},{"name":"Charlie B","amt":264},{"name":"Thomas G","amt":263},{"name":"Devan G","amt":260},{"name":"Yisa L","amt":250},{"name":"Aidan S","amt":244},{"name":"inni Jurd","amt":243},{"name":"Ben W","amt":240},{"name":"Devlin McCARTHY","amt":240},{"name":"Charlie S","amt":237},{"name":"barney T","amt":225},{"name":"Reyaan PRASAD","amt":215},{"name":"Damon Y","amt":210},{"name":"Elvin C","amt":190},{"name":"Boren C","amt":183},{"name":"Shafin Azad","amt":182},{"name":"digby S","amt":182},{"name":"Nicholas W","amt":179},{"name":"benjamin W","amt":174},{"name":"Oliver L","amt":161},{"name":"Lucas D","amt":160},{"name":"Redson C","amt":158},{"name":"Jeremy Z","amt":158},{"name":"Julian K","amt":154},{"name":"Tian G","amt":151},{"name":"Hunter Y","amt":120},{"name":"Aarav K","amt":120},{"name":"Hayden Y","amt":119},{"name":"Julian Z","amt":112},{"name":"Fox H","amt":111},{"name":"Linden C","amt":108},{"name":"Xavier C","amt":106},{"name":"Max X","amt":91},{"name":"Ethan Nguyen","amt":84},{"name":"Hugo G","amt":82},{"name":"Ted R","amt":74},{"name":"Delta Company","amt":72},{"name":"Liam W","amt":62},{"name":"Andrew M","amt":60},{"name":"Ethan W","amt":59},{"name":"Zaynne Z","amt":57},{"name":"Nathan X","amt":36},{"name":"Owen M","amt":33},{"name":"Nathan Zhou","amt":32},{"name":"Declan W","amt":29},{"name":"Jude L","amt":28},{"name":"Jeremy H","amt":27},{"name":"Ryan W","amt":26},{"name":"Thomas G","amt":25},{"name":"Heliang L","amt":24},{"name":"Miles Phijidvijan","amt":20},{"name":"Lucas L","amt":15},{"name":"Haoyi T","amt":13},{"name":"Bancheng N","amt":12},{"name":"Derek Q","amt":12},{"name":"Danny L","amt":10},{"name":"Darren W","amt":10},{"name":"Admin Platoon","amt":10},{"name":"Darren Li","amt":7},{"name":"Caleb T","amt":5},{"name":"benny J","amt":5},{"name":"Harry C","amt":2},{"name":"Ollie R","amt":1},{"name":"William G","amt":1},{"name":"Drake Houghton","amt":1}];
+
+const DATA_2025 = [{"name":"Ishan P","amt":5546},{"name":"Ethan K","amt":5463},{"name":"Sam and Mr Leggo","amt":3172},{"name":"Aden S","amt":2522},{"name":"Yulsig C","amt":2395},{"name":"Dylan B","amt":2388},{"name":"Tom M","amt":2376},{"name":"Caleb K","amt":2287},{"name":"Austin D","amt":2173},{"name":"Benjamin L","amt":2085},{"name":"Mohammad A","amt":2009},{"name":"Christian Keane","amt":1938},{"name":"Korben Pitman","amt":1933},{"name":"Harold L","amt":1898},{"name":"Hugh W","amt":1742},{"name":"Trevor T","amt":1560},{"name":"Max Chung","amt":1509},{"name":"Howard C","amt":1408},{"name":"Harry Olbourne","amt":1360},{"name":"Lachlan O","amt":1337},{"name":"Nathaniel L","amt":1228},{"name":"Freddie A","amt":1214},{"name":"Jaydon H","amt":1200},{"name":"Lewis Christie","amt":1198},{"name":"Benjamin L","amt":1149},{"name":"Ollie O","amt":1046},{"name":"Angus W","amt":1033},{"name":"Ayaan W","amt":1003},{"name":"Hugo G","amt":939},{"name":"Kellen M","amt":936},{"name":"Alex Chen","amt":914},{"name":"Max K","amt":908},{"name":"Josh K","amt":853},{"name":"Derek Z","amt":810},{"name":"William P","amt":800},{"name":"Nathaniel H","amt":796},{"name":"Shyan E","amt":777},{"name":"Nick Z","amt":773},{"name":"Alex Z","amt":739},{"name":"Ethan Nguyen","amt":719},{"name":"Leo S","amt":697},{"name":"Alex B","amt":659},{"name":"Saxon G","amt":647},{"name":"Linden C","amt":642},{"name":"Carson N","amt":630},{"name":"Archie U","amt":629},{"name":"Alex X","amt":627},{"name":"Devan G","amt":624},{"name":"Danny S","amt":616},{"name":"Tony W","amt":597},{"name":"William K","amt":596},{"name":"Jesse A","amt":596},{"name":"Ian and Max","amt":593},{"name":"Ollie R","amt":583},{"name":"Mani Khanna-Boyle","amt":574},{"name":"James P","amt":547},{"name":"Charlie R","amt":532},{"name":"Zaynne Z","amt":531},{"name":"Joshua H","amt":498},{"name":"Jerry P","amt":469},{"name":"Harry D","amt":447},{"name":"Noah Ellis","amt":443},{"name":"Jeremy Z","amt":426},{"name":"Aman Qadri","amt":407},{"name":"Jacob Cartwright","amt":406},{"name":"Seth D","amt":379},{"name":"George G","amt":356},{"name":"Reyaan Prasad","amt":353},{"name":"Jimmy A","amt":346},{"name":"inni Jurd","amt":342},{"name":"Ariyan R","amt":340},{"name":"Tony L","amt":326},{"name":"Boren C","amt":319},{"name":"Arthur B","amt":310},{"name":"Remy L","amt":309},{"name":"Mitchell W","amt":308},{"name":"Zayn Cheema","amt":300},{"name":"Kabir D","amt":296},{"name":"digby S","amt":289},{"name":"Rayan Q","amt":280},{"name":"Charlie S","amt":269},{"name":"Charlie B","amt":264},{"name":"Thomas G","amt":263},{"name":"Benjamin W","amt":263},{"name":"Yisa L","amt":250},{"name":"Aidan S","amt":244},{"name":"Ben W","amt":240},{"name":"Devlin McCarthy","amt":240},{"name":"Damon Y","amt":232},{"name":"barney T","amt":225},{"name":"Elvin C","amt":190},{"name":"Shafin Azad","amt":182},{"name":"Nicholas W","amt":179},{"name":"Miles Phijidvijan","amt":178},{"name":"Tian G","amt":168},{"name":"Elliot S","amt":164},{"name":"Oliver L","amt":161},{"name":"Lucas D","amt":160},{"name":"Redson C","amt":158},{"name":"Julian K","amt":154},{"name":"Drake Houghton","amt":143},{"name":"Julian Z","amt":134},{"name":"Hunter Y","amt":127},{"name":"Andrew M","amt":125},{"name":"Aarav K","amt":120},{"name":"Hayden Y","amt":119},{"name":"Fox H","amt":111},{"name":"Xavier C","amt":106},{"name":"Jack C","amt":106},{"name":"Ollie R","amt":101},{"name":"Harry Burwood","amt":100},{"name":"Declan H","amt":100},{"name":"Owen M","amt":96},{"name":"Ryan W","amt":92},{"name":"Max X","amt":91},{"name":"Arran R","amt":90},{"name":"Ethan W","amt":89},{"name":"Jude L","amt":85},{"name":"Delta Company","amt":78},{"name":"Ted R","amt":74},{"name":"Ray L","amt":73},{"name":"Keaton P","amt":63},{"name":"Liam W","amt":62},{"name":"Heliang L","amt":55},{"name":"Joshua Huang","amt":52},{"name":"Jeremy H","amt":37},{"name":"Nathan X","amt":36},{"name":"Danny L","amt":34},{"name":"Geoffrey C","amt":33},{"name":"Nathan Zhou","amt":32},{"name":"Admin Platoon","amt":30},{"name":"Darren Li","amt":30},{"name":"Declan W","amt":29},{"name":"Jason C","amt":23},{"name":"Lucas L","amt":15},{"name":"Haoyi T","amt":13},{"name":"Bancheng N","amt":12},{"name":"Derek Q","amt":12},{"name":"Darren W","amt":10},{"name":"Macarthur Arnott","amt":7},{"name":"David L","amt":7},{"name":"Caleb T","amt":5},{"name":"benny J","amt":5},{"name":"Harry C","amt":2},{"name":"William G","amt":1},{"name":"John Z","amt":1}];
+
+const DATA_2026 = [{"name":"Christian Keane","amt":6268},{"name":"Ishan P","amt":6132},{"name":"Ethan K","amt":5744},{"name":"Sam and Mr Leggo","amt":3631},{"name":"Mohammad A","amt":3133},{"name":"Tom M","amt":2746},{"name":"Aden S","amt":2736},{"name":"Dylan B","amt":2570},{"name":"Benjamin L","amt":2522},{"name":"Yulsig C","amt":2397},{"name":"Austin D","amt":2333},{"name":"Caleb K","amt":2294},{"name":"Benjamin L","amt":2117},{"name":"Korben Pitman","amt":2057},{"name":"Mani Khanna-Boyle","amt":2041},{"name":"Devan G","amt":1960},{"name":"Harold L","amt":1953},{"name":"Josh K","amt":1891},{"name":"Lachlan O","amt":1847},{"name":"Hugo G","amt":1840},{"name":"Jack C","amt":1752},{"name":"Hugh W","amt":1744},{"name":"Saxon G","amt":1686},{"name":"Trevor T","amt":1602},{"name":"Max Chung","amt":1600},{"name":"Ethan G","amt":1535},{"name":"Harry Olbourne","amt":1503},{"name":"Howard C","amt":1410},{"name":"Ollie O","amt":1392},{"name":"Ethan Nguyen","amt":1349},{"name":"Ian and Max","amt":1332},{"name":"Nathaniel L","amt":1329},{"name":"Lewis Christie","amt":1290},{"name":"Angus W","amt":1288},{"name":"Freddie A","amt":1280},{"name":"Harry D","amt":1244},{"name":"Kellen M","amt":1237},{"name":"Jaydon H","amt":1224},{"name":"William K","amt":1138},{"name":"Ayaan W","amt":1118},{"name":"Alex Chen","amt":1087},{"name":"Leo S","amt":1027},{"name":"Nick Z","amt":1023},{"name":"William P","amt":1020},{"name":"Shyan E","amt":937},{"name":"Zaynne Z","amt":912},{"name":"Max K","amt":910},{"name":"Julian Z","amt":903},{"name":"mitchell W","amt":897},{"name":"Harry Burwood","amt":890},{"name":"Ollie R","amt":874},{"name":"Paul C","amt":865},{"name":"Archie U","amt":837},{"name":"Derek Z","amt":832},{"name":"Keaton P","amt":811},{"name":"Noah Ellis","amt":800},{"name":"Nathaniel H","amt":798},{"name":"Drake Houghton","amt":772},{"name":"Kabir D","amt":762},{"name":"Alex B","amt":746},{"name":"Alex Z","amt":741},{"name":"Charlie R","amt":709},{"name":"Alex X","amt":707},{"name":"Jeremy Z","amt":683},{"name":"Jackie Z","amt":674},{"name":"Jimmy A","amt":666},{"name":"Tony W","amt":662},{"name":"Linden C","amt":649},{"name":"Seth D","amt":644},{"name":"James P","amt":637},{"name":"Aidan S","amt":634},{"name":"Carson N","amt":632},{"name":"Danny S","amt":618},{"name":"Nicholas L","amt":606},{"name":"Jesse A","amt":596},{"name":"Lucas M","amt":591},{"name":"Joshua H","amt":585},{"name":"Frederick L","amt":576},{"name":"digby S","amt":560},{"name":"David L","amt":560},{"name":"Miles Phijidvijan","amt":551},{"name":"benjamin W","amt":536},{"name":"Andrew M","amt":522},{"name":"Devlin McCARTHY","amt":520},{"name":"Hunter O","amt":512},{"name":"Reyaan PRASAD","amt":505},{"name":"Jacob Cartwright","amt":502},{"name":"barney T","amt":493},{"name":"Jerry P","amt":480},{"name":"Oliver L","amt":462},{"name":"Boren C","amt":446},{"name":"Aman Qadri","amt":442},{"name":"Owen M","amt":423},{"name":"George G","amt":421},{"name":"Arthur B","amt":418},{"name":"Damon Y","amt":399},{"name":"Zayn Cheema","amt":377},{"name":"inni Jurd","amt":342},{"name":"Ariyan R","amt":340},{"name":"Rayan Q","amt":331},{"name":"Tony L","amt":326},{"name":"Tian G","amt":320},{"name":"Thomas G","amt":320},{"name":"Charlie B","amt":318},{"name":"Remy L","amt":309},{"name":"Nicholas W","amt":307},{"name":"Arran R","amt":305},{"name":"Charlie S","amt":276},{"name":"Elliot S","amt":271},{"name":"Elvin C","amt":270},{"name":"Macarthur ARNOTT","amt":270},{"name":"Ben W","amt":260},{"name":"max A","amt":252},{"name":"Yisa L","amt":250},{"name":"Shafin Azad","amt":239},{"name":"Julian K","amt":223},{"name":"Redson C","amt":216},{"name":"Lucas D","amt":212},{"name":"Xavier C","amt":212},{"name":"Sean Lin","amt":196},{"name":"Aarav K","amt":170},{"name":"Harry C","amt":167},{"name":"Darren Li","amt":159},{"name":"Nathan Zhou","amt":159},{"name":"Liam W","amt":155},{"name":"Jude L","amt":145},{"name":"Heliang L","amt":144},{"name":"Danny L","amt":131},{"name":"Hunter Y","amt":127},{"name":"Ryan W","amt":121},{"name":"Hayden Y","amt":119},{"name":"Josh K","amt":115},{"name":"Nathan X","amt":114},{"name":"Fox H","amt":111},{"name":"Ollie R","amt":102},{"name":"Joshua Li","amt":102},{"name":"Declan H","amt":101},{"name":"Max X","amt":91},{"name":"Ethan W","amt":89},{"name":"Jeremy H","amt":85},{"name":"Joshua Zhou","amt":84},{"name":"Delta Company","amt":78},{"name":"Ted R","amt":76},{"name":"Ray L","amt":73},{"name":"Kane F","amt":69},{"name":"Haoyi T","amt":64},{"name":"Joshua Huang","amt":52},{"name":"Lucas L","amt":43},{"name":"Geoffrey C","amt":41},{"name":"William G","amt":38},{"name":"Declan W","amt":36},{"name":"Jason C","amt":35},{"name":"Caleb T","amt":34},{"name":"Ryan C","amt":33},{"name":"Admin Platoon","amt":30},{"name":"Bancheng N","amt":28},{"name":"Derek Q","amt":24},{"name":"Anthony H","amt":23},{"name":"Mason L","amt":23},{"name":"Darren W","amt":23},{"name":"Ethan A","amt":21},{"name":"Oliver K","amt":20},{"name":"benny J","amt":18},{"name":"John Z","amt":1}];
+
+// Build unified dataset
+const allDots = [];
+const COLORS = { '2024': '#475569', '2025': '#3b82f6', '2026': '#60a5fa' };
+const COLORS_DIM = { '2024': 'rgba(71,85,105,0.15)', '2025': 'rgba(59,130,246,0.12)', '2026': 'rgba(96,165,250,0.12)' };
+
+[['2024', DATA_2024], ['2025', DATA_2025], ['2026', DATA_2026]].forEach(([yr, data]) => {
+  data.forEach(d => allDots.push({ name: d.name, amt: d.amt, year: yr }));
+});
+
+// Canvas setup
+const canvas = document.getElementById('portraitCanvas');
+const ctx = canvas.getContext('2d');
+const tooltip = document.getElementById('tooltip_cp');
+
+let currentYear = 'all';
+let currentSort = 'amount';
+let dots = [];
+let hoveredDot = null;
+let dpr = window.devicePixelRatio || 1;
+
+function getRadius(amt) {
+  return Math.max(3, Math.sqrt(amt) * 0.28);
+}
+
+function buildDots(yearFilter, sortMode) {
+  let data = yearFilter === 'all' ? allDots : allDots.filter(d => d.year === yearFilter);
+  if (sortMode === 'alpha') {
+    data = [...data].sort((a, b) => a.name.localeCompare(b.name));
+  } else {
+    data = [...data].sort((a, b) => b.amt - a.amt);
+  }
+  return data;
+}
+
+function layout(data, canvasW, canvasH) {
+  // Beeswarm: sort by amount, place left to right with collision avoidance
+  const PAD = 48;
+  const usableW = canvasW - PAD * 2;
+  const centerY = canvasH / 2;
+
+  const maxAmt = Math.max(...data.map(d => d.amt));
+  const minAmt = Math.min(...data.map(d => d.amt));
+
+  const placed = [];
+  data.forEach((d, i) => {
+    const r = getRadius(d.amt);
+    // Log-scale x
+    const logMin = Math.log(Math.max(1, minAmt));
+    const logMax = Math.log(maxAmt);
+    const logVal = Math.log(Math.max(1, d.amt));
+    const xNorm = (logVal - logMin) / (logMax - logMin);
+    const targetX = PAD + xNorm * usableW;
+
+    // Try placing at centerY, then push up/down
+    let y = centerY;
+    let attempts = 0;
+    let direction = 1;
+    let step = 0;
+
+    while (attempts < 200) {
+      let collision = false;
+      for (const p of placed) {
+        const dx = targetX - p.x;
+        const dy = y - p.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < r + p.r + 2) { collision = true; break; }
+      }
+      if (!collision) break;
+      step += (r + 1);
+      direction = -direction;
+      y = centerY + direction * step;
+      attempts++;
+    }
+
+    placed.push({ ...d, x: targetX, y, r });
+  });
+  return placed;
+}
+
+function resize() {
+  const wrap = canvas.parentElement;
+  const w = wrap.clientWidth - 96;
+  const h = Math.max(280, Math.min(520, w * 0.38));
+  canvas.style.width = w + 'px';
+  canvas.style.height = h + 'px';
+  canvas.width = w * dpr;
+  canvas.height = h * dpr;
+  ctx.scale(dpr, dpr);
+  redraw();
+}
+
+function redraw() {
+  const W = canvas.width / dpr;
+  const H = canvas.height / dpr;
+  ctx.clearRect(0, 0, W, H);
+
+  const data = buildDots(currentYear, currentSort);
+  dots = layout(data, W, H);
+
+  // Draw dots
+  dots.forEach(d => {
+    const isHovered = hoveredDot && hoveredDot === d;
+    const col = COLORS[d.year];
+
+    ctx.beginPath();
+    ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+
+    if (isHovered) {
+      ctx.fillStyle = col;
+      ctx.shadowColor = col;
+      ctx.shadowBlur = 12;
+    } else {
+      ctx.fillStyle = col + 'cc';
+      ctx.shadowBlur = 0;
+    }
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    // Border
+    ctx.beginPath();
+    ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+    ctx.strokeStyle = col + '66';
+    ctx.lineWidth = 0.5;
+    ctx.stroke();
+  });
+
+  // Draw subtle year labels on left when showing all
+  if (currentYear === 'all') {
+    const pad = 8;
+    ctx.font = `500 10px 'JetBrains Mono', monospace`;
+    ctx.fillStyle = 'rgba(255,255,255,0.2)';
+    ctx.fillText('smaller donations', pad, H - 8);
+    ctx.textAlign = 'right';
+    ctx.fillText('larger donations', W - pad, H - 8);
+    ctx.textAlign = 'left';
+  }
+}
+
+function getHoveredDot(mx, my) {
+  for (let i = dots.length - 1; i >= 0; i--) {
+    const d = dots[i];
+    const dx = mx - d.x;
+    const dy = my - d.y;
+    if (Math.sqrt(dx * dx + dy * dy) <= d.r + 2) return d;
+  }
+  return null;
+}
+
+canvas.addEventListener('mousemove', e => {
+  const rect = canvas.getBoundingClientRect();
+  const mx = (e.clientX - rect.left);
+  const my = (e.clientY - rect.top);
+  const found = getHoveredDot(mx, my);
+
+  if (found !== hoveredDot) {
+    hoveredDot = found;
+    redraw();
+  }
+
+  if (found) {
+    canvas.style.cursor = 'pointer';
+    tooltip.style.opacity = '1';
+    tooltip.style.left = (e.clientX + 14) + 'px';
+    tooltip.style.top = (e.clientY - 10) + 'px';
+    document.getElementById('ttName_cp').textContent = found.name;
+    document.getElementById('ttAmt_cp').textContent = '$' + found.amt.toLocaleString() + ' raised';
+    document.getElementById('ttAmt_cp').style.color = COLORS[found.year];
+    document.getElementById('ttYr_cp').textContent = found.year + ' campaign';
+  } else {
+    canvas.style.cursor = 'crosshair';
+    tooltip.style.opacity = '0';
+  }
+});
+
+canvas.addEventListener('mouseleave', () => {
+  hoveredDot = null;
+  tooltip.style.opacity = '0';
+  redraw();
+});
+
+function setYear(yr, btn) {
+  currentYear = yr;
+  document.querySelectorAll('.yr-btn').forEach(b => {
+    b.classList.remove('active-all', 'active-2024', 'active-2025', 'active-2026');
+  });
+  if (yr === 'all') btn.classList.add('active-all');
+  else btn.classList.add('active-' + yr);
+  redraw();
+}
+
+function setSort(mode, btn) {
+  currentSort = mode;
+  document.getElementById('sortAmt').classList.remove('active-all');
+  document.getElementById('sortAlpha').classList.remove('active-all');
+  btn.classList.add('active-all');
+  redraw();
+}
+
+window.addEventListener('resize', resize);
+resize();
+
+
+window.setYearCP = setYear;
+window.setSortCP = setSort;
+})();
+
+
+// FTD SCRIPTS
+(function(){
+
+// CURSOR
+const cursor = document.getElementById('cursor');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+});
+const ftdWrap = document.getElementById('follow-dollar');
+ftdWrap.addEventListener('mouseenter', () => cursor.style.opacity = '1');
+ftdWrap.addEventListener('mouseleave', () => cursor.style.opacity = '0');
+document.querySelectorAll('a, button, input, .calc-out, .icon-dot').forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.classList.add('big'));
+  el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
+});
+
+// CALCULATIONS
+const RATE_INSTANCE = 339;
+const RATE_NIGHT = 360;
+const RATE_AWARD = 650;
+const RATE_CHEMO = 5000;
+const RATE_GRANT = 154000;
+const TOTAL_SERVED = 6881;
+const NATIONAL_NET = 29200000 * 0.628;
+
+function calc(amt) {
+  return {
+    instances: Math.round(amt / RATE_INSTANCE),
+    nights: Math.round(amt / RATE_NIGHT),
+    awards: Math.round(amt / RATE_AWARD),
+    chemo: Math.round(amt / RATE_CHEMO),
+    grants: (amt / RATE_GRANT).toFixed(1),
+    people: Math.round((amt / NATIONAL_NET) * TOTAL_SERVED)
+  };
+}
+
+// COUNT UP ANIMATION
+function countUp(el, from, to, isFloat) {
+  const dur = 400;
+  const start = Date.now();
+  const run = () => {
+    const t = Math.min((Date.now() - start) / dur, 1);
+    const e = 1 - Math.pow(1-t, 3);
+    const val = from + (to - from) * e;
+    el.textContent = isFloat ? val.toFixed(1)+'x' : Math.round(val).toLocaleString();
+    if (t < 1) requestAnimationFrame(run);
+  };
+  requestAnimationFrame(run);
+}
+
+// ICON GRID HELPERS
+const TIPS_INSTANCES = [
+  "One counselling session for a blood cancer patient",
+  "One night of financial support for a family",
+  "One transport assistance trip to treatment",
+  "One call to the Foundation's support line",
+  "One practical care package delivered",
+  "One family reached through community outreach",
+  "One person accessing information services",
+  "One patient connected with a Care Case Manager"
+];
+const TIPS_NIGHTS = [
+  "One night for a family from Dubbo near their hospital",
+  "One night for a parent staying close to their child",
+  "One night removing the choice between care and home",
+  "One night for a regional family during treatment",
+  "One night so a carer doesn't have to drive 300km",
+  "One night of stability during an unstable time"
+];
+const TIPS_AWARDS = [
+  "Pharmaceuticals not covered by PBS",
+  "Specialised medical equipment",
+  "Travel costs to treatment appointments",
+  "Wigs and appearance-related support",
+  "Utility bills during treatment period",
+  "Home care equipment for recovery"
+];
+
+function buildGrid(containerId, count, tips, colorClass, maxVisible) {
+  const container = document.getElementById(containerId);
+  const existing = container.querySelectorAll('.icon-dot').length;
+  if (existing === count) return;
+
+  container.innerHTML = '';
+  const show = Math.min(count, maxVisible);
+  for (let i = 0; i < show; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'icon-dot ' + colorClass;
+    const tip = tips[i % tips.length] + ' (illustrative)';
+    dot.setAttribute('data-tip', tip);
+    dot.style.animationDelay = (i * 8) + 'ms';
+    dot.style.animation = 'dotPop 0.3s ease forwards';
+    dot.style.opacity = '0';
+    container.appendChild(dot);
+    setTimeout(() => dot.style.opacity = '1', i * 8);
+  }
+}
+
+function toggleGrid(gridId, hintId) {
+  const grid = document.getElementById(gridId);
+  const hint = document.getElementById(hintId);
+  if (grid.classList.contains('expanded')) {
+    grid.classList.remove('expanded');
+    const total = parseInt(grid.dataset.total || 0);
+    const shown = grid.querySelectorAll('.icon-dot').length;
+    hint.textContent = '+' + (total - shown) + ' more. Click to expand.';
+  } else {
+    grid.classList.add('expanded');
+    hint.textContent = 'Click to collapse.';
+  }
+}
+
+// MAIN UPDATE
+let prevVals = { instances: 413, nights: 389, awards: 215, chemo: 28, grants: 0.9, people: 83 };
+
+function update(amt) {
+  const v = calc(amt);
+
+  // Display amount
+  const dispEl = document.getElementById('calcDisplay');
+  dispEl.textContent = '$' + amt.toLocaleString();
+  document.getElementById('hookAmt').textContent = amt.toLocaleString();
+
+  // Slider fill
+  const pct = (amt - 1000) / (200000 - 1000) * 100;
+  document.getElementById('sliderFill').style.width = pct + '%';
+
+  // Count up each output
+  countUp(document.getElementById('cOut1'), prevVals.instances, v.instances, false);
+  countUp(document.getElementById('cOut2'), prevVals.nights, v.nights, false);
+  countUp(document.getElementById('cOut3'), prevVals.awards, v.awards, false);
+  countUp(document.getElementById('cOut4'), prevVals.chemo, v.chemo, false);
+  const grantsEl = document.getElementById('cOut5');
+  const fromG = parseFloat(prevVals.grants);
+  const toG = parseFloat(v.grants);
+  countUp(grantsEl, fromG * 10, toG * 10, false);
+  setTimeout(() => grantsEl.textContent = v.grants + 'x', 400);
+  countUp(document.getElementById('cOut6'), prevVals.people, v.people, false);
+
+  // Update inline counts
+  document.getElementById('countInstances').textContent = v.instances.toLocaleString();
+  document.getElementById('countNights').textContent = v.nights.toLocaleString();
+  document.getElementById('countAwards').textContent = v.awards.toLocaleString();
+
+  // Rebuild grids (capped at 200 for performance)
+  const MAX = 200;
+  buildGrid('gridInstances', Math.min(v.instances, MAX), TIPS_INSTANCES, '', MAX);
+  buildGrid('gridNights', Math.min(v.nights, MAX), TIPS_NIGHTS, 'blue-dot', MAX);
+  buildGrid('gridAwards', Math.min(v.awards, MAX), TIPS_AWARDS, 'blue-dot', MAX);
+
+  // Overflow hints
+  ['Instances','Nights','Awards'].forEach(name => {
+    const total = v[name.toLowerCase() === 'instances' ? 'instances' : name.toLowerCase() === 'nights' ? 'nights' : 'awards'];
+    const shown = Math.min(total, MAX);
+    const hint = document.getElementById('hint' + name);
+    const grid = document.getElementById('grid' + name);
+    grid.dataset.total = total;
+    if (total > MAX && !grid.classList.contains('expanded')) {
+      hint.textContent = '+' + (total - shown).toLocaleString() + ' more. Click to expand.';
+    } else if (total <= MAX) {
+      hint.textContent = '';
+    }
+  });
+
+  prevVals = { instances: v.instances, nights: v.nights, awards: v.awards, chemo: v.chemo, grants: v.grants, people: v.people };
+}
+
+document.getElementById('amtSlider').addEventListener('input', function() {
+  update(parseInt(this.value));
+});
+
+// SCROLL REVEAL
+const ro = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('vis'), i * 80);
+      ro.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+// SPLIT BAR ANIMATION
+const splitObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      setTimeout(() => {
+        document.getElementById('splitMission').style.width = '62.8%';
+        document.getElementById('splitCost').style.width = '37.2%';
+      }, 200);
+      splitObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.5 });
+splitObs.observe(document.getElementById('splitTrack'));
+
+// INIT
+update(140000);
+
+
+})();
+</script>
+</body>
+</html>

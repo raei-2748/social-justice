@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Knox Community Portrait</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #09090d;
+  --bg2: #111118;
+  --bg3: #17171f;
+  --border: rgba(255,255,255,0.07);
+  --gold: #d4a843;
+  --gold2: #f0c866;
+  --blue: #4a9eff;
+  --gray: #6b7280;
+  --text: #ece8df;
+  --muted: #787880;
+  --muted2: #a0a0aa;
+  --teal: #2ccfa0;
+}
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* HEADER */
+.header {
+  padding: 64px 48px 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.header-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: 0.2em;
+  color: var(--teal); text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.header-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(40px, 6vw, 80px);
+  font-weight: 700; line-height: 1.0;
+  margin-bottom: 16px;
+}
+.header-title em { font-style: italic; color: var(--gold); }
+.header-sub {
+  font-size: 15px; color: var(--muted2);
+  max-width: 560px; line-height: 1.7;
+}
+
+/* INSIGHT STRIP */
+.insight-strip {
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 48px 48px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.insight-cell {
+  background: var(--bg2);
+  padding: 28px 24px;
+  transition: background 0.2s;
+}
+.insight-cell:hover { background: var(--bg3); }
+.insight-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 38px; font-weight: 700;
+  line-height: 1; margin-bottom: 6px;
+}
+.insight-lbl {
+  font-size: 12px; color: var(--muted);
+  line-height: 1.4;
+}
+.insight-delta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--teal);
+  margin-top: 6px;
+}
+.gold { color: var(--gold2); }
+.blue { color: var(--blue); }
+.grayc { color: #9ca3af; }
+
+/* KEY INSIGHT */
+.key-insight {
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 48px 40px;
+}
+.insight-banner {
+  background: linear-gradient(135deg, rgba(212,168,67,0.08), rgba(44,207,160,0.05));
+  border: 1px solid rgba(212,168,67,0.2);
+  border-radius: 12px;
+  padding: 24px 32px;
+  display: flex; align-items: center; gap: 24px;
+}
+.insight-icon {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 48px; font-weight: 700;
+  color: var(--gold2); white-space: nowrap;
+}
+.insight-text { font-size: 14px; color: var(--muted2); line-height: 1.65; }
+.insight-text strong { color: var(--text); }
+
+/* CONTROLS */
+.controls {
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 48px 24px;
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+.ctrl-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--muted);
+  letter-spacing: 0.1em; text-transform: uppercase;
+  margin-right: 4px;
+}
+.yr-btn {
+  padding: 7px 20px; border-radius: 20px;
+  border: 1px solid var(--border);
+  background: transparent; cursor: pointer;
+  font-family: 'Syne', sans-serif;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0.04em;
+  transition: all 0.2s;
+  color: var(--muted);
+}
+.yr-btn:hover { border-color: rgba(255,255,255,0.2); color: var(--text); }
+.yr-btn.active-all { border-color: rgba(255,255,255,0.3); color: var(--text); background: rgba(255,255,255,0.05); }
+.yr-btn.active-2024 { border-color: var(--gray); color: #9ca3af; background: rgba(107,114,128,0.12); }
+.yr-btn.active-2025 { border-color: var(--blue); color: #93c5fd; background: rgba(74,158,255,0.1); }
+.yr-btn.active-2026 { border-color: var(--gold); color: var(--gold2); background: rgba(212,168,67,0.12); }
+
+.sort-sep { width: 1px; height: 20px; background: var(--border); margin: 0 4px; }
+
+/* CANVAS AREA */
+.canvas-wrap {
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 48px 16px;
+  position: relative;
+}
+#portraitCanvas {
+  width: 100%;
+  display: block;
+  cursor: crosshair;
+}
+
+/* LEGEND */
+.legend {
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 48px 16px;
+  display: flex; align-items: center; gap: 28px;
+  flex-wrap: wrap;
+}
+.leg-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
+.leg-dot { width: 10px; height: 10px; border-radius: 50%; }
+.leg-size {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11px; color: var(--muted); font-family: 'JetBrains Mono', monospace;
+}
+.leg-size-circles { display: flex; align-items: center; gap: 4px; }
+
+/* TOOLTIP */
+#tooltip {
+  position: fixed;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 100;
+  min-width: 140px;
+}
+.tt-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.tt-amt { font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+.tt-yr { font-size: 11px; color: var(--muted); margin-top: 3px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+/* X AXIS */
+.axis-wrap {
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 48px 48px;
+}
+.axis-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--muted);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  text-align: center;
+  margin-top: 4px;
+}
+
+/* BOTTOM INSIGHT */
+.bottom-section {
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 48px 80px;
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+}
+.bottom-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 28px;
+}
+.bc-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--teal); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px; }
+.bc-val { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 700; color: var(--gold2); line-height: 1; margin-bottom: 8px; }
+.bc-desc { font-size: 13px; color: var(--muted2); line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <p class="header-tag">Knox Grammar / World's Greatest Shave / Community Portrait</p>
+  <h1 class="header-title">Every dot is<br><em>a person.</em></h1>
+  <p class="header-sub">441 fundraising participants across 2024, 2025, and 2026. Each circle is one Knox community member. Circle size is proportional to the amount they raised. This is not a school that donates. It is a community that gives.</p>
+</div>
+
+<div style="max-width:1200px;margin:0 auto;padding:0 48px 32px;">
+  <div class="insight-strip">
+    <div class="insight-cell">
+      <div class="insight-val grayc">131</div>
+      <div class="insight-lbl">Participants in 2024</div>
+      <div class="insight-delta">baseline year</div>
+    </div>
+    <div class="insight-cell">
+      <div class="insight-val blue">146</div>
+      <div class="insight-lbl">Participants in 2025</div>
+      <div class="insight-delta">+11% more people</div>
+    </div>
+    <div class="insight-cell">
+      <div class="insight-val gold">164</div>
+      <div class="insight-lbl">Participants in 2026</div>
+      <div class="insight-delta">+25% vs 2024</div>
+    </div>
+    <div class="insight-cell">
+      <div class="insight-val" style="color:var(--teal)">136</div>
+      <div class="insight-lbl">Returned from 2024 to 2026</div>
+      <div class="insight-delta">sustained commitment</div>
+    </div>
+  </div>
+</div>
+
+<div class="key-insight">
+  <div class="insight-banner">
+    <div class="insight-icon">38% <span style="font-size:24px;color:var(--muted)">to</span> 28%</div>
+    <div class="insight-text">
+      <strong>The base is getting wider, not just taller.</strong> In 2024, the top 10 fundraisers accounted for 38% of all donations. By 2026 that share fell to 28%. The growth is not coming from a few big donors. It is coming from the whole community giving more. That is a more durable, more meaningful trend than a rising total alone.
+    </div>
+  </div>
+</div>
+
+<div class="controls">
+  <span class="ctrl-label">Filter</span>
+  <button class="yr-btn active-all" onclick="setYear('all', this)">All years</button>
+  <button class="yr-btn" onclick="setYear('2024', this)">2024 only</button>
+  <button class="yr-btn" onclick="setYear('2025', this)">2025 only</button>
+  <button class="yr-btn" onclick="setYear('2026', this)">2026 only</button>
+  <div class="sort-sep"></div>
+  <span class="ctrl-label">Sort</span>
+  <button class="yr-btn active-all" id="sortAmt" onclick="setSort('amount', this)">By amount</button>
+  <button class="yr-btn" id="sortAlpha" onclick="setSort('alpha', this)">A to Z</button>
+</div>
+
+<div class="canvas-wrap">
+  <canvas id="portraitCanvas"></canvas>
+</div>
+
+<div class="legend">
+  <div class="leg-item"><div class="leg-dot" style="background:#6b7280"></div>2024 participant</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#4a9eff"></div>2025 participant</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#d4a843"></div>2026 participant</div>
+  <div class="sort-sep"></div>
+  <div class="leg-size">
+    Circle size
+    <div class="leg-size-circles">
+      <svg width="40" height="20"><circle cx="5" cy="10" r="3" fill="rgba(255,255,255,0.2)"/><circle cx="18" cy="10" r="6" fill="rgba(255,255,255,0.2)"/><circle cx="34" cy="10" r="9" fill="rgba(255,255,255,0.2)"/></svg>
+    </div>
+    proportional to donation amount
+  </div>
+</div>
+
+<div class="axis-wrap">
+  <div class="axis-label">Hover any circle to see the person's name and amount raised</div>
+</div>
+
+<div class="bottom-section">
+  <div class="bottom-card">
+    <div class="bc-tag">Median donation</div>
+    <div class="bc-val">$529</div>
+    <div class="bc-desc">The typical Knox fundraiser raised $529 in 2026, up from $280 in 2024. The middle of the community nearly doubled. Not just the top.</div>
+  </div>
+  <div class="bottom-card">
+    <div class="bc-tag">Average donation</div>
+    <div class="bc-val">$820</div>
+    <div class="bc-desc">Average raised per participant in 2026, up from $593 in 2024. Combined with more participants, this produced a 73% lift in total over two years.</div>
+  </div>
+  <div class="bottom-card">
+    <div class="bc-tag">Most improved</div>
+    <div class="bc-val">+$5,031</div>
+    <div class="bc-desc">The biggest personal growth from 2024 to 2026 was Christian Keane, who went from $1,237 to $6,268. The individual commitment story is as powerful as the aggregate.</div>
+  </div>
+</div>
+
+<div id="tooltip">
+  <div class="tt-name" id="ttName"></div>
+  <div class="tt-amt" id="ttAmt"></div>
+  <div class="tt-yr" id="ttYr"></div>
+</div>
+
+<script>
+const DATA_2024 = [{"name":"Ethan K","amt":5463},{"name":"Ishan P","amt":5390},{"name":"Sam and Mr Leggo","amt":3103},{"name":"Aden S","amt":2522},{"name":"Yulsig C","amt":2395},{"name":"Tom M","amt":2318},{"name":"Caleb K","amt":2181},{"name":"Dylan B","amt":2165},{"name":"Austin D","amt":2153},{"name":"Benjamin L","amt":2085},{"name":"Korben Pitman","amt":1933},{"name":"Harold L","amt":1792},{"name":"Mohammad A","amt":1737},{"name":"Max Chung","amt":1407},{"name":"Howard C","amt":1367},{"name":"Harry Olbourne","amt":1360},{"name":"Trevor T","amt":1337},{"name":"Hugh W","amt":1260},{"name":"Christian Keane","amt":1237},{"name":"Freddie A","amt":1214},{"name":"Ollie O","amt":1046},{"name":"Angus W","amt":1033},{"name":"Lewis Christie","amt":1000},{"name":"Ayaan W","amt":953},{"name":"Benjamin L","amt":897},{"name":"Jaydon H","amt":884},{"name":"Alex Chen","amt":865},{"name":"Max K","amt":851},{"name":"William P","amt":791},{"name":"Kellen M","amt":789},{"name":"Nathaniel L","amt":788},{"name":"Derek Z","amt":788},{"name":"Josh K","amt":784},{"name":"Shyan E","amt":749},{"name":"Alex Z","amt":739},{"name":"Leo S","amt":644},{"name":"Carson N","amt":602},{"name":"Lachlan O","amt":595},{"name":"Jesse A","amt":592},{"name":"Ollie R","amt":583},{"name":"Alex B","amt":579},{"name":"Alex X","amt":578},{"name":"Archie U","amt":575},{"name":"Nick Z","amt":563},{"name":"James P","amt":514},{"name":"Jerry P","amt":469},{"name":"Mani Khanna-Boyle","amt":461},{"name":"Joshua H","amt":455},{"name":"Noah Ellis","amt":443},{"name":"Jacob Cartwright","amt":406},{"name":"Aman Qadri","amt":392},{"name":"Ian and Max","amt":384},{"name":"Charlie R","amt":369},{"name":"Seth D","amt":357},{"name":"Danny S","amt":350},{"name":"Ariyan R","amt":340},{"name":"Tony L","amt":326},{"name":"Jimmy A","amt":313},{"name":"William K","amt":312},{"name":"Arthur B","amt":310},{"name":"Remy L","amt":309},{"name":"mitchell W","amt":308},{"name":"Zayn Cheema","amt":300},{"name":"Kabir D","amt":296},{"name":"Harry D","amt":290},{"name":"Rayan Q","amt":280},{"name":"Tony W","amt":270},{"name":"Charlie B","amt":264},{"name":"Thomas G","amt":263},{"name":"Devan G","amt":260},{"name":"Yisa L","amt":250},{"name":"Aidan S","amt":244},{"name":"inni Jurd","amt":243},{"name":"Ben W","amt":240},{"name":"Devlin McCARTHY","amt":240},{"name":"Charlie S","amt":237},{"name":"barney T","amt":225},{"name":"Reyaan PRASAD","amt":215},{"name":"Damon Y","amt":210},{"name":"Elvin C","amt":190},{"name":"Boren C","amt":183},{"name":"Shafin Azad","amt":182},{"name":"digby S","amt":182},{"name":"Nicholas W","amt":179},{"name":"benjamin W","amt":174},{"name":"Oliver L","amt":161},{"name":"Lucas D","amt":160},{"name":"Redson C","amt":158},{"name":"Jeremy Z","amt":158},{"name":"Julian K","amt":154},{"name":"Tian G","amt":151},{"name":"Hunter Y","amt":120},{"name":"Aarav K","amt":120},{"name":"Hayden Y","amt":119},{"name":"Julian Z","amt":112},{"name":"Fox H","amt":111},{"name":"Linden C","amt":108},{"name":"Xavier C","amt":106},{"name":"Max X","amt":91},{"name":"Ethan Nguyen","amt":84},{"name":"Hugo G","amt":82},{"name":"Ted R","amt":74},{"name":"Delta Company","amt":72},{"name":"Liam W","amt":62},{"name":"Andrew M","amt":60},{"name":"Ethan W","amt":59},{"name":"Zaynne Z","amt":57},{"name":"Nathan X","amt":36},{"name":"Owen M","amt":33},{"name":"Nathan Zhou","amt":32},{"name":"Declan W","amt":29},{"name":"Jude L","amt":28},{"name":"Jeremy H","amt":27},{"name":"Ryan W","amt":26},{"name":"Thomas G","amt":25},{"name":"Heliang L","amt":24},{"name":"Miles Phijidvijan","amt":20},{"name":"Lucas L","amt":15},{"name":"Haoyi T","amt":13},{"name":"Bancheng N","amt":12},{"name":"Derek Q","amt":12},{"name":"Danny L","amt":10},{"name":"Darren W","amt":10},{"name":"Admin Platoon","amt":10},{"name":"Darren Li","amt":7},{"name":"Caleb T","amt":5},{"name":"benny J","amt":5},{"name":"Harry C","amt":2},{"name":"Ollie R","amt":1},{"name":"William G","amt":1},{"name":"Drake Houghton","amt":1}];
+
+const DATA_2025 = [{"name":"Ishan P","amt":5546},{"name":"Ethan K","amt":5463},{"name":"Sam and Mr Leggo","amt":3172},{"name":"Aden S","amt":2522},{"name":"Yulsig C","amt":2395},{"name":"Dylan B","amt":2388},{"name":"Tom M","amt":2376},{"name":"Caleb K","amt":2287},{"name":"Austin D","amt":2173},{"name":"Benjamin L","amt":2085},{"name":"Mohammad A","amt":2009},{"name":"Christian Keane","amt":1938},{"name":"Korben Pitman","amt":1933},{"name":"Harold L","amt":1898},{"name":"Hugh W","amt":1742},{"name":"Trevor T","amt":1560},{"name":"Max Chung","amt":1509},{"name":"Howard C","amt":1408},{"name":"Harry Olbourne","amt":1360},{"name":"Lachlan O","amt":1337},{"name":"Nathaniel L","amt":1228},{"name":"Freddie A","amt":1214},{"name":"Jaydon H","amt":1200},{"name":"Lewis Christie","amt":1198},{"name":"Benjamin L","amt":1149},{"name":"Ollie O","amt":1046},{"name":"Angus W","amt":1033},{"name":"Ayaan W","amt":1003},{"name":"Hugo G","amt":939},{"name":"Kellen M","amt":936},{"name":"Alex Chen","amt":914},{"name":"Max K","amt":908},{"name":"Josh K","amt":853},{"name":"Derek Z","amt":810},{"name":"William P","amt":800},{"name":"Nathaniel H","amt":796},{"name":"Shyan E","amt":777},{"name":"Nick Z","amt":773},{"name":"Alex Z","amt":739},{"name":"Ethan Nguyen","amt":719},{"name":"Leo S","amt":697},{"name":"Alex B","amt":659},{"name":"Saxon G","amt":647},{"name":"Linden C","amt":642},{"name":"Carson N","amt":630},{"name":"Archie U","amt":629},{"name":"Alex X","amt":627},{"name":"Devan G","amt":624},{"name":"Danny S","amt":616},{"name":"Tony W","amt":597},{"name":"William K","amt":596},{"name":"Jesse A","amt":596},{"name":"Ian and Max","amt":593},{"name":"Ollie R","amt":583},{"name":"Mani Khanna-Boyle","amt":574},{"name":"James P","amt":547},{"name":"Charlie R","amt":532},{"name":"Zaynne Z","amt":531},{"name":"Joshua H","amt":498},{"name":"Jerry P","amt":469},{"name":"Harry D","amt":447},{"name":"Noah Ellis","amt":443},{"name":"Jeremy Z","amt":426},{"name":"Aman Qadri","amt":407},{"name":"Jacob Cartwright","amt":406},{"name":"Seth D","amt":379},{"name":"George G","amt":356},{"name":"Reyaan Prasad","amt":353},{"name":"Jimmy A","amt":346},{"name":"inni Jurd","amt":342},{"name":"Ariyan R","amt":340},{"name":"Tony L","amt":326},{"name":"Boren C","amt":319},{"name":"Arthur B","amt":310},{"name":"Remy L","amt":309},{"name":"Mitchell W","amt":308},{"name":"Zayn Cheema","amt":300},{"name":"Kabir D","amt":296},{"name":"digby S","amt":289},{"name":"Rayan Q","amt":280},{"name":"Charlie S","amt":269},{"name":"Charlie B","amt":264},{"name":"Thomas G","amt":263},{"name":"Benjamin W","amt":263},{"name":"Yisa L","amt":250},{"name":"Aidan S","amt":244},{"name":"Ben W","amt":240},{"name":"Devlin McCarthy","amt":240},{"name":"Damon Y","amt":232},{"name":"barney T","amt":225},{"name":"Elvin C","amt":190},{"name":"Shafin Azad","amt":182},{"name":"Nicholas W","amt":179},{"name":"Miles Phijidvijan","amt":178},{"name":"Tian G","amt":168},{"name":"Elliot S","amt":164},{"name":"Oliver L","amt":161},{"name":"Lucas D","amt":160},{"name":"Redson C","amt":158},{"name":"Julian K","amt":154},{"name":"Drake Houghton","amt":143},{"name":"Julian Z","amt":134},{"name":"Hunter Y","amt":127},{"name":"Andrew M","amt":125},{"name":"Aarav K","amt":120},{"name":"Hayden Y","amt":119},{"name":"Fox H","amt":111},{"name":"Xavier C","amt":106},{"name":"Jack C","amt":106},{"name":"Ollie R","amt":101},{"name":"Harry Burwood","amt":100},{"name":"Declan H","amt":100},{"name":"Owen M","amt":96},{"name":"Ryan W","amt":92},{"name":"Max X","amt":91},{"name":"Arran R","amt":90},{"name":"Ethan W","amt":89},{"name":"Jude L","amt":85},{"name":"Delta Company","amt":78},{"name":"Ted R","amt":74},{"name":"Ray L","amt":73},{"name":"Keaton P","amt":63},{"name":"Liam W","amt":62},{"name":"Heliang L","amt":55},{"name":"Joshua Huang","amt":52},{"name":"Jeremy H","amt":37},{"name":"Nathan X","amt":36},{"name":"Danny L","amt":34},{"name":"Geoffrey C","amt":33},{"name":"Nathan Zhou","amt":32},{"name":"Admin Platoon","amt":30},{"name":"Darren Li","amt":30},{"name":"Declan W","amt":29},{"name":"Jason C","amt":23},{"name":"Lucas L","amt":15},{"name":"Haoyi T","amt":13},{"name":"Bancheng N","amt":12},{"name":"Derek Q","amt":12},{"name":"Darren W","amt":10},{"name":"Macarthur Arnott","amt":7},{"name":"David L","amt":7},{"name":"Caleb T","amt":5},{"name":"benny J","amt":5},{"name":"Harry C","amt":2},{"name":"William G","amt":1},{"name":"John Z","amt":1}];
+
+const DATA_2026 = [{"name":"Christian Keane","amt":6268},{"name":"Ishan P","amt":6132},{"name":"Ethan K","amt":5744},{"name":"Sam and Mr Leggo","amt":3631},{"name":"Mohammad A","amt":3133},{"name":"Tom M","amt":2746},{"name":"Aden S","amt":2736},{"name":"Dylan B","amt":2570},{"name":"Benjamin L","amt":2522},{"name":"Yulsig C","amt":2397},{"name":"Austin D","amt":2333},{"name":"Caleb K","amt":2294},{"name":"Benjamin L","amt":2117},{"name":"Korben Pitman","amt":2057},{"name":"Mani Khanna-Boyle","amt":2041},{"name":"Devan G","amt":1960},{"name":"Harold L","amt":1953},{"name":"Josh K","amt":1891},{"name":"Lachlan O","amt":1847},{"name":"Hugo G","amt":1840},{"name":"Jack C","amt":1752},{"name":"Hugh W","amt":1744},{"name":"Saxon G","amt":1686},{"name":"Trevor T","amt":1602},{"name":"Max Chung","amt":1600},{"name":"Ethan G","amt":1535},{"name":"Harry Olbourne","amt":1503},{"name":"Howard C","amt":1410},{"name":"Ollie O","amt":1392},{"name":"Ethan Nguyen","amt":1349},{"name":"Ian and Max","amt":1332},{"name":"Nathaniel L","amt":1329},{"name":"Lewis Christie","amt":1290},{"name":"Angus W","amt":1288},{"name":"Freddie A","amt":1280},{"name":"Harry D","amt":1244},{"name":"Kellen M","amt":1237},{"name":"Jaydon H","amt":1224},{"name":"William K","amt":1138},{"name":"Ayaan W","amt":1118},{"name":"Alex Chen","amt":1087},{"name":"Leo S","amt":1027},{"name":"Nick Z","amt":1023},{"name":"William P","amt":1020},{"name":"Shyan E","amt":937},{"name":"Zaynne Z","amt":912},{"name":"Max K","amt":910},{"name":"Julian Z","amt":903},{"name":"mitchell W","amt":897},{"name":"Harry Burwood","amt":890},{"name":"Ollie R","amt":874},{"name":"Paul C","amt":865},{"name":"Archie U","amt":837},{"name":"Derek Z","amt":832},{"name":"Keaton P","amt":811},{"name":"Noah Ellis","amt":800},{"name":"Nathaniel H","amt":798},{"name":"Drake Houghton","amt":772},{"name":"Kabir D","amt":762},{"name":"Alex B","amt":746},{"name":"Alex Z","amt":741},{"name":"Charlie R","amt":709},{"name":"Alex X","amt":707},{"name":"Jeremy Z","amt":683},{"name":"Jackie Z","amt":674},{"name":"Jimmy A","amt":666},{"name":"Tony W","amt":662},{"name":"Linden C","amt":649},{"name":"Seth D","amt":644},{"name":"James P","amt":637},{"name":"Aidan S","amt":634},{"name":"Carson N","amt":632},{"name":"Danny S","amt":618},{"name":"Nicholas L","amt":606},{"name":"Jesse A","amt":596},{"name":"Lucas M","amt":591},{"name":"Joshua H","amt":585},{"name":"Frederick L","amt":576},{"name":"digby S","amt":560},{"name":"David L","amt":560},{"name":"Miles Phijidvijan","amt":551},{"name":"benjamin W","amt":536},{"name":"Andrew M","amt":522},{"name":"Devlin McCARTHY","amt":520},{"name":"Hunter O","amt":512},{"name":"Reyaan PRASAD","amt":505},{"name":"Jacob Cartwright","amt":502},{"name":"barney T","amt":493},{"name":"Jerry P","amt":480},{"name":"Oliver L","amt":462},{"name":"Boren C","amt":446},{"name":"Aman Qadri","amt":442},{"name":"Owen M","amt":423},{"name":"George G","amt":421},{"name":"Arthur B","amt":418},{"name":"Damon Y","amt":399},{"name":"Zayn Cheema","amt":377},{"name":"inni Jurd","amt":342},{"name":"Ariyan R","amt":340},{"name":"Rayan Q","amt":331},{"name":"Tony L","amt":326},{"name":"Tian G","amt":320},{"name":"Thomas G","amt":320},{"name":"Charlie B","amt":318},{"name":"Remy L","amt":309},{"name":"Nicholas W","amt":307},{"name":"Arran R","amt":305},{"name":"Charlie S","amt":276},{"name":"Elliot S","amt":271},{"name":"Elvin C","amt":270},{"name":"Macarthur ARNOTT","amt":270},{"name":"Ben W","amt":260},{"name":"max A","amt":252},{"name":"Yisa L","amt":250},{"name":"Shafin Azad","amt":239},{"name":"Julian K","amt":223},{"name":"Redson C","amt":216},{"name":"Lucas D","amt":212},{"name":"Xavier C","amt":212},{"name":"Sean Lin","amt":196},{"name":"Aarav K","amt":170},{"name":"Harry C","amt":167},{"name":"Darren Li","amt":159},{"name":"Nathan Zhou","amt":159},{"name":"Liam W","amt":155},{"name":"Jude L","amt":145},{"name":"Heliang L","amt":144},{"name":"Danny L","amt":131},{"name":"Hunter Y","amt":127},{"name":"Ryan W","amt":121},{"name":"Hayden Y","amt":119},{"name":"Josh K","amt":115},{"name":"Nathan X","amt":114},{"name":"Fox H","amt":111},{"name":"Ollie R","amt":102},{"name":"Joshua Li","amt":102},{"name":"Declan H","amt":101},{"name":"Max X","amt":91},{"name":"Ethan W","amt":89},{"name":"Jeremy H","amt":85},{"name":"Joshua Zhou","amt":84},{"name":"Delta Company","amt":78},{"name":"Ted R","amt":76},{"name":"Ray L","amt":73},{"name":"Kane F","amt":69},{"name":"Haoyi T","amt":64},{"name":"Joshua Huang","amt":52},{"name":"Lucas L","amt":43},{"name":"Geoffrey C","amt":41},{"name":"William G","amt":38},{"name":"Declan W","amt":36},{"name":"Jason C","amt":35},{"name":"Caleb T","amt":34},{"name":"Ryan C","amt":33},{"name":"Admin Platoon","amt":30},{"name":"Bancheng N","amt":28},{"name":"Derek Q","amt":24},{"name":"Anthony H","amt":23},{"name":"Mason L","amt":23},{"name":"Darren W","amt":23},{"name":"Ethan A","amt":21},{"name":"Oliver K","amt":20},{"name":"benny J","amt":18},{"name":"John Z","amt":1}];
+
+// Build unified dataset
+const allDots = [];
+const COLORS = { '2024': '#6b7280', '2025': '#4a9eff', '2026': '#d4a843' };
+const COLORS_DIM = { '2024': 'rgba(107,114,128,0.12)', '2025': 'rgba(74,158,255,0.1)', '2026': 'rgba(212,168,67,0.1)' };
+
+[['2024', DATA_2024], ['2025', DATA_2025], ['2026', DATA_2026]].forEach(([yr, data]) => {
+  data.forEach(d => allDots.push({ name: d.name, amt: d.amt, year: yr }));
+});
+
+// Canvas setup
+const canvas = document.getElementById('portraitCanvas');
+const ctx = canvas.getContext('2d');
+const tooltip = document.getElementById('tooltip');
+
+let currentYear = 'all';
+let currentSort = 'amount';
+let dots = [];
+let hoveredDot = null;
+let dpr = window.devicePixelRatio || 1;
+
+function getRadius(amt) {
+  return Math.max(3, Math.sqrt(amt) * 0.28);
+}
+
+function buildDots(yearFilter, sortMode) {
+  let data = yearFilter === 'all' ? allDots : allDots.filter(d => d.year === yearFilter);
+  if (sortMode === 'alpha') {
+    data = [...data].sort((a, b) => a.name.localeCompare(b.name));
+  } else {
+    data = [...data].sort((a, b) => b.amt - a.amt);
+  }
+  return data;
+}
+
+function layout(data, canvasW, canvasH) {
+  // Beeswarm: sort by amount, place left to right with collision avoidance
+  const PAD = 48;
+  const usableW = canvasW - PAD * 2;
+  const centerY = canvasH / 2;
+
+  const maxAmt = Math.max(...data.map(d => d.amt));
+  const minAmt = Math.min(...data.map(d => d.amt));
+
+  const placed = [];
+  data.forEach((d, i) => {
+    const r = getRadius(d.amt);
+    // Log-scale x
+    const logMin = Math.log(Math.max(1, minAmt));
+    const logMax = Math.log(maxAmt);
+    const logVal = Math.log(Math.max(1, d.amt));
+    const xNorm = (logVal - logMin) / (logMax - logMin);
+    const targetX = PAD + xNorm * usableW;
+
+    // Try placing at centerY, then push up/down
+    let y = centerY;
+    let attempts = 0;
+    let direction = 1;
+    let step = 0;
+
+    while (attempts < 200) {
+      let collision = false;
+      for (const p of placed) {
+        const dx = targetX - p.x;
+        const dy = y - p.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < r + p.r + 2) { collision = true; break; }
+      }
+      if (!collision) break;
+      step += (r + 1);
+      direction = -direction;
+      y = centerY + direction * step;
+      attempts++;
+    }
+
+    placed.push({ ...d, x: targetX, y, r });
+  });
+  return placed;
+}
+
+function resize() {
+  const wrap = canvas.parentElement;
+  const w = wrap.clientWidth - 96;
+  const h = Math.max(280, Math.min(520, w * 0.38));
+  canvas.style.width = w + 'px';
+  canvas.style.height = h + 'px';
+  canvas.width = w * dpr;
+  canvas.height = h * dpr;
+  ctx.scale(dpr, dpr);
+  redraw();
+}
+
+function redraw() {
+  const W = canvas.width / dpr;
+  const H = canvas.height / dpr;
+  ctx.clearRect(0, 0, W, H);
+
+  const data = buildDots(currentYear, currentSort);
+  dots = layout(data, W, H);
+
+  // Draw dots
+  dots.forEach(d => {
+    const isHovered = hoveredDot && hoveredDot === d;
+    const col = COLORS[d.year];
+
+    ctx.beginPath();
+    ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+
+    if (isHovered) {
+      ctx.fillStyle = col;
+      ctx.shadowColor = col;
+      ctx.shadowBlur = 12;
+    } else {
+      ctx.fillStyle = col + 'cc';
+      ctx.shadowBlur = 0;
+    }
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    // Border
+    ctx.beginPath();
+    ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+    ctx.strokeStyle = col + '66';
+    ctx.lineWidth = 0.5;
+    ctx.stroke();
+  });
+
+  // Draw subtle year labels on left when showing all
+  if (currentYear === 'all') {
+    const pad = 8;
+    ctx.font = `500 10px 'JetBrains Mono', monospace`;
+    ctx.fillStyle = 'rgba(255,255,255,0.2)';
+    ctx.fillText('smaller donations', pad, H - 8);
+    ctx.textAlign = 'right';
+    ctx.fillText('larger donations', W - pad, H - 8);
+    ctx.textAlign = 'left';
+  }
+}
+
+function getHoveredDot(mx, my) {
+  for (let i = dots.length - 1; i >= 0; i--) {
+    const d = dots[i];
+    const dx = mx - d.x;
+    const dy = my - d.y;
+    if (Math.sqrt(dx * dx + dy * dy) <= d.r + 2) return d;
+  }
+  return null;
+}
+
+canvas.addEventListener('mousemove', e => {
+  const rect = canvas.getBoundingClientRect();
+  const mx = (e.clientX - rect.left);
+  const my = (e.clientY - rect.top);
+  const found = getHoveredDot(mx, my);
+
+  if (found !== hoveredDot) {
+    hoveredDot = found;
+    redraw();
+  }
+
+  if (found) {
+    canvas.style.cursor = 'pointer';
+    tooltip.style.opacity = '1';
+    tooltip.style.left = (e.clientX + 14) + 'px';
+    tooltip.style.top = (e.clientY - 10) + 'px';
+    document.getElementById('ttName').textContent = found.name;
+    document.getElementById('ttAmt').textContent = '$' + found.amt.toLocaleString() + ' raised';
+    document.getElementById('ttAmt').style.color = COLORS[found.year];
+    document.getElementById('ttYr').textContent = found.year + ' campaign';
+  } else {
+    canvas.style.cursor = 'crosshair';
+    tooltip.style.opacity = '0';
+  }
+});
+
+canvas.addEventListener('mouseleave', () => {
+  hoveredDot = null;
+  tooltip.style.opacity = '0';
+  redraw();
+});
+
+function setYear(yr, btn) {
+  currentYear = yr;
+  document.querySelectorAll('.yr-btn').forEach(b => {
+    b.classList.remove('active-all', 'active-2024', 'active-2025', 'active-2026');
+  });
+  if (yr === 'all') btn.classList.add('active-all');
+  else btn.classList.add('active-' + yr);
+  redraw();
+}
+
+function setSort(mode, btn) {
+  currentSort = mode;
+  document.getElementById('sortAmt').classList.remove('active-all');
+  document.getElementById('sortAlpha').classList.remove('active-all');
+  btn.classList.add('active-all');
+  redraw();
+}
+
+window.addEventListener('resize', resize);
+resize();
+</script>
+</body>
+</html>

@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Follow the Dollar — Knox Grammar</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f2ec;
+  --bg2: #ede9e0;
+  --bg3: #e4dfd4;
+  --ink: #1a1814;
+  --ink2: #3d3a33;
+  --ink3: #7a7268;
+  --gold: #b5831a;
+  --gold2: #d4a843;
+  --gold-light: #f0e4c0;
+  --red: #c0392b;
+  --teal: #1a7a62;
+  --teal-light: #d4ede7;
+  --border: rgba(26,24,20,0.1);
+  --border2: rgba(26,24,20,0.18);
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; font-size:16px; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* CUSTOM CURSOR */
+.cursor {
+  position: fixed;
+  width: 10px; height: 10px;
+  background: var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: transform 0.1s, width 0.2s, height 0.2s, opacity 0.2s;
+  mix-blend-mode: multiply;
+}
+.cursor.big { width: 40px; height: 40px; opacity: 0.4; }
+
+/* LAYOUT */
+.page-wrap {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* STICKY CALCULATOR */
+.sticky-calc {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  background: var(--ink);
+  padding: 40px 32px;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid rgba(255,255,255,0.08);
+}
+.calc-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 0.18em;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.calc-amount {
+  font-family: 'Playfair Display', serif;
+  font-size: 42px; font-weight: 900;
+  color: var(--gold2);
+  line-height: 1;
+  margin-bottom: 6px;
+  transition: all 0.15s;
+}
+.calc-sublabel {
+  font-size: 12px;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 28px;
+  font-family: 'DM Mono', monospace;
+}
+
+/* SLIDER */
+.slider-wrap { margin-bottom: 32px; }
+#amtSlider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 3px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+}
+#amtSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--gold2);
+  cursor: pointer;
+  box-shadow: 0 0 0 4px rgba(212,168,67,0.2);
+  transition: box-shadow 0.2s;
+}
+#amtSlider::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 0 8px rgba(212,168,67,0.25);
+}
+.slider-range {
+  display: flex; justify-content: space-between;
+  margin-top: 8px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; color: rgba(255,255,255,0.25);
+}
+.slider-fill {
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold2));
+  border-radius: 2px;
+  margin-top: -3px;
+  pointer-events: none;
+  transition: width 0.05s;
+}
+
+/* CALC OUTPUTS */
+.calc-outputs { display: flex; flex-direction: column; gap: 1px; flex: 1; }
+.calc-out {
+  background: rgba(255,255,255,0.04);
+  border-radius: 8px;
+  padding: 14px 16px;
+  transition: background 0.2s;
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+}
+.calc-out:hover { background: rgba(255,255,255,0.08); }
+.calc-out-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px; font-weight: 700;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 3px;
+  transition: color 0.3s;
+}
+.calc-out-lbl {
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.4;
+}
+.calc-out-icon {
+  position: absolute;
+  right: 14px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  opacity: 0.15;
+}
+.calc-out.highlight .calc-out-val { color: var(--gold2); }
+.calc-source {
+  margin-top: 20px;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: rgba(255,255,255,0.2);
+  line-height: 1.6;
+  letter-spacing: 0.04em;
+}
+
+/* NARRATIVE SIDE */
+.narrative { padding: 0; }
+
+/* BEAT 1: HOOK */
+.beat-hook {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 64px;
+  position: relative;
+  overflow: hidden;
+}
+.beat-hook::before {
+  content: '';
+  position: absolute;
+  top: -100px; right: -100px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(181,131,26,0.08) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hook-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; letter-spacing: 0.2em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: riseIn 0.7s 0.3s ease forwards;
+}
+.hook-statement {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 3.5vw, 48px);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.35;
+  color: var(--ink);
+  max-width: 640px;
+  margin-bottom: 40px;
+  opacity: 0;
+  animation: riseIn 0.8s 0.5s ease forwards;
+}
+.hook-statement strong {
+  font-style: normal;
+  font-weight: 700;
+  color: var(--gold);
+}
+.hook-number {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(56px, 8vw, 100px);
+  font-weight: 900;
+  color: var(--ink);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+  opacity: 0;
+  animation: riseIn 0.8s 0.8s ease forwards;
+}
+.hook-number span { color: var(--gold); }
+.hook-body {
+  font-size: 16px;
+  color: var(--ink3);
+  max-width: 520px;
+  line-height: 1.75;
+  opacity: 0;
+  animation: riseIn 0.7s 1s ease forwards;
+}
+.scroll-cue {
+  position: absolute;
+  bottom: 40px; left: 64px;
+  display: flex; align-items: center; gap: 12px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 0.15em;
+  color: var(--ink3);
+  text-transform: uppercase;
+  opacity: 0;
+  animation: fadeIn 1s 2s ease forwards;
+}
+.scroll-line {
+  width: 40px; height: 1px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  animation: expandLine 1.5s 2s ease forwards;
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+/* BEAT 2: THE SPLIT */
+.beat {
+  padding: 80px 64px;
+  border-top: 1px solid var(--border);
+  position: relative;
+}
+.beat-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 0.18em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.beat-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 3vw, 42px);
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 20px;
+  max-width: 560px;
+}
+.beat-title em { font-style: italic; color: var(--gold); }
+.beat-body {
+  font-size: 15px;
+  color: var(--ink2);
+  max-width: 520px;
+  line-height: 1.75;
+  margin-bottom: 48px;
+}
+
+/* DOLLAR SPLIT VISUAL */
+.dollar-split {
+  margin-bottom: 48px;
+}
+.split-track {
+  height: 48px;
+  background: var(--bg3);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  margin-bottom: 16px;
+  border: 1px solid var(--border);
+}
+.split-mission {
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal), #2a9a7c);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px; font-weight: 500;
+  color: #fff;
+  transition: width 1.2s cubic-bezier(0.16,1,0.3,1);
+  width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.split-cost {
+  height: 100%;
+  background: linear-gradient(90deg, #b5831a, var(--gold2));
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px; font-weight: 500;
+  color: rgba(255,255,255,0.9);
+  transition: width 1.2s cubic-bezier(0.16,1,0.3,1) 0.1s;
+  width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.split-labels {
+  display: flex; gap: 24px;
+}
+.split-lbl {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--ink2);
+}
+.split-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+}
+
+/* MISSION BREAKDOWN */
+.mission-breakdown {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px 32px;
+  margin-bottom: 32px;
+}
+.breakdown-row {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.breakdown-row:last-child { border-bottom: none; }
+.br-label { font-size: 14px; color: var(--ink2); }
+.br-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 700;
+  color: var(--teal);
+}
+.br-pct {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; color: var(--ink3);
+  margin-top: 2px;
+  text-align: right;
+}
+
+/* BEAT 3: HUMAN GRID */
+.beat-grid {
+  padding: 80px 64px;
+  border-top: 1px solid var(--border);
+}
+.grid-intro { margin-bottom: 48px; }
+.output-section { margin-bottom: 56px; }
+.output-heading {
+  display: flex; align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.output-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px; font-weight: 700;
+}
+.output-count {
+  font-family: 'DM Mono', monospace;
+  font-size: 32px; font-weight: 500;
+  color: var(--gold);
+}
+.output-desc {
+  font-size: 13px; color: var(--ink3);
+  margin-bottom: 20px;
+  line-height: 1.6;
+  max-width: 480px;
+}
+.icon-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  max-height: 180px;
+  overflow: hidden;
+  position: relative;
+}
+.icon-grid.expanded { max-height: none; }
+.icon-dot {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--teal-light);
+  border: 1px solid rgba(26,122,98,0.2);
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+  position: relative;
+  flex-shrink: 0;
+}
+.icon-dot:hover {
+  background: var(--teal);
+  transform: scale(1.3);
+  z-index: 10;
+}
+.icon-dot.gold-dot {
+  background: var(--gold-light);
+  border-color: rgba(181,131,26,0.25);
+}
+.icon-dot.gold-dot:hover { background: var(--gold2); }
+.icon-dot.faded { opacity: 0.25; }
+.icon-dot[data-tip]:hover::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: #fff;
+  font-size: 11px;
+  font-family: 'DM Sans', sans-serif;
+  white-space: nowrap;
+  padding: 5px 10px;
+  border-radius: 5px;
+  pointer-events: none;
+  z-index: 100;
+}
+.grid-overflow-hint {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; color: var(--ink3);
+  margin-top: 8px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* BEAT 4: SCALE */
+.beat-scale {
+  padding: 80px 64px;
+  border-top: 1px solid var(--border);
+  background: var(--ink);
+  color: #fff;
+}
+.beat-scale .beat-tag { color: var(--gold2); }
+.beat-scale .beat-title { color: #fff; }
+.beat-scale .beat-body { color: rgba(255,255,255,0.6); }
+
+.scale-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 40px;
+}
+.scale-cell {
+  background: rgba(255,255,255,0.04);
+  padding: 32px 28px;
+  transition: background 0.2s;
+}
+.scale-cell:hover { background: rgba(255,255,255,0.08); }
+.scale-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 48px; font-weight: 900;
+  color: var(--gold2);
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.scale-lbl {
+  font-size: 13px;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.6;
+}
+.scale-lbl strong { color: rgba(255,255,255,0.9); }
+
+/* SOURCE FOOTER */
+.source-footer {
+  padding: 40px 64px;
+  border-top: 1px solid var(--border);
+  background: var(--bg2);
+}
+.source-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 0.15em;
+  color: var(--ink3);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.source-text {
+  font-size: 12px; color: var(--ink3);
+  line-height: 1.7;
+  max-width: 600px;
+}
+
+/* ANIMATIONS */
+@keyframes riseIn {
+  from { opacity:0; transform:translateY(24px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity:0; } to { opacity:0.7; }
+}
+@keyframes expandLine {
+  from { transform:scaleX(0); } to { transform:scaleX(1); }
+}
+@keyframes dotPop {
+  0%   { transform:scale(0); opacity:0; }
+  60%  { transform:scale(1.2); opacity:1; }
+  100% { transform:scale(1); opacity:1; }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.reveal.vis { opacity:1; transform:none; }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+
+<div class="page-wrap">
+
+  <!-- NARRATIVE COLUMN -->
+  <div class="narrative">
+
+    <!-- BEAT 1: HOOK -->
+    <div class="beat-hook">
+      <p class="hook-tag">Knox Grammar / Follow the Dollar / World's Greatest Shave 2026</p>
+      <p class="hook-statement">
+        This year, a family relocated from regional New South Wales to stay near their child's hospital.
+        <strong>Knox paid for their accommodation.</strong>
+      </p>
+      <div class="hook-number">$<span id="hookAmt">140,000</span></div>
+      <p class="hook-body">
+        That is what Knox Grammar raised in 2026. Not an abstract total. Not a line on a spreadsheet.
+        A number that resolves into real people receiving real care. This page follows every dollar.
+      </p>
+      <div class="scroll-cue">
+        <div class="scroll-line"></div>
+        scroll to follow
+      </div>
+    </div>
+
+    <!-- BEAT 2: THE SPLIT -->
+    <div class="beat">
+      <p class="beat-tag reveal">How every dollar is allocated</p>
+      <h2 class="beat-title reveal">62.8 cents of every dollar<br><em>reaches the mission.</em></h2>
+      <p class="beat-body reveal">
+        In FY2024-25, the Leukaemia Foundation raised $29.2M and spent $10.86M on fundraising and operations.
+        That means 37.2 cents raised each dollar. The remaining 62.8 cents went directly to patient support,
+        research, and advocacy. This is a significant improvement from 53.5 cents the year before.
+      </p>
+
+      <div class="dollar-split reveal">
+        <div class="split-track" id="splitTrack">
+          <div class="split-mission" id="splitMission" style="width:0">62.8c to mission</div>
+          <div class="split-cost" id="splitCost" style="width:0">37.2c fundraising cost</div>
+        </div>
+        <div class="split-labels">
+          <div class="split-lbl"><div class="split-dot" style="background:var(--teal)"></div>Mission delivery: 62.8%</div>
+          <div class="split-lbl"><div class="split-dot" style="background:var(--gold2)"></div>Fundraising cost: 37.2%</div>
+        </div>
+      </div>
+
+      <div class="mission-breakdown reveal">
+        <div class="breakdown-row">
+          <div>
+            <div class="br-label">Patient support, accommodation and counselling</div>
+            <div style="font-size:12px;color:var(--ink3);margin-top:2px;">39,800 service instances delivered to 6,881 people</div>
+          </div>
+          <div style="text-align:right">
+            <div class="br-val">$13.5M</div>
+            <div class="br-pct">62.4% of mission spend</div>
+          </div>
+        </div>
+        <div class="breakdown-row">
+          <div>
+            <div class="br-label">Research grants and advocacy</div>
+            <div style="font-size:12px;color:var(--ink3);margin-top:2px;">Funding scientific breakthroughs for 135,000 Australians with blood cancer</div>
+          </div>
+          <div style="text-align:right">
+            <div class="br-val">$4.36M</div>
+            <div class="br-pct">20.2% of mission spend</div>
+          </div>
+        </div>
+        <div class="breakdown-row">
+          <div>
+            <div class="br-label">UWA Endowed Chair in Blood Cancer Research</div>
+            <div style="font-size:12px;color:var(--ink3);margin-top:2px;">Permanent research position, $3M matched by UWA</div>
+          </div>
+          <div style="text-align:right">
+            <div class="br-val">$3M</div>
+            <div class="br-pct">13.9% of mission spend</div>
+          </div>
+        </div>
+        <div class="breakdown-row" style="background:rgba(181,131,26,0.06);border-radius:6px;padding:14px 12px;margin-top:8px;border:none;">
+          <div class="br-label" style="font-weight:600;color:var(--ink)">Total mission expenditure FY25</div>
+          <div style="text-align:right">
+            <div class="br-val" style="font-size:26px;">$21.6M</div>
+            <div class="br-pct">Audited. Source: Leukaemia Foundation FY25 Accounts</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BEAT 3: HUMAN GRID -->
+    <div class="beat-grid">
+      <div class="grid-intro">
+        <p class="beat-tag reveal">What Knox's contribution becomes</p>
+        <h2 class="beat-title reveal">Each dot below<br><em>is a person.</em></h2>
+        <p class="beat-body reveal" style="margin-bottom:0">
+          Use the calculator on the right to adjust the donation amount.
+          Every dot updates. Each one represents a real service instance,
+          a real family, a real night of care. Hover to see what it means.
+        </p>
+      </div>
+
+      <!-- SERVICE INSTANCES -->
+      <div class="output-section reveal">
+        <div class="output-heading">
+          <div class="output-title">Service instances funded</div>
+          <div class="output-count" id="countInstances">413</div>
+        </div>
+        <p class="output-desc">
+          At $339 per service instance (FY25 audited: $13.5M across 39,800 instances),
+          Knox's donation covered approximately this many interactions with people living with blood cancer.
+          Counselling, financial support, accommodation, practical care.
+        </p>
+        <div class="icon-grid" id="gridInstances"></div>
+        <div class="grid-overflow-hint" id="hintInstances" onclick="toggleGrid('gridInstances','hintInstances')"></div>
+      </div>
+
+      <!-- ACCOMMODATION NIGHTS -->
+      <div class="output-section reveal">
+        <div class="output-heading">
+          <div class="output-title">Nights of accommodation</div>
+          <div class="output-count" id="countNights">389</div>
+        </div>
+        <p class="output-desc">
+          At $360 per night (derived from $13.5M patient support across 39,800 service instances,
+          weighted for accommodation cost), Knox funded roughly this many nights for families
+          forced to relocate for treatment.
+        </p>
+        <div class="icon-grid" id="gridNights"></div>
+        <div class="grid-overflow-hint" id="hintNights" onclick="toggleGrid('gridNights','hintNights')"></div>
+      </div>
+
+      <!-- FINANCIAL ASSISTANCE -->
+      <div class="output-section reveal">
+        <div class="output-heading">
+          <div class="output-title">Financial assistance awards</div>
+          <div class="output-count" id="countAwards">215</div>
+        </div>
+        <p class="output-desc">
+          In FY24, 866 individuals received financial assistance covering pharmaceuticals
+          and specialised equipment, at an estimated average of $650 per award.
+          Knox's contribution funds approximately this many awards.
+        </p>
+        <div class="icon-grid" id="gridAwards"></div>
+        <div class="grid-overflow-hint" id="hintAwards" onclick="toggleGrid('gridAwards','hintAwards')"></div>
+      </div>
+
+    </div>
+
+    <!-- BEAT 4: SCALE -->
+    <div class="beat-scale">
+      <p class="beat-tag reveal">Putting it in context</p>
+      <h2 class="beat-title reveal" style="max-width:540px">One school in Wahroonga.<br><em>Disproportionate impact.</em></h2>
+      <p class="beat-body reveal" style="max-width:520px">
+        Knox is not a corporate sponsor. It is a school community with a
+        culture of giving that has compounded over eight years. These numbers
+        show what that looks like at national scale.
+      </p>
+
+      <div class="scale-grid reveal">
+        <div class="scale-cell">
+          <div class="scale-num">1.2%</div>
+          <div class="scale-lbl"><strong>Of national WGS net revenue</strong> comes from Knox. One school. One community.</div>
+        </div>
+        <div class="scale-cell">
+          <div class="scale-num">16</div>
+          <div class="scale-lbl"><strong>Australians die from blood cancer</strong> every day. The Foundation's work runs against that number.</div>
+        </div>
+        <div class="scale-cell">
+          <div class="scale-num">$10k</div>
+          <div class="scale-lbl"><strong>Knox raised in 2018.</strong> Eight years later: $148,000. Philanthropic culture, once embedded, compounds.</div>
+        </div>
+        <div class="scale-cell">
+          <div class="scale-num">135,000</div>
+          <div class="scale-lbl"><strong>Australians currently living</strong> with blood cancer. By 2035 that number reaches 275,000.</div>
+        </div>
+        <div class="scale-cell" style="grid-column:1/-1; background:rgba(181,131,26,0.08); border-top:1px solid rgba(181,131,26,0.15);">
+          <div class="scale-num" style="font-size:36px;">63c</div>
+          <div class="scale-lbl" style="max-width:520px;">
+            <strong>Of every dollar Knox raised in 2026 reached the mission directly</strong>, up from 54 cents the year before.
+            The Foundation improved its fundraising efficiency by 15% in FY25 while simultaneously growing total mission spend by 9%.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SOURCE FOOTER -->
+    <div class="source-footer">
+      <div class="source-title">Data sources</div>
+      <div class="source-text">
+        All financial figures sourced from the Leukaemia Foundation of Australia FY2025 Audited Financial Accounts
+        (published October 2025, BDO Audit Pty Ltd) and the Leukaemia Foundation Annual Report 2024-25.
+        Knox participation data sourced from World's Greatest Shave fundraising records 2024-2026.
+        Impact estimates (service instance cost, accommodation night cost, financial assistance award value)
+        are derived from the Foundation's own reported expenditure divided by reported service volumes.
+        All illustrative hover descriptions are representative, not individual case studies.
+        This page was prepared by Capital Finance Club, Knox Grammar School, March 2026.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- STICKY CALCULATOR -->
+  <div class="sticky-calc">
+    <p class="calc-label">Live impact calculator</p>
+    <div class="calc-amount" id="calcDisplay">$140,000</div>
+    <div class="calc-sublabel">Knox Grammar 2026 total</div>
+
+    <div class="slider-wrap">
+      <div style="position:relative;">
+        <input type="range" id="amtSlider" min="1000" max="200000" value="140000" step="1000">
+        <div class="slider-fill" id="sliderFill"></div>
+      </div>
+      <div class="slider-range">
+        <span>$1,000</span>
+        <span>$200,000</span>
+      </div>
+    </div>
+
+    <div class="calc-outputs">
+      <div class="calc-out highlight">
+        <div class="calc-out-val" id="cOut1">413</div>
+        <div class="calc-out-lbl">service instances funded</div>
+        <div class="calc-out-icon">◎</div>
+      </div>
+      <div class="calc-out">
+        <div class="calc-out-val" id="cOut2">389</div>
+        <div class="calc-out-lbl">nights of accommodation</div>
+        <div class="calc-out-icon">⌂</div>
+      </div>
+      <div class="calc-out">
+        <div class="calc-out-val" id="cOut3">215</div>
+        <div class="calc-out-lbl">financial assistance awards</div>
+        <div class="calc-out-icon">◇</div>
+      </div>
+      <div class="calc-out">
+        <div class="calc-out-val" id="cOut4">28</div>
+        <div class="calc-out-lbl">chemotherapy courses (3 days each)</div>
+        <div class="calc-out-icon">+</div>
+      </div>
+      <div class="calc-out">
+        <div class="calc-out-val" id="cOut5">0.9x</div>
+        <div class="calc-out-lbl">average research grants funded</div>
+        <div class="calc-out-icon">✦</div>
+      </div>
+      <div class="calc-out">
+        <div class="calc-out-val" id="cOut6">83</div>
+        <div class="calc-out-lbl">people reached (of 6,881 served)</div>
+        <div class="calc-out-icon">♦</div>
+      </div>
+    </div>
+
+    <div class="calc-source">
+      Sources: LFA FY25 Audited Accounts.<br>
+      $339/service instance. $360/night.<br>
+      $650/assistance award. $5,000/chemo course.<br>
+      $154,000/research grant avg. 1.2% of $29.2M.
+    </div>
+  </div>
+
+</div>
+
+<script>
+// CURSOR
+const cursor = document.getElementById('cursor');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+});
+document.addEventListener('mouseenter', () => cursor.style.opacity = '1');
+document.addEventListener('mouseleave', () => cursor.style.opacity = '0');
+document.querySelectorAll('a, button, input, .calc-out, .icon-dot').forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.classList.add('big'));
+  el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
+});
+
+// CALCULATIONS
+const RATE_INSTANCE = 339;
+const RATE_NIGHT = 360;
+const RATE_AWARD = 650;
+const RATE_CHEMO = 5000;
+const RATE_GRANT = 154000;
+const TOTAL_SERVED = 6881;
+const NATIONAL_NET = 29200000 * 0.628;
+
+function calc(amt) {
+  return {
+    instances: Math.round(amt / RATE_INSTANCE),
+    nights: Math.round(amt / RATE_NIGHT),
+    awards: Math.round(amt / RATE_AWARD),
+    chemo: Math.round(amt / RATE_CHEMO),
+    grants: (amt / RATE_GRANT).toFixed(1),
+    people: Math.round((amt / NATIONAL_NET) * TOTAL_SERVED)
+  };
+}
+
+// COUNT UP ANIMATION
+function countUp(el, from, to, isFloat) {
+  const dur = 400;
+  const start = Date.now();
+  const run = () => {
+    const t = Math.min((Date.now() - start) / dur, 1);
+    const e = 1 - Math.pow(1-t, 3);
+    const val = from + (to - from) * e;
+    el.textContent = isFloat ? val.toFixed(1)+'x' : Math.round(val).toLocaleString();
+    if (t < 1) requestAnimationFrame(run);
+  };
+  requestAnimationFrame(run);
+}
+
+// ICON GRID HELPERS
+const TIPS_INSTANCES = [
+  "One counselling session for a blood cancer patient",
+  "One night of financial support for a family",
+  "One transport assistance trip to treatment",
+  "One call to the Foundation's support line",
+  "One practical care package delivered",
+  "One family reached through community outreach",
+  "One person accessing information services",
+  "One patient connected with a Care Case Manager"
+];
+const TIPS_NIGHTS = [
+  "One night for a family from Dubbo near their hospital",
+  "One night for a parent staying close to their child",
+  "One night removing the choice between care and home",
+  "One night for a regional family during treatment",
+  "One night so a carer doesn't have to drive 300km",
+  "One night of stability during an unstable time"
+];
+const TIPS_AWARDS = [
+  "Pharmaceuticals not covered by PBS",
+  "Specialised medical equipment",
+  "Travel costs to treatment appointments",
+  "Wigs and appearance-related support",
+  "Utility bills during treatment period",
+  "Home care equipment for recovery"
+];
+
+function buildGrid(containerId, count, tips, colorClass, maxVisible) {
+  const container = document.getElementById(containerId);
+  const existing = container.querySelectorAll('.icon-dot').length;
+  if (existing === count) return;
+
+  container.innerHTML = '';
+  const show = Math.min(count, maxVisible);
+  for (let i = 0; i < show; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'icon-dot ' + colorClass;
+    const tip = tips[i % tips.length] + ' (illustrative)';
+    dot.setAttribute('data-tip', tip);
+    dot.style.animationDelay = (i * 8) + 'ms';
+    dot.style.animation = 'dotPop 0.3s ease forwards';
+    dot.style.opacity = '0';
+    container.appendChild(dot);
+    setTimeout(() => dot.style.opacity = '1', i * 8);
+  }
+}
+
+function toggleGrid(gridId, hintId) {
+  const grid = document.getElementById(gridId);
+  const hint = document.getElementById(hintId);
+  if (grid.classList.contains('expanded')) {
+    grid.classList.remove('expanded');
+    const total = parseInt(grid.dataset.total || 0);
+    const shown = grid.querySelectorAll('.icon-dot').length;
+    hint.textContent = '+' + (total - shown) + ' more. Click to expand.';
+  } else {
+    grid.classList.add('expanded');
+    hint.textContent = 'Click to collapse.';
+  }
+}
+
+// MAIN UPDATE
+let prevVals = { instances: 413, nights: 389, awards: 215, chemo: 28, grants: 0.9, people: 83 };
+
+function update(amt) {
+  const v = calc(amt);
+
+  // Display amount
+  const dispEl = document.getElementById('calcDisplay');
+  dispEl.textContent = '$' + amt.toLocaleString();
+  document.getElementById('hookAmt').textContent = amt.toLocaleString();
+
+  // Slider fill
+  const pct = (amt - 1000) / (200000 - 1000) * 100;
+  document.getElementById('sliderFill').style.width = pct + '%';
+
+  // Count up each output
+  countUp(document.getElementById('cOut1'), prevVals.instances, v.instances, false);
+  countUp(document.getElementById('cOut2'), prevVals.nights, v.nights, false);
+  countUp(document.getElementById('cOut3'), prevVals.awards, v.awards, false);
+  countUp(document.getElementById('cOut4'), prevVals.chemo, v.chemo, false);
+  const grantsEl = document.getElementById('cOut5');
+  const fromG = parseFloat(prevVals.grants);
+  const toG = parseFloat(v.grants);
+  countUp(grantsEl, fromG * 10, toG * 10, false);
+  setTimeout(() => grantsEl.textContent = v.grants + 'x', 400);
+  countUp(document.getElementById('cOut6'), prevVals.people, v.people, false);
+
+  // Update inline counts
+  document.getElementById('countInstances').textContent = v.instances.toLocaleString();
+  document.getElementById('countNights').textContent = v.nights.toLocaleString();
+  document.getElementById('countAwards').textContent = v.awards.toLocaleString();
+
+  // Rebuild grids (capped at 200 for performance)
+  const MAX = 200;
+  buildGrid('gridInstances', Math.min(v.instances, MAX), TIPS_INSTANCES, '', MAX);
+  buildGrid('gridNights', Math.min(v.nights, MAX), TIPS_NIGHTS, 'gold-dot', MAX);
+  buildGrid('gridAwards', Math.min(v.awards, MAX), TIPS_AWARDS, 'gold-dot', MAX);
+
+  // Overflow hints
+  ['Instances','Nights','Awards'].forEach(name => {
+    const total = v[name.toLowerCase() === 'instances' ? 'instances' : name.toLowerCase() === 'nights' ? 'nights' : 'awards'];
+    const shown = Math.min(total, MAX);
+    const hint = document.getElementById('hint' + name);
+    const grid = document.getElementById('grid' + name);
+    grid.dataset.total = total;
+    if (total > MAX && !grid.classList.contains('expanded')) {
+      hint.textContent = '+' + (total - shown).toLocaleString() + ' more. Click to expand.';
+    } else if (total <= MAX) {
+      hint.textContent = '';
+    }
+  });
+
+  prevVals = { instances: v.instances, nights: v.nights, awards: v.awards, chemo: v.chemo, grants: v.grants, people: v.people };
+}
+
+document.getElementById('amtSlider').addEventListener('input', function() {
+  update(parseInt(this.value));
+});
+
+// SCROLL REVEAL
+const ro = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('vis'), i * 80);
+      ro.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+// SPLIT BAR ANIMATION
+const splitObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      setTimeout(() => {
+        document.getElementById('splitMission').style.width = '62.8%';
+        document.getElementById('splitCost').style.width = '37.2%';
+      }, 200);
+      splitObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.5 });
+splitObs.observe(document.getElementById('splitTrack'));
+
+// INIT
+update(140000);
+</script>
+</body>
+</html>

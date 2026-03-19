@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Knox World's Greatest Shave 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Syne:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root {
+  --bg:      #09090d;
+  --bg2:     #111118;
+  --bg3:     #17171f;
+  --border:  rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --gold:    #d4a843;
+  --gold2:   #f0c866;
+  --teal:    #2ccfa0;
+  --teal2:   #1a8a6a;
+  --text:    #ece8df;
+  --muted:   #787880;
+  --muted2:  #a0a0aa;
+  --red:     #e05252;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'Syne',sans-serif;font-weight:400;
+  overflow-x:hidden;line-height:1.6;
+}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  padding:18px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(9,9,13,0.9);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+}
+.nav-mark{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;color:var(--gold);text-transform:uppercase;}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{font-size:12px;font-weight:500;letter-spacing:.06em;color:var(--muted);text-decoration:none;text-transform:uppercase;transition:color .2s;}
+.nav-links a:hover{color:var(--text);}
+
+/* HERO */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  justify-content:flex-end;padding:140px 48px 80px;
+  position:relative;overflow:hidden;
+}
+.hero-glow1{position:absolute;top:-20%;right:-10%;width:60vw;height:60vw;max-width:800px;background:radial-gradient(circle,rgba(212,168,67,.06) 0%,transparent 65%);pointer-events:none;}
+.hero-glow2{position:absolute;bottom:0;left:20%;width:50vw;height:50vw;max-width:600px;background:radial-gradient(circle,rgba(44,207,160,.04) 0%,transparent 65%);pointer-events:none;}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;color:var(--gold);text-transform:uppercase;margin-bottom:28px;opacity:0;animation:riseIn .6s .2s ease forwards;}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(60px,8.5vw,130px);font-weight:700;line-height:.95;margin-bottom:32px;max-width:900px;opacity:0;animation:riseIn .7s .35s ease forwards;}
+.hero-title .ital{font-style:italic;color:var(--gold);}
+.hero-title .line2{display:block;color:var(--muted2);font-weight:400;font-style:italic;}
+.hero-body{font-size:16px;color:var(--muted2);line-height:1.75;max-width:520px;margin-bottom:56px;opacity:0;animation:riseIn .7s .5s ease forwards;}
+.hero-bottom{display:flex;align-items:flex-end;justify-content:space-between;opacity:0;animation:riseIn .7s .65s ease forwards;}
+.hero-nums{display:flex;gap:52px;}
+.hnum{font-family:'Cormorant Garamond',serif;font-size:46px;font-weight:700;color:var(--gold2);line-height:1;}
+.hlabel{font-size:11px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:6px;}
+.scroll-hint{display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--muted);font-size:10px;letter-spacing:.15em;text-transform:uppercase;}
+.scroll-line{width:1px;height:48px;background:linear-gradient(to bottom,var(--gold),transparent);animation:pulse 2s ease-in-out infinite;}
+
+/* BAND */
+.band{
+  padding:88px 48px;
+  background:linear-gradient(135deg,rgba(212,168,67,.05),rgba(44,207,160,.03));
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  text-align:center;
+}
+.band-counter{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(72px,12vw,140px);font-weight:700;line-height:1;
+  background:linear-gradient(135deg,var(--gold),var(--gold2) 50%,var(--teal));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  margin-bottom:20px;
+}
+.band-sub{font-size:16px;color:var(--muted2);max-width:440px;margin:0 auto;line-height:1.7;}
+
+/* SECTIONS */
+.section{max-width:1120px;margin:0 auto;padding:100px 48px;}
+.slabel{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:var(--teal);text-transform:uppercase;margin-bottom:14px;}
+.sheading{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,4.5vw,60px);font-weight:700;line-height:1.1;margin-bottom:16px;}
+.sintro{font-size:15px;color:var(--muted2);line-height:1.75;max-width:520px;margin-bottom:60px;}
+
+/* YEAR GRID */
+.year-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:56px;}
+.ycell{background:var(--bg2);padding:44px 36px;transition:background .2s;}
+.ycell:hover{background:var(--bg3);}
+.ytotal{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:700;color:var(--gold2);line-height:1;margin-bottom:10px;}
+.ydelta{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--teal);letter-spacing:.06em;margin-bottom:12px;}
+.ydesc{font-size:13px;color:var(--muted);line-height:1.55;}
+
+/* CHART */
+.chart-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:40px;}
+.chart-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:36px;flex-wrap:wrap;gap:16px;}
+.chart-ttl{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;}
+.toggles{display:flex;gap:8px;}
+.tog{padding:6px 18px;border-radius:20px;border:1px solid var(--border2);background:transparent;cursor:pointer;font-family:'Syne',sans-serif;font-size:12px;font-weight:600;letter-spacing:.04em;transition:all .2s;}
+.tog24{color:#6b7280;}.tog24.on{border-color:#6b7280;background:rgba(107,114,128,.12);}
+.tog25{color:#60a5fa;}.tog25.on{border-color:#3b82f6;background:rgba(59,130,246,.12);}
+.tog26{color:var(--gold2);}.tog26.on{border-color:var(--gold);background:rgba(212,168,67,.12);}
+.chart-wrap{position:relative;height:300px;}
+
+/* INSIGHTS */
+.ins-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+.ins-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:30px;transition:border-color .25s,transform .25s;}
+.ins-card:hover{border-color:rgba(212,168,67,.25);transform:translateY(-2px);}
+.ins-idx{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px;}
+.ins-body{font-size:15px;line-height:1.7;color:var(--text);}
+.ins-body strong{color:var(--gold2);font-weight:600;}
+.ins-pill{display:inline-block;margin-top:16px;padding:3px 12px;background:rgba(44,207,160,.08);border:1px solid rgba(44,207,160,.18);border-radius:20px;font-size:10px;font-weight:600;letter-spacing:.07em;color:var(--teal);text-transform:uppercase;}
+
+/* TEKWORO */
+.tk-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;}
+.tk-story{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--teal);border-radius:0 12px 12px 0;padding:44px;}
+.tk-quote{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;line-height:1.55;color:var(--text);margin-bottom:20px;}
+.tk-cite{font-size:12px;color:var(--muted);letter-spacing:.04em;font-style:normal;}
+.tk-body{margin-top:20px;padding-top:20px;border-top:1px solid var(--border);font-size:14px;color:var(--muted2);line-height:1.75;}
+.tk-stats{display:flex;flex-direction:column;gap:14px;}
+.tk-stat{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:24px 28px;display:flex;align-items:center;gap:20px;transition:border-color .2s;}
+.tk-stat:hover{border-color:rgba(44,207,160,.25);}
+.tk-num{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:700;color:var(--teal);line-height:1;min-width:90px;white-space:nowrap;}
+.tk-desc{font-size:13px;color:var(--muted2);line-height:1.55;}
+
+/* EFFICIENCY */
+.eff-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;}
+.eff-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:36px;}
+.eff-hdg{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;margin-bottom:24px;}
+.bar-row{margin-bottom:18px;}
+.bar-lbls{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px;}
+.bar-lbls span:last-child{color:var(--text);font-weight:600;}
+.bar-track{height:5px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:3px;transition:width 1.6s cubic-bezier(.16,1,.3,1);width:0;}
+.bteal{background:linear-gradient(90deg,var(--teal2),var(--teal));}
+.bgold{background:linear-gradient(90deg,#8a6200,var(--gold));}
+.bgray{background:#4b5563;}
+.eff-rev{margin-top:24px;padding-top:24px;border-top:1px solid var(--border);}
+.eff-rev-lbl{font-size:12px;color:var(--muted);margin-bottom:4px;}
+.eff-rev-num{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:700;line-height:1;}
+.eff-rev-delta{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--teal);margin-top:4px;}
+.eff-stack{display:flex;flex-direction:column;gap:14px;}
+.verdict{background:var(--bg3);border-radius:10px;border-left:2px solid var(--teal);padding:18px 20px;font-size:13px;color:var(--muted2);line-height:1.65;}
+.verdict strong{color:var(--text);}
+.trend-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:28px 32px;font-size:14px;color:var(--muted2);line-height:1.7;}
+.trend-card strong{color:var(--text);}
+.tbad{color:var(--red);font-weight:600;}
+.tgood{color:var(--teal);font-weight:600;}
+.q-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:28px 32px;}
+.q-lbl{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;}
+.q-txt{font-size:15px;line-height:1.65;color:var(--text);}
+.q-txt em{font-style:italic;color:var(--gold2);}
+
+/* NEXT */
+.next-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.ncard{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:28px;transition:border-color .2s;}
+.ncard:hover{border-color:var(--border2);}
+.ndate{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:.08em;margin-bottom:10px;}
+.ntitle{font-size:16px;font-weight:600;margin-bottom:8px;}
+.nbody{font-size:13px;color:var(--muted);line-height:1.55;}
+.ngold{border-color:rgba(212,168,67,.3);}
+.ntealc{background:rgba(44,207,160,.04);border-color:rgba(44,207,160,.2);}
+
+/* DIVIDER */
+.div{height:1px;background:var(--border);max-width:1120px;margin:0 auto;}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:36px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.fmark{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.06em;}
+.flink{font-size:12px;color:var(--teal);text-decoration:none;transition:opacity .2s;}
+.flink:hover{opacity:.7;}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease;}
+.reveal.vis{opacity:1;transform:none;}
+
+@keyframes riseIn{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:none;}}
+@keyframes pulse{0%,100%{opacity:.35;transform:scaleY(1);}50%{opacity:1;transform:scaleY(1.08);}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-mark">CFC x Social Justice 2026</div>
+  <ul class="nav-links">
+    <li><a href="#data">The Data</a></li>
+    <li><a href="#insights">Analysis</a></li>
+    <li><a href="#efficiency">Efficiency</a></li>
+    <li><a href="#next">What's Next</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="hero-glow1"></div>
+  <div class="hero-glow2"></div>
+  <p class="hero-tag">Knox Grammar School / World's Greatest Shave</p>
+  <h1 class="hero-title">
+    Three years.<br>
+    <span class="ital">One community.</span>
+    <span class="line2">Unstoppable.</span>
+  </h1>
+  <p class="hero-body">Knox has raised over $365,000 for the Leukaemia Foundation across 2024, 2025, and 2026. This is the story of why the curve keeps getting steeper.</p>
+  <div class="hero-bottom">
+    <div class="hero-nums">
+      <div><div class="hnum">~$140k</div><div class="hlabel">2026 total</div></div>
+      <div><div class="hnum">+13%</div><div class="hlabel">vs last year</div></div>
+    </div>
+    <div class="scroll-hint">
+      <div class="scroll-line"></div>
+      scroll
+    </div>
+  </div>
+</div>
+
+<div class="band">
+  <div class="band-counter" id="bigCount">$365,590</div>
+  <p class="band-sub">Combined donations from Knox Grammar across three consecutive World's Greatest Shave campaigns.</p>
+</div>
+
+<div class="section" id="data">
+  <p class="slabel reveal">The Numbers</p>
+  <h2 class="sheading reveal">2026 is tracking<br>structurally ahead.</h2>
+  <p class="sintro reveal">At the same point in the campaign, Knox 2026 raised 31% more than 2025. This is not a coincidence. It is compounding.</p>
+
+  <div class="year-grid reveal">
+    <div class="ycell">
+      <div class="ytotal">$101,678</div>
+      <div class="ydelta">2024 baseline</div>
+      <div class="ydesc">The year the campaign began to scale structurally.</div>
+    </div>
+    <div class="ycell">
+      <div class="ytotal">$123,912</div>
+      <div class="ydelta">+22% vs 2024</div>
+      <div class="ydesc">2025 confirmed the upward shift was structural, not a fluke.</div>
+    </div>
+    <div class="ycell">
+      <div class="ytotal">~$140,000</div>
+      <div class="ydelta">+13% vs 2025</div>
+      <div class="ydesc">2026 was 31% ahead of 2025 at the same campaign point.</div>
+    </div>
+  </div>
+
+  <div class="chart-card reveal">
+    <div class="chart-top">
+      <div class="chart-ttl">Money raised by date, all three years</div>
+      <div class="toggles">
+        <button class="tog tog24 on" onclick="tog(0,this)">2024</button>
+        <button class="tog tog25 on" onclick="tog(1,this)">2025</button>
+        <button class="tog tog26 on" onclick="tog(2,this)">2026</button>
+      </div>
+    </div>
+    <div class="chart-wrap"><canvas id="mc"></canvas></div>
+  </div>
+</div>
+
+<div class="div"></div>
+
+<div class="section" id="insights">
+  <p class="slabel reveal">CFC Member Analysis</p>
+  <h2 class="sheading reveal">What is driving<br>the growth?</h2>
+  <p class="sintro reveal">CFC members were asked to analyse the trend before this presentation. No prompting, no format, just real analysis from Knox students.</p>
+  <div class="ins-grid">
+    <div class="ins-card reveal">
+      <div class="ins-idx">Insight 01</div>
+      <div class="ins-body">The fundraising trajectory has taken a <strong>structural upward shift</strong> rather than a cyclical pattern. This signals improved participation elasticity and stronger early-stage engagement each year.</div>
+      <span class="ins-pill">Structural shift</span>
+    </div>
+    <div class="ins-card reveal">
+      <div class="ins-idx">Insight 02</div>
+      <div class="ins-body">A <strong>compounding awareness effect</strong> is occurring. As cohorts progress through Knox, their exposure accumulates, leading to lower resistance and higher conversion rates over time.</div>
+      <span class="ins-pill">Network effects</span>
+    </div>
+    <div class="ins-card reveal">
+      <div class="ins-idx">Insight 03</div>
+      <div class="ins-body">Senior students create a <strong>network multiplier effect,</strong> making participation visible and normalising donation behaviour for younger year groups who look up to them.</div>
+      <span class="ins-pill">Peer effects</span>
+    </div>
+    <div class="ins-card reveal">
+      <div class="ins-idx">Insight 04</div>
+      <div class="ins-body">To strengthen future campaigns, measure <strong>KPIs by year level:</strong> participation rate, donor retention rate, and average donation per participant. Total dollar growth can mask a shrinking donor base.</div>
+      <span class="ins-pill">Recommendation</span>
+    </div>
+  </div>
+</div>
+
+
+<div class="div"></div>
+
+<div class="section" id="efficiency">
+  <p class="slabel reveal">CFC Financial Analysis</p>
+  <h2 class="sheading reveal">Is the Leukaemia<br>Foundation efficient?</h2>
+  <p class="sintro reveal">CFC members went beyond the cause and read the annual report. Here is the FY2024-25 breakdown, in plain terms.</p>
+  <div class="eff-grid reveal">
+    <div class="eff-card">
+      <div class="eff-hdg">Revenue and allocation</div>
+      <div class="bar-row">
+        <div class="bar-lbls"><span>Mission programs</span><span>$21.6M / 55%</span></div>
+        <div class="bar-track"><div class="bar-fill bteal" data-w="55"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-lbls"><span>Fundraising and admin</span><span>$15.6M / 40%</span></div>
+        <div class="bar-track"><div class="bar-fill bgold" data-w="40"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-lbls"><span>Operating surplus</span><span>$1.9M / 5%</span></div>
+        <div class="bar-track"><div class="bar-fill bgray" data-w="5"></div></div>
+      </div>
+      <div class="eff-rev">
+        <div class="eff-rev-lbl">Total revenue FY24-25</div>
+        <div class="eff-rev-num">$39.2M</div>
+        <div class="eff-rev-delta">+30% vs prior year</div>
+      </div>
+    </div>
+    <div class="eff-stack">
+      <div class="trend-card"><strong>The trend that matters.</strong> In FY23-24, the Foundation ran a <span class="tbad">$5.8M deficit.</span> In FY24-25, it flipped to a <span class="tgood">$4.9M surplus.</span> Fundraising costs fell while revenue grew 30%. Each dollar raised now costs less to raise.</div>
+      <div class="verdict"><strong>CFC verdict:</strong> Based on the FY24-25 financials, the Leukaemia Foundation is financially stable and improving. 55% of revenue reaching the mission directly is reasonable for a national charity of this scale. Worth monitoring whether that ratio improves.</div>
+      <div class="q-card">
+        <div class="q-lbl">Key open question</div>
+        <div class="q-txt">Is growth driven by <em>more participants</em> or <em>larger average donations?</em> The answer determines how sustainable the trajectory really is.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="div"></div>
+
+<div class="section" id="next">
+  <p class="slabel reveal">Coming Up</p>
+  <h2 class="sheading reveal">The campaign is not<br>over yet.</h2>
+  <p class="sintro reveal">World's Greatest Shave is on 20 March, two days from now. Here is what Social Justice has planned for the rest of term and beyond.</p>
+  <div class="next-grid reveal">
+    <div class="ncard ngold">
+      <div class="ndate">20 March 2026 / This Friday</div>
+      <div class="ntitle">World's Greatest Shave</div>
+      <div class="nbody">The shave event itself. Knox 2026 is tracking to close at approximately $140,000, a new record.</div>
+    </div>
+    <div class="ncard">
+      <div class="ndate">Last 2-3 weeks of Term 1</div>
+      <div class="ntitle">Easter Egg and Instant Noodle Drive</div>
+      <div class="nbody">Donations for Wesley Mission and Ku-ring-gai Neighbourhood Centre. Details from Social Justice soon.</div>
+    </div>
+    <div class="ncard">
+      <div class="ndate">5 June 2026 / Term 2</div>
+      <div class="ntitle">World Environment Day</div>
+      <div class="nbody">KEST event. Social Justice's calendar extends well beyond Term 1, with a full year of impact ahead.</div>
+    </div>
+    <div class="ncard">
+      <div class="ndate">14-20 June 2026</div>
+      <div class="ntitle">Refugee Week</div>
+      <div class="nbody">A week of events supporting refugees and asylum seekers. One of Social Justice's major Term 2 initiatives.</div>
+    </div>
+    <div class="ncard">
+      <div class="ndate">4 September 2026</div>
+      <div class="ntitle">Legacy Day</div>
+      <div class="nbody">Honouring the legacy of Australian veterans and their families. Jersey Day on the same date.</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span class="fmark">Capital Finance Club x Social Justice / Knox Grammar 2026</span>
+</footer>
+
+<script>
+const labels=['Feb 7','Feb 10','Feb 13','Feb 16','Feb 19','Feb 22','Feb 25','Feb 28','Mar 3','Mar 6','Mar 9','Mar 13'];
+const ds24=[78,5426,8817,14127,17764,19333,27574,34492,44341,54110,63916,81647];
+const ds25=[60,6000,11500,20000,26000,40208,46000,55000,66000,77490,83000,108000];
+const ds26=[0,100,3253,11124,27304,46773,65000,80804,90956,100000,108000,null];
+
+const chart=new Chart(document.getElementById('mc').getContext('2d'),{
+  type:'line',
+  data:{labels,datasets:[
+    {label:'2024',data:ds24,borderColor:'#6b7280',backgroundColor:'rgba(107,114,128,.04)',borderWidth:1.5,pointRadius:2,pointHoverRadius:5,tension:.4,fill:false},
+    {label:'2025',data:ds25,borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.04)',borderWidth:1.5,pointRadius:2,pointHoverRadius:5,tension:.4,fill:false},
+    {label:'2026',data:ds26,borderColor:'#d4a843',backgroundColor:'rgba(212,168,67,.07)',borderWidth:2.5,pointRadius:3,pointHoverRadius:6,tension:.4,fill:true,spanGaps:false}
+  ]},
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    interaction:{mode:'index',intersect:false},
+    plugins:{
+      legend:{display:false},
+      tooltip:{backgroundColor:'#17171f',borderColor:'rgba(255,255,255,.08)',borderWidth:1,titleColor:'#ece8df',bodyColor:'#787880',padding:12,
+        callbacks:{label:c=>c.parsed.y===null?null:'  '+c.dataset.label+': $'+c.parsed.y.toLocaleString()}}
+    },
+    scales:{
+      x:{ticks:{color:'#787880',font:{size:11,family:'Syne'}},grid:{color:'rgba(255,255,255,.03)'},border:{color:'rgba(255,255,255,.06)'}},
+      y:{ticks:{color:'#787880',font:{size:11,family:'JetBrains Mono'},callback:v=>'$'+(v/1000).toFixed(0)+'k'},grid:{color:'rgba(255,255,255,.03)'},border:{color:'rgba(255,255,255,.06)'}}
+    }
+  }
+});
+
+function tog(idx,btn){
+  const m=chart.getDatasetMeta(idx);m.hidden=!m.hidden;
+  btn.classList.toggle('on',!m.hidden);btn.style.opacity=m.hidden?.3:1;
+  chart.update();
+}
+
+const ro=new IntersectionObserver((entries)=>{
+  entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('vis'),i*80);ro.unobserve(e.target);}});
+},{threshold:.08,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+
+const barObs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll('.bar-fill').forEach(b=>b.style.width=b.dataset.w+'%');barObs.unobserve(e.target);}});
+},{threshold:.25});
+document.querySelectorAll('.eff-grid').forEach(el=>barObs.observe(el));
+
+const cEl=document.getElementById('bigCount');
+new IntersectionObserver((entries)=>{
+  if(entries[0].isIntersecting){
+    const s=Date.now();
+    (function step(){const t=Math.min((Date.now()-s)/1800,1),e=1-Math.pow(1-t,3);cEl.textContent='$'+Math.floor(e*365590).toLocaleString();if(t<1)requestAnimationFrame(step);})();
+  }
+},{threshold:.5}).observe(cEl);
+</script>
+</body>
+</html>

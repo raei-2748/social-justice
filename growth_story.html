@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Knox Growth Story</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #09090d;
+  --bg2: #111118;
+  --bg3: #17171f;
+  --border: rgba(255,255,255,0.07);
+  --gold: #d4a843;
+  --gold2: #f0c866;
+  --blue: #4a9eff;
+  --gray: #6b7280;
+  --text: #ece8df;
+  --muted: #787880;
+  --muted2: #a0a0aa;
+  --teal: #2ccfa0;
+  --c24: #6b7280;
+  --c25: #4a9eff;
+  --c26: #d4a843;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-height:100vh;overflow-x:hidden;}
+
+/* HEADER */
+.header{padding:64px 48px 40px;max-width:1200px;margin:0 auto;}
+.header-tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;color:var(--teal);text-transform:uppercase;margin-bottom:20px;}
+.header-title{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,6vw,80px);font-weight:700;line-height:1.0;margin-bottom:16px;}
+.header-title em{font-style:italic;color:var(--gold);}
+.header-sub{font-size:15px;color:var(--muted2);max-width:580px;line-height:1.7;}
+
+/* MAIN LAYOUT */
+.main{max-width:1200px;margin:0 auto;padding:0 48px 80px;display:grid;grid-template-columns:1fr 340px;gap:40px;align-items:start;}
+
+/* CANVAS SIDE */
+.canvas-side{}
+.year-tabs{display:flex;gap:0;margin-bottom:28px;border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.year-tab{flex:1;padding:12px;text-align:center;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;letter-spacing:.1em;color:var(--muted);background:var(--bg2);transition:all .2s;border:none;}
+.year-tab:hover{color:var(--text);}
+.year-tab.active-2024{background:rgba(107,114,128,.15);color:#9ca3af;}
+.year-tab.active-2025{background:rgba(74,158,255,.12);color:#93c5fd;}
+.year-tab.active-2026{background:rgba(212,168,67,.12);color:var(--gold2);}
+
+.chart-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:32px;}
+.chart-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:20px;}
+.chart-wrap{position:relative;height:260px;}
+.chart-sub{font-size:12px;color:var(--muted);margin-top:12px;text-align:center;font-family:'JetBrains Mono',monospace;}
+
+.dist-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:32px;margin-top:16px;}
+.dist-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:20px;}
+.dist-bars{}
+.dist-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.dist-tier{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);min-width:70px;}
+.dist-track{flex:1;height:6px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden;}
+.dist-fill{height:100%;border-radius:3px;transition:width .8s cubic-bezier(.16,1,.3,1);}
+.dist-count{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted2);min-width:28px;text-align:right;}
+
+/* STATS SIDE */
+.stats-side{}
+.year-heading{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:700;line-height:1;margin-bottom:6px;transition:color .4s;}
+.year-sub{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:32px;}
+
+.stat-stack{display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:20px;}
+.stat-cell{background:var(--bg2);padding:20px 22px;transition:background .2s;}
+.stat-cell:hover{background:var(--bg3);}
+.stat-val{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:700;line-height:1;margin-bottom:4px;transition:color .4s;}
+.stat-lbl{font-size:12px;color:var(--muted);line-height:1.4;}
+.stat-delta{font-family:'JetBrains Mono',monospace;font-size:11px;margin-top:5px;transition:color .4s;}
+
+.insight-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:16px;}
+.insight-heading{font-size:13px;font-weight:600;color:var(--text);margin-bottom:8px;}
+.insight-body{font-size:13px;color:var(--muted2);line-height:1.65;}
+
+.play-btn{width:100%;padding:14px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--text);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;cursor:pointer;letter-spacing:.04em;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.play-btn:hover{border-color:var(--gold);color:var(--gold);}
+.play-btn.playing{border-color:var(--teal);color:var(--teal);}
+
+/* TOOLTIP */
+#tt{position:fixed;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;pointer-events:none;opacity:0;transition:opacity .15s;z-index:100;min-width:130px;}
+.tt-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;}
+.tt-amt{font-family:'JetBrains Mono',monospace;font-size:12px;}
+
+/* PROGRESS */
+.progress-wrap{max-width:1200px;margin:0 auto;padding:0 48px 8px;display:flex;align-items:center;gap:16px;}
+.progress-track{flex:1;height:2px;background:var(--border);border-radius:1px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--gold);border-radius:1px;transition:width .4s;}
+.progress-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.1em;min-width:60px;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <p class="header-tag">Knox Grammar / World's Greatest Shave / Growth Story</p>
+  <h1 class="header-title">How a movement<br><em>compounds.</em></h1>
+  <p class="header-sub">Three years. More participants, higher medians, a wider base. Step through each year and watch the numbers shift in real time.</p>
+</div>
+
+<div class="progress-wrap">
+  <span class="progress-label" id="progLabel">2024</span>
+  <div class="progress-track"><div class="progress-fill" id="progFill" style="width:33%"></div></div>
+  <button class="play-btn" id="playBtn" onclick="togglePlay()" style="width:auto;padding:8px 20px;">Play all</button>
+</div>
+
+<div class="main">
+  <div class="canvas-side">
+    <div class="year-tabs">
+      <button class="year-tab active-2024" id="tab24" onclick="setYear('2024')">2024</button>
+      <button class="year-tab" id="tab25" onclick="setYear('2025')">2025</button>
+      <button class="year-tab" id="tab26" onclick="setYear('2026')">2026</button>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-label">Cumulative donations by date</div>
+      <div class="chart-wrap"><canvas id="lineChart"></canvas></div>
+      <div class="chart-sub" id="chartSub">Showing 2024 campaign trajectory</div>
+    </div>
+
+    <div class="dist-card">
+      <div class="dist-label">Donor distribution by giving tier</div>
+      <div class="dist-bars" id="distBars"></div>
+    </div>
+  </div>
+
+  <div class="stats-side">
+    <div class="year-heading" id="yearHeading" style="color:var(--c24)">2024</div>
+    <div class="year-sub" id="yearSub">Baseline year</div>
+
+    <div class="stat-stack">
+      <div class="stat-cell">
+        <div class="stat-val" id="statTotal" style="color:var(--c24)">$101,678</div>
+        <div class="stat-lbl">Total raised</div>
+        <div class="stat-delta" id="deltaTotal" style="color:var(--muted)">baseline</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-val" id="statPart" style="color:var(--c24)">131</div>
+        <div class="stat-lbl">Participants</div>
+        <div class="stat-delta" id="deltaPart" style="color:var(--muted)">baseline</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-val" id="statMedian" style="color:var(--c24)">$280</div>
+        <div class="stat-lbl">Median donation</div>
+        <div class="stat-delta" id="deltaMedian" style="color:var(--muted)">baseline</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-val" id="statTop10" style="color:var(--c24)">38%</div>
+        <div class="stat-lbl">Top 10 share of total</div>
+        <div class="stat-delta" id="deltaTop10" style="color:var(--muted)">baseline</div>
+      </div>
+    </div>
+
+    <div class="insight-card" id="insightCard">
+      <div class="insight-heading" id="insightHead">The campaign begins to scale.</div>
+      <div class="insight-body" id="insightBody">131 participants come together for the first time at this level. The top 10 fundraisers carry 38% of the total, showing a campaign still driven by a concentrated core.</div>
+    </div>
+
+    <button class="play-btn" id="playBtn2" onclick="togglePlay()">
+      <span id="playIcon">&#9654;</span> <span id="playLabel">Play through all years</span>
+    </button>
+  </div>
+</div>
+
+<div id="tt">
+  <div class="tt-name" id="ttName"></div>
+  <div class="tt-amt" id="ttAmt"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+// DATA
+const DAILY = {
+  labels: ['Feb 7','Feb 10','Feb 13','Feb 16','Feb 19','Feb 22','Feb 25','Feb 28','Mar 3','Mar 6','Mar 9','Mar 13'],
+  '2024': [78,5426,8817,14127,17764,19333,27574,34492,44341,54110,63916,81647],
+  '2025': [60,6000,11500,20000,26000,40208,46000,55000,66000,77490,83000,108000],
+  '2026': [0,100,3253,11124,27304,46773,65000,80804,90956,100000,108000,null]
+};
+
+const DIST = {
+  '2024': { tiers:['under $100','$100-250','$250-500','$500-1k','$1k-2k','$2k-5k','$5k+'], counts:[27,17,25,30,19,10,3], pcts:[21,13,19,23,15,8,2] },
+  '2025': { tiers:['under $100','$100-250','$250-500','$500-1k','$1k-2k','$2k-5k','$5k+'], counts:[24,18,22,35,22,12,3], pcts:[16,12,15,24,15,8,2] },
+  '2026': { tiers:['under $100','$100-250','$250-500','$500-1k','$1k-2k','$2k-5k','$5k+'], counts:[27,24,26,43,29,12,3], pcts:[16,15,16,26,18,7,2] }
+};
+
+const STATS = {
+  '2024': { total:'$101,678', participants:131, median:'$280', avg:'$593', top10:'38%', color:'var(--c24)', colorHex:'#6b7280', heading:'The campaign begins to scale.', body:'131 participants come together for the first time at this level. The top 10 fundraisers carry 38% of the total, showing a campaign still driven by a concentrated core.' },
+  '2025': { total:'$123,912', participants:146, median:'$314', avg:'$630', top10:'33%', color:'var(--c25)', colorHex:'#4a9eff', heading:'The base starts to widen.', body:'15 more participants join. The top 10 share drops from 38% to 33%. The median lifts from $280 to $314. This is not just growth. It is the base strengthening.' },
+  '2026': { total:'~$140,000', participants:164, median:'$529', avg:'$820', top10:'28%', color:'var(--c26)', colorHex:'#d4a843', heading:'A community, fully formed.', body:'The top 10 share falls to 28%. The median nearly doubles to $529. 33 more participants than 2024. The growth is now broad-based. This is what a compounding community looks like.' }
+};
+
+const SUBTITLES = {
+  '2024': 'Showing 2024 campaign trajectory',
+  '2025': 'Showing 2024 vs 2025 trajectories',
+  '2026': 'Showing all three years together'
+};
+
+const COLORS = { '2024':'#6b7280', '2025':'#4a9eff', '2026':'#d4a843' };
+const PROG = { '2024': '33%', '2025': '66%', '2026': '100%' };
+const PROG_LABELS = { '2024': '2024', '2025': '2025', '2026': '2026' };
+
+let currentYear = '2024';
+let playInterval = null;
+let isPlaying = false;
+
+// CHART
+const ctx = document.getElementById('lineChart').getContext('2d');
+const lineChart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: DAILY.labels,
+    datasets: [
+      { label:'2024', data:DAILY['2024'], borderColor:'#6b7280', backgroundColor:'rgba(107,114,128,0.05)', borderWidth:1.5, pointRadius:2, tension:.4, fill:false },
+      { label:'2025', data:DAILY['2025'], borderColor:'#4a9eff', backgroundColor:'rgba(74,158,255,0.05)', borderWidth:1.5, pointRadius:2, tension:.4, fill:false },
+      { label:'2026', data:DAILY['2026'], borderColor:'#d4a843', backgroundColor:'rgba(212,168,67,0.08)', borderWidth:2.5, pointRadius:3, tension:.4, fill:false, spanGaps:false }
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    interaction:{ mode:'index', intersect:false },
+    plugins:{
+      legend:{ display:false },
+      tooltip:{
+        backgroundColor:'#17171f', borderColor:'rgba(255,255,255,.08)', borderWidth:1,
+        titleColor:'#ece8df', bodyColor:'#787880', padding:10,
+        callbacks:{ label: c => c.parsed.y===null?null:'  '+c.dataset.label+': $'+c.parsed.y.toLocaleString() }
+      }
+    },
+    scales:{
+      x:{ ticks:{color:'#787880',font:{size:10,family:'Syne'}}, grid:{color:'rgba(255,255,255,.03)'}, border:{color:'rgba(255,255,255,.05)'} },
+      y:{ ticks:{color:'#787880',font:{size:10,family:'JetBrains Mono'},callback:v=>'$'+(v/1000).toFixed(0)+'k'}, grid:{color:'rgba(255,255,255,.03)'}, border:{color:'rgba(255,255,255,.05)'} }
+    },
+    animation:{ duration:600 }
+  }
+});
+
+function updateChart(yr) {
+  lineChart.data.datasets[0].hidden = false;
+  lineChart.data.datasets[1].hidden = yr === '2024';
+  lineChart.data.datasets[2].hidden = yr !== '2026';
+  lineChart.update();
+  document.getElementById('chartSub').textContent = SUBTITLES[yr];
+}
+
+function buildDistBars(yr) {
+  const d = DIST[yr];
+  const col = COLORS[yr];
+  const container = document.getElementById('distBars');
+  container.innerHTML = '';
+  d.tiers.forEach((tier, i) => {
+    const row = document.createElement('div');
+    row.className = 'dist-row';
+    row.innerHTML = `
+      <span class="dist-tier">${tier}</span>
+      <div class="dist-track"><div class="dist-fill" style="background:${col}; width:0%" data-w="${d.pcts[i]}"></div></div>
+      <span class="dist-count">${d.counts[i]}</span>
+    `;
+    container.appendChild(row);
+  });
+  // Animate bars
+  setTimeout(() => {
+    container.querySelectorAll('.dist-fill').forEach(b => b.style.width = b.dataset.w + '%');
+  }, 60);
+}
+
+function updateStats(yr) {
+  const s = STATS[yr];
+  document.getElementById('yearHeading').textContent = yr;
+  document.getElementById('yearHeading').style.color = s.color;
+  document.getElementById('statTotal').textContent = s.total;
+  document.getElementById('statTotal').style.color = s.color;
+  document.getElementById('statPart').textContent = s.participants;
+  document.getElementById('statPart').style.color = s.color;
+  document.getElementById('statMedian').textContent = s.median;
+  document.getElementById('statMedian').style.color = s.color;
+  document.getElementById('statTop10').textContent = s.top10;
+  document.getElementById('statTop10').style.color = s.color;
+  document.getElementById('insightHead').textContent = s.heading;
+  document.getElementById('insightBody').textContent = s.body;
+
+  // Deltas
+  if (yr === '2024') {
+    ['deltaTotal','deltaPart','deltaMedian','deltaTop10'].forEach(id => {
+      document.getElementById(id).textContent = 'baseline';
+      document.getElementById(id).style.color = 'var(--muted)';
+    });
+    document.getElementById('yearSub').textContent = 'Baseline year';
+  } else if (yr === '2025') {
+    document.getElementById('deltaTotal').textContent = '+22% vs 2024';
+    document.getElementById('deltaPart').textContent = '+15 participants vs 2024';
+    document.getElementById('deltaMedian').textContent = '+12% vs 2024';
+    document.getElementById('deltaTop10').textContent = 'Down from 38%';
+    document.getElementById('yearSub').textContent = 'Second year';
+    ['deltaTotal','deltaPart','deltaMedian','deltaTop10'].forEach(id => {
+      document.getElementById(id).style.color = 'var(--c25)';
+    });
+  } else {
+    document.getElementById('deltaTotal').textContent = '+38% vs 2024';
+    document.getElementById('deltaPart').textContent = '+33 participants vs 2024';
+    document.getElementById('deltaMedian').textContent = '+89% vs 2024';
+    document.getElementById('deltaTop10').textContent = 'Down from 38% to 28%';
+    document.getElementById('yearSub').textContent = 'Third year';
+    ['deltaTotal','deltaPart','deltaMedian','deltaTop10'].forEach(id => {
+      document.getElementById(id).style.color = 'var(--c26)';
+    });
+  }
+}
+
+function updateTabs(yr) {
+  ['2024','2025','2026'].forEach(y => {
+    const tab = document.getElementById('tab'+y.slice(2));
+    tab.className = 'year-tab';
+    if (y === yr) tab.classList.add('active-'+y);
+  });
+}
+
+function updateProgress(yr) {
+  document.getElementById('progFill').style.width = PROG[yr];
+  document.getElementById('progLabel').textContent = PROG_LABELS[yr];
+}
+
+function setYear(yr) {
+  currentYear = yr;
+  updateChart(yr);
+  buildDistBars(yr);
+  updateStats(yr);
+  updateTabs(yr);
+  updateProgress(yr);
+}
+
+function togglePlay() {
+  if (isPlaying) {
+    stopPlay();
+  } else {
+    startPlay();
+  }
+}
+
+function startPlay() {
+  isPlaying = true;
+  const btns = [document.getElementById('playBtn'), document.getElementById('playBtn2')];
+  btns.forEach(b => b.classList.add('playing'));
+  document.getElementById('playLabel').textContent = 'Pause';
+  document.getElementById('playIcon').textContent = '\u23F8';
+
+  setYear('2024');
+  let idx = 0;
+  const years = ['2024','2025','2026'];
+  playInterval = setInterval(() => {
+    idx++;
+    if (idx >= years.length) { stopPlay(); return; }
+    setYear(years[idx]);
+  }, 2400);
+}
+
+function stopPlay() {
+  isPlaying = false;
+  clearInterval(playInterval);
+  const btns = [document.getElementById('playBtn'), document.getElementById('playBtn2')];
+  btns.forEach(b => b.classList.remove('playing'));
+  document.getElementById('playLabel').textContent = 'Play through all years';
+  document.getElementById('playIcon').innerHTML = '&#9654;';
+}
+
+// Init
+setYear('2024');
+</script>
+</body>
+</html>
