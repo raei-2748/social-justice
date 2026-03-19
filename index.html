@@ -1606,7 +1606,7 @@ footer{border-top:1px solid var(--border);padding:48px 72px;display:flex;align-i
         That family from Dubbo. The one who relocated.
         <strong>Follow their dollar.</strong>
       </p>
-      <div class="hook-number">$<span id="hookAmt">140,000</span></div>
+      <div class="hook-number">$<span id="hookAmt">149,348</span></div>
       <p class="hook-body">
         That is what Knox Grammar raised in 2026. Not an abstract total. Not a line on a spreadsheet.
         A number that resolves into real people receiving real care. This page follows every dollar.
@@ -1940,10 +1940,10 @@ footer{border-top:1px solid var(--border);padding:48px 72px;display:flex;align-i
 
 <script>
 
-const labels=['Feb 7','Feb 10','Feb 13','Feb 16','Feb 19','Feb 22','Feb 25','Feb 28','Mar 3','Mar 6','Mar 9','Mar 13'];
-const ds24=[78,5426,8817,14127,17764,19333,27574,34492,44341,54110,63916,81647];
-const ds25=[60,6000,11500,20000,26000,40208,46000,55000,66000,77490,83000,108000];
-const ds26=[0,100,3253,11124,27304,46773,65000,80804,90956,100000,108000,null];
+const labels=['Feb 7','Feb 10','Feb 13','Feb 16','Feb 19','Feb 22','Feb 25','Feb 28','Mar 3','Mar 6','Mar 9','Mar 13','Mar 20'];
+const ds24=[78,5426,8817,14127,17764,19333,27574,34492,44341,54110,63916,81647,81647];
+const ds25=[60,6000,11500,20000,26000,40208,46000,55000,66000,77490,83000,108000,108000];
+const ds26=[0,100,3253,11124,27304,46773,65000,80804,90956,100000,108000,132000,149348];
 
 const chart=new Chart(document.getElementById('mc').getContext('2d'),{
   type:'line',
@@ -2050,10 +2050,10 @@ new IntersectionObserver((entries)=>{
 
 // DATA
 const DAILY = {
-  labels: ['Feb 7','Feb 10','Feb 13','Feb 16','Feb 19','Feb 22','Feb 25','Feb 28','Mar 3','Mar 6','Mar 9','Mar 13'],
-  '2024': [78,5426,8817,14127,17764,19333,27574,34492,44341,54110,63916,81647],
-  '2025': [60,6000,11500,20000,26000,40208,46000,55000,66000,77490,83000,108000],
-  '2026': [0,100,3253,11124,27304,46773,65000,80804,90956,100000,108000,null]
+  labels: ['Feb 7','Feb 10','Feb 13','Feb 16','Feb 19','Feb 22','Feb 25','Feb 28','Mar 3','Mar 6','Mar 9','Mar 13','Mar 20'],
+  '2024': [78,5426,8817,14127,17764,19333,27574,34492,44341,54110,63916,81647,81647],
+  '2025': [60,6000,11500,20000,26000,40208,46000,55000,66000,77490,83000,108000,108000],
+  '2026': [0,100,3253,11124,27304,46773,65000,80804,90956,100000,108000,132000,149348]
 };
 
 const DIST = {
@@ -2065,7 +2065,7 @@ const DIST = {
 const STATS = {
   '2024': { total:'$101,678', participants:131, median:'$280', avg:'$593', top10:'38%', color:'var(--c24)', colorHex:'#64748b', heading:'The campaign begins to scale.', body:'131 participants come together for the first time at this level. The top 10 fundraisers carry 38% of the total, showing a campaign still driven by a concentrated core.' },
   '2025': { total:'$123,912', participants:146, median:'$314', avg:'$630', top10:'33%', color:'var(--c25)', colorHex:'#3b5bdb', heading:'The base starts to widen.', body:'15 more participants join. The top 10 share drops from 38% to 33%. The median lifts from $280 to $314. This is not just growth. It is the base strengthening.' },
-  '2026': { total:'~$140,000', participants:164, median:'$529', avg:'$820', top10:'28%', color:'var(--c26)', colorHex:'#748ffc', heading:'A community, fully formed.', body:'The top 10 share falls to 28%. The median nearly doubles to $529. 33 more participants than 2024. The growth is now broad-based. This is what a compounding community looks like.' }
+  '2026': { total:'$149,348', participants:164, median:'$529', avg:'$820', top10:'28%', color:'var(--c26)', colorHex:'#748ffc', heading:'A community, fully formed.', body:'The top 10 share falls to 28%. The median nearly doubles to $529. 33 more participants than 2024. The growth is now broad-based. This is what a compounding community looks like.' }
 };
 
 const SUBTITLES = {
