@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Follow The Dollar - Knox Grammar WGS 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=JetBrains+Mono:wght@400;700&family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0f1e;
+            --bg-secondary: #0d1526;
+            --knox-blue: #003DA5;
+            --electric-blue: #4a9eff;
+            --blue-white: #cce6ff;
+            --text-white: #f0ede6;
+            --text-muted: #6b7a9a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-white);
+            font-family: 'Syne', sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .header {
+            padding: 32px 40px;
+            flex-shrink: 0;
+            z-index: 10;
+        }
+
+        .top-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            text-transform: uppercase;
+            color: var(--knox-blue);
+            letter-spacing: 0.15em;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 20px;
+            color: var(--text-muted);
+        }
+
+        .canvas-container {
+            flex: 1;
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .bottom-strip {
+            flex-shrink: 0;
+            display: flex;
+            padding: 0 40px 40px 40px;
+            gap: 24px;
+            z-index: 10;
+        }
+
+        .card {
+            background-color: var(--bg-secondary);
+            padding: 24px 28px;
+            border-radius: 8px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .card-patient { border-top: 3px solid var(--knox-blue); }
+        .card-research { border-top: 3px solid var(--electric-blue); }
+        .card-uwa { border-top: 3px solid var(--blue-white); }
+
+        .card-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--text-white);
+            margin-bottom: 4px;
+        }
+
+        .card-percentage {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .card-patient .card-percentage { color: var(--knox-blue); }
+        .card-research .card-percentage { color: var(--electric-blue); }
+        .card-uwa .card-percentage { color: var(--blue-white); }
+
+        .card-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="top-label">Follow the Dollar / Knox Grammar 2026</div>
+        <div class="subtitle">Watching $140,000 flow to its destination in real time</div>
+    </div>
+
+    <div class="canvas-container" id="canvasContainer">
+        <canvas id="flowCanvas"></canvas>
+    </div>
+
+    <div class="bottom-strip">
+        <div class="card card-patient">
+            <div class="card-title">Patient Support</div>
+            <div class="card-percentage">$13.5M / 62.4%</div>
+            <div class="card-desc">39,800 service instances. 6,881 people. Accommodation, counselling, transport.</div>
+        </div>
+        <div class="card card-research">
+            <div class="card-title">Research Grants</div>
+            <div class="card-percentage">$4.36M / 20.2%</div>
+            <div class="card-desc">$4.36M in grants. 135,000 Australians with blood cancer. Funding the science.</div>
+        </div>
+        <div class="card card-uwa">
+            <div class="card-title">UWA Endowed Chair</div>
+            <div class="card-percentage">$3M / 13.9%</div>
+            <div class="card-desc">$3M matched by UWA. Permanent research position. Building future capacity.</div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('flowCanvas');
+        const ctx = canvas.getContext('2d');
+        const container = document.getElementById('canvasContainer');
+
+        let dpr = window.devicePixelRatio || 1;
+        let width, height;
+
+        const nodes = {
+            knox: { x: 0, y: 0, r: 80, color: '#003DA5', label: 'Knox', stat: '$140,000' },
+            foundation: { x: 0, y: 0, r: 60, color: '#4a9eff', label: 'Leukaemia\nFoundation' },
+            dests: [
+                { id: 0, type: 'patient', x: 0, y: 0, r: 35, color: '#003DA5', label: 'Patient Support', stat: '$13.5M / 62.4%', count: 0, pulse: 1, targetSplit: 0.624 },
+                { id: 1, type: 'research', x: 0, y: 0, r: 35, color: '#4a9eff', label: 'Research Grants', stat: '$4.36M / 20.2%', count: 0, pulse: 1, targetSplit: 0.202 },
+                { id: 2, type: 'uwa', x: 0, y: 0, r: 35, color: '#cce6ff', label: 'UWA Endowed Chair', stat: '$3M / 13.9%', count: 0, pulse: 1, targetSplit: 0.139 }
+            ]
+        };
+
+        let paths = { phase1: [], phase2: [[], [], []] };
+        let particles = [];
+        let explosions = [];
+
+        function resize() {
+            const rect = container.getBoundingClientRect();
+            width = rect.width;
+            height = rect.height;
+            
+            canvas.width = width * dpr;
+            canvas.height = height * dpr;
+            canvas.style.width = width + 'px';
+            canvas.style.height = height + 'px';
+            
+            ctx.scale(dpr, dpr);
+            
+            recalculateNodes();
+            recalculatePaths();
+        }
+
+        function recalculateNodes() {
+            nodes.knox.x = width * 0.18;
+            nodes.knox.y = height * 0.5;
+            
+            nodes.foundation.x = width * 0.5;
+            nodes.foundation.y = height * 0.5;
+            
+            const destX = width * 0.82;
+            const destSpacing = height * 0.3;
+            const startY = height * 0.5 - destSpacing;
+            
+            nodes.dests[0].x = destX;
+            nodes.dests[0].y = startY;
+            nodes.dests[1].x = destX;
+            nodes.dests[1].y = startY + destSpacing;
+            nodes.dests[2].x = destX;
+            nodes.dests[2].y = startY + destSpacing * 2;
+        }
+
+        function buildBezierLUT(x1, y1, x2, y2, isOutward) {
+            const cx1 = x1 + (x2 - x1) * 0.4;
+            const cy1 = y1;
+            const cx2 = x1 + (x2 - x1) * 0.6;
+            const cy2 = y2;
+            
+            const pts = [];
+            const stepSize = 2; // px per frame
+            
+            const getPt = (t) => {
+                const x = (1-t)**3 * x1 + 3*(1-t)**2*t*cx1 + 3*(1-t)*t**2*cx2 + t**3 * x2;
+                const y = (1-t)**3 * y1 + 3*(1-t)**2*t*cy1 + 3*(1-t)*t**2*cy2 + t**3 * y2;
+                return {x, y};
+            };
+
+            let t = 0;
+            pts.push(getPt(t));
+            
+            while(t < 1.0) {
+                let current = pts[pts.length - 1];
+                let nextT = t;
+                let nextPt = current;
+                let distTraveled = 0;
+                let sanity = 0;
+                
+                while(distTraveled < stepSize && nextT < 1.0 && sanity < 1000) {
+                    nextT += 0.001;
+                    nextPt = getPt(nextT);
+                    distTraveled = Math.hypot(nextPt.x - current.x, nextPt.y - current.y);
+                    sanity++;
+                }
+                t = nextT;
+                if(t <= 1) pts.push(nextPt);
+            }
+            pts.push(getPt(1));
+            return pts;
+        }
+
+        function recalculatePaths() {
+            paths.phase1 = buildBezierLUT(
+                nodes.knox.x + nodes.knox.r, nodes.knox.y,
+                nodes.foundation.x - nodes.foundation.r, nodes.foundation.y
+            );
+            
+            for(let i=0; i<3; i++) {
+                paths.phase2[i] = buildBezierLUT(
+                    nodes.foundation.x + nodes.foundation.r, nodes.foundation.y,
+                    nodes.dests[i].x - nodes.dests[i].r, nodes.dests[i].y
+                );
+            }
+        }
+
+        function hexToRgb(hex) {
+            let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : null;
+        }
+
+        const rgbaKnox = hexToRgb('#003DA5');
+        const bgPrimaryRgb = hexToRgb('#0a0f1e');
+
+        class Particle {
+            constructor() {
+                this.idx1 = 0;
+                this.idx2 = -1;
+                
+                let r = Math.random();
+                if(r < nodes.dests[0].targetSplit) this.destIdx = 0;
+                else if(r < nodes.dests[0].targetSplit + nodes.dests[1].targetSplit) this.destIdx = 1;
+                else this.destIdx = 2;
+                
+                this.destRgb = hexToRgb(nodes.dests[this.destIdx].color);
+                this.history = [];
+                this.active = true;
+            }
+            
+            update() {
+                if(!this.active) {
+                    if(this.history.length > 0) this.history.pop();
+                    return;
+                }
+                
+                let currentPoint;
+                if(this.idx1 < paths.phase1.length) {
+                    currentPoint = paths.phase1[this.idx1];
+                    this.idx1++;
+                } else {
+                    if(this.idx2 === -1) this.idx2 = 0;
+                    
+                    if(this.idx2 < paths.phase2[this.destIdx].length) {
+                        currentPoint = paths.phase2[this.destIdx][this.idx2];
+                        this.idx2++;
+                    } else {
+                        this.active = false;
+                        triggerExplosion(currentPoint, this.destIdx, this.destRgb);
+                        return; // do not unshift undefined point
+                    }
+                }
+                
+                this.history.unshift(currentPoint);
+                if(this.history.length > 8) this.history.pop();
+            }
+            
+            draw() {
+                if(this.history.length === 0) return;
+                
+                for(let i=0; i<this.history.length; i++) {
+                    let pt = this.history[i];
+                    let t = 1 - (i / 8); 
+                    
+                    ctx.beginPath();
+                    ctx.arc(pt.x, pt.y, 3, 0, Math.PI*2);
+                    
+                    let rgb = (this.idx2 === -1) ? rgbaKnox : this.destRgb;
+                    ctx.fillStyle = `rgba(${rgb}, ${t * 0.9})`;
+                    ctx.fill();
+                }
+            }
+        }
+
+        function triggerExplosion(pt, destIdx, rgbStr) {
+            nodes.dests[destIdx].count++;
+            
+            if(nodes.dests[destIdx].pulse < 1.05) {
+                nodes.dests[destIdx].pulse += 0.03;
+            }
+            
+            for(let i=0; i<6; i++) {
+                let angle = (i/6) * Math.PI*2 + Math.random()*0.5;
+                let speed = 1.0 + Math.random()*2.0;
+                explosions.push({
+                    x: pt.x, y: pt.y,
+                    vx: Math.cos(angle)*speed,
+                    vy: Math.sin(angle)*speed,
+                    life: 1.0,
+                    rgb: rgbStr
+                });
+            }
+        }
+
+        function drawBackgroundPaths() {
+            ctx.setLineDash([8, 8]);
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = `rgba(${rgbaKnox}, 0.15)`;
+            
+            if(paths.phase1.length > 0) {
+                ctx.beginPath();
+                ctx.moveTo(paths.phase1[0].x, paths.phase1[0].y);
+                for(let pt of paths.phase1) ctx.lineTo(pt.x, pt.y);
+                ctx.stroke();
+            }
+            
+            for(let i=0; i<3; i++) {
+                let p2 = paths.phase2[i];
+                if(p2.length > 0) {
+                    ctx.beginPath();
+                    ctx.moveTo(p2[0].x, p2[0].y);
+                    for(let pt of p2) ctx.lineTo(pt.x, pt.y);
+                    ctx.stroke();
+                }
+            }
+            ctx.setLineDash([]);
+        }
+
+        function drawKnoxNode() {
+            let n = nodes.knox;
+            ctx.beginPath();
+            ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
+            ctx.fillStyle = n.color;
+            ctx.fill();
+            
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#f0ede6';
+            ctx.font = '30px "Cormorant Garamond"';
+            ctx.fillText("Knox", n.x, n.y - 8);
+            ctx.font = '22px "Cormorant Garamond"';
+            ctx.fillText("$140,000", n.x, n.y + 22);
+        }
+
+        function drawFoundationNode() {
+            let n = nodes.foundation;
+            ctx.beginPath();
+            ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
+            ctx.strokeStyle = n.color;
+            ctx.lineWidth = 4;
+            ctx.stroke();
+            
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#f0ede6';
+            ctx.font = '18px "Cormorant Garamond"';
+            ctx.fillText("Leukaemia", n.x, n.y - 6);
+            ctx.fillText("Foundation", n.x, n.y + 16);
+        }
+
+        function drawDestNodes() {
+            for(let n of nodes.dests) {
+                n.pulse += (1.0 - n.pulse) * 0.1;
+                
+                ctx.save();
+                ctx.translate(n.x, n.y);
+                ctx.scale(n.pulse, n.pulse);
+                
+                ctx.beginPath();
+                ctx.arc(0, 0, n.r, 0, Math.PI*2);
+                ctx.strokeStyle = n.color;
+                ctx.lineWidth = 3;
+                ctx.fillStyle = `rgba(${hexToRgb(n.color)}, 0.1)`;
+                ctx.fill();
+                ctx.stroke();
+                
+                ctx.restore();
+                
+                ctx.textAlign = 'left';
+                ctx.fillStyle = '#f0ede6';
+                ctx.font = '700 20px "Cormorant Garamond"';
+                ctx.fillText(n.label, n.x + n.r + 20, n.y - 8);
+                
+                ctx.fillStyle = n.color;
+                ctx.font = '14px "JetBrains Mono"';
+                ctx.fillText(n.stat, n.x + n.r + 20, n.y + 16);
+                
+                ctx.textAlign = 'center';
+                ctx.fillStyle = n.color;
+                ctx.font = '12px "JetBrains Mono"';
+                ctx.fillText(`${n.count} particles`, n.x, n.y + n.r + 20);
+            }
+        }
+
+        function frame() {
+            ctx.clearRect(0, 0, width, height);
+            
+            drawBackgroundPaths();
+            
+            for(let i=0; i<3; i++) {
+                particles.push(new Particle());
+            }
+            
+            for(let i=particles.length-1; i>=0; i--) {
+                let p = particles[i];
+                p.update();
+                p.draw();
+                if(!p.active && p.history.length === 0) {
+                    particles.splice(i, 1);
+                }
+            }
+            
+            for(let i=explosions.length-1; i>=0; i--) {
+                let e = explosions[i];
+                e.x += e.vx; e.y += e.vy;
+                e.life -= 0.04;
+                if(e.life <= 0) explosions.splice(i, 1);
+                else {
+                    ctx.beginPath();
+                    ctx.arc(e.x, e.y, 1.5, 0, Math.PI*2);
+                    ctx.fillStyle = `rgba(${e.rgb}, ${e.life})`;
+                    ctx.fill();
+                }
+            }
+            
+            drawKnoxNode();
+            drawFoundationNode();
+            drawDestNodes();
+            
+            requestAnimationFrame(frame);
+        }
+
+        window.addEventListener('resize', resize);
+        
+        document.fonts.ready.then(() => {
+            resize();
+            requestAnimationFrame(frame);
+        });
+    </script>
+</body>
+</html>
