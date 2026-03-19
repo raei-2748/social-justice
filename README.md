@@ -1,1 +1,1 @@
-# social-justice
+# Knox Social Justice
