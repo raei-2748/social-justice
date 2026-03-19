@@ -126,13 +126,54 @@ nav{
 .chart-wrap{position:relative;height:300px;}
 
 /* INSIGHTS */
-.ins-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
-.ins-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:30px;transition:border-color .25s,transform .25s;}
+.ins-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:20px;}
+.ins-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:16px;
+  padding:32px;transition:border-color .25s,transform .25s;
+  display:flex;flex-direction:column;
+}
 .ins-card:hover{border-color:rgba(212,168,67,.25);transform:translateY(-2px);}
-.ins-idx{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px;}
-.ins-body{font-size:15px;line-height:1.7;color:var(--text);}
-.ins-body strong{color:var(--gold2);font-weight:600;}
-.ins-pill{display:inline-block;margin-top:16px;padding:3px 12px;background:rgba(44,207,160,.08);border:1px solid rgba(44,207,160,.18);border-radius:20px;font-size:10px;font-weight:600;letter-spacing:.07em;color:var(--teal);text-transform:uppercase;}
+.ins-idx{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px;}
+.ins-body{font-size:15px;line-height:1.7;color:var(--text);flex:1;}
+
+.ins-pill{
+  display:inline-block;margin-top:20px;padding:4px 14px;
+  border:1px solid transparent;border-radius:24px;
+  font-size:10px;font-weight:600;letter-spacing:.08em;
+  color:var(--teal);text-transform:uppercase;width:fit-content;
+}
+
+/* Card Specific Layouts */
+@media (min-width: 1024px) {
+  .ins-card:nth-child(1) { grid-row: span 2; }
+  .ins-card:nth-child(4) { grid-column: span 2; }
+}
+
+/* Card Colors - Light/Dark adaptive */
+.ins-blue { border-top: 3px solid var(--blue); }
+.ins-blue .ins-idx { color: var(--blue); }
+.ins-blue .ins-pill { color: var(--blue); background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.2); }
+.ins-blue strong { color: var(--blue2); opacity: 0.9; }
+
+.ins-green { border-top: 3px solid var(--teal); }
+.ins-green .ins-idx { color: var(--teal); }
+.ins-green .ins-pill { color: var(--teal); background: rgba(44,207,160,0.1); border-color: rgba(44,207,160,0.2); }
+.ins-green strong { color: var(--teal); opacity: 0.9; }
+
+.ins-teal { border-top: 3px solid #06b6d4; }
+.ins-teal .ins-idx { color: #06b6d4; }
+.ins-teal .ins-pill { color: #06b6d4; background: rgba(6,182,212,0.1); border-color: rgba(6,182,212,0.2); }
+.ins-teal strong { color: #22d3ee; opacity: 0.9; }
+
+.ins-red { border-top: 3px solid var(--red); }
+.ins-red .ins-idx { color: var(--red); }
+.ins-red .ins-pill { color: var(--red); background: rgba(239,68,68,0.1); border-color: rgba(239, 68, 68, 0.2); }
+.ins-red strong { color: var(--red); opacity: 0.9; }
+
+[data-theme="light"] .ins-blue strong { color: var(--blue); }
+[data-theme="light"] .ins-green strong { color: var(--teal2); }
+[data-theme="light"] .ins-teal strong { color: #0891b2; }
+[data-theme="light"] .ins-red strong { color: var(--red); }
 
 /* TEKWORO */
 .tk-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;}
@@ -306,22 +347,22 @@ footer{border-top:1px solid var(--border);padding:36px 48px;display:flex;align-i
   <h2 class="sheading reveal">What is driving<br>the growth?</h2>
   <p class="sintro reveal">CFC members were asked to analyse the trend before this presentation. No prompting, no format, just real analysis from Knox students.</p>
   <div class="ins-grid">
-    <div class="ins-card reveal">
+    <div class="ins-card ins-blue reveal">
       <div class="ins-idx">Insight 01</div>
       <div class="ins-body">The fundraising trajectory has taken a <strong>structural upward shift</strong> rather than a cyclical pattern. This signals improved participation elasticity and stronger early-stage engagement each year.</div>
       <span class="ins-pill">Structural shift</span>
     </div>
-    <div class="ins-card reveal">
+    <div class="ins-card ins-green reveal">
       <div class="ins-idx">Insight 02</div>
       <div class="ins-body">A <strong>compounding awareness effect</strong> is occurring. As cohorts progress through Knox, their exposure accumulates, leading to lower resistance and higher conversion rates over time.</div>
       <span class="ins-pill">Network effects</span>
     </div>
-    <div class="ins-card reveal">
+    <div class="ins-card ins-teal reveal">
       <div class="ins-idx">Insight 03</div>
       <div class="ins-body">Senior students create a <strong>network multiplier effect,</strong> making participation visible and normalising donation behaviour for younger year groups who look up to them.</div>
       <span class="ins-pill">Peer effects</span>
     </div>
-    <div class="ins-card reveal">
+    <div class="ins-card ins-red reveal">
       <div class="ins-idx">Insight 04</div>
       <div class="ins-body">To strengthen future campaigns, measure <strong>KPIs by year level:</strong> participation rate, donor retention rate, and average donation per participant. Total dollar growth can mask a shrinking donor base.</div>
       <span class="ins-pill">Recommendation</span>

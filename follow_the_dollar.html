@@ -203,14 +203,14 @@ body { overflow-x: hidden; }
 .narrative { padding: 0; overflow-x: hidden; min-width: 0; }
 
 /* Beat content stays within column on all widths */
-.beat-title  { max-width: min(900px, 100%); margin-inline: auto; text-align: center; }
-.beat-body   { max-width: min(800px, 100%); margin-inline: auto; text-align: center; }
-.hook-statement { max-width: min(1000px, 100%); margin-inline: auto; text-align: center; }
-.hook-body   { max-width: min(800px, 100%); margin-inline: auto; text-align: center; }
+.beat-title  { max-width: min(1000px, 100%); margin-inline: auto; text-align: center; }
+.beat-body   { max-width: min(850px, 100%); margin-inline: auto; text-align: center; }
+.hook-statement { max-width: min(1100px, 100%); margin-inline: auto; text-align: center; }
+.hook-body   { max-width: min(850px, 100%); margin-inline: auto; text-align: center; }
 .mission-breakdown,
 .dollar-split,
 .scale-grid,
-.output-desc { max-width: 900px; margin-inline: auto; }
+.output-desc { max-width: 1000px; margin-inline: auto; }
 
 /* BEAT 1: HOOK */
 .beat-hook {
@@ -385,7 +385,9 @@ body { overflow-x: hidden; }
   overflow: hidden;
 }
 .split-labels {
-  display: flex; gap: 24px;
+  display: flex; gap: 32px;
+  justify-content: center;
+  margin-top: 16px;
 }
 .split-lbl {
   display: flex; align-items: center; gap: 8px;
@@ -400,28 +402,36 @@ body { overflow-x: hidden; }
 .mission-breakdown {
   background: var(--bg2);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 28px 32px;
-  margin-bottom: 32px;
+  border-radius: 16px;
+  padding: 48px;
+  margin-bottom: 48px;
+  width: 100%;
+  max-width: 800px;
+  margin-inline: auto;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
 }
 .breakdown-row {
-  display: flex; align-items: center;
-  justify-content: space-between;
-  padding: 12px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 24px 0;
   border-bottom: 1px solid var(--border);
+  gap: 12px;
 }
 .breakdown-row:last-child { border-bottom: none; }
 .br-label { font-size: 14px; color: var(--ink2); }
 .br-val {
   font-family: 'Playfair Display', serif;
-  font-size: 20px; font-weight: 700;
+  font-size: 32px; font-weight: 700;
   color: var(--teal);
+  line-height: 1;
 }
 .br-pct {
   font-family: 'DM Mono', monospace;
   font-size: 11px; color: var(--ink3);
-  margin-top: 2px;
-  text-align: right;
+  margin-top: 4px;
+  text-align: center;
 }
 
 /* BEAT 3: HUMAN GRID */
@@ -435,30 +445,39 @@ body { overflow-x: hidden; }
 .grid-intro { margin-bottom: 48px; text-align: center; width: 100%; max-width: 900px; }
 .output-section { margin-bottom: 56px; width: 100%; max-width: 900px; }
 .output-heading {
-  display: flex; align-items: baseline;
-  justify-content: space-between;
-  margin-bottom: 8px;
+  display: flex; flex-direction: column; align-items: center;
+  margin-bottom: 24px;
+  text-align: center;
 }
 .output-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 22px; font-weight: 700;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  order: 2;
 }
 .output-count {
-  font-family: 'DM Mono', monospace;
-  font-size: 32px; font-weight: 500;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(48px, 6vw, 72px);
+  font-weight: 500;
   color: var(--gold);
+  line-height: 1;
+  margin-bottom: 8px;
+  order: 1;
 }
 .output-desc {
   font-size: 13px; color: var(--ink3);
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   line-height: 1.6;
-  max-width: 800px;
+  max-width: 600px;
   margin-inline: auto;
+  text-align: center;
 }
 .icon-grid {
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
+  justify-content: center;
   max-height: 180px;
   overflow: hidden;
   position: relative;
@@ -532,14 +551,21 @@ body { overflow-x: hidden; }
   grid-template-columns: 1fr 1fr;
   gap: 1px;
   background: var(--border);
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
-  margin-top: 40px;
+  margin-top: 48px;
+  width: 100%;
+  max-width: 1000px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
 }
 .scale-cell {
   background: var(--bg);
-  padding: 32px 28px;
+  padding: 48px 32px;
   transition: background 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 .scale-cell:hover { background: var(--bg3); }
 .scale-num {
@@ -758,7 +784,7 @@ nav{
             <div class="br-label">Patient support, accommodation and counselling</div>
             <div style="font-size:12px;color:var(--ink3);margin-top:2px;">39,800 service instances delivered to 6,881 people</div>
           </div>
-          <div style="text-align:right">
+          <div>
             <div class="br-val">$13.5M</div>
             <div class="br-pct">62.4% of mission spend</div>
           </div>
@@ -768,7 +794,7 @@ nav{
             <div class="br-label">Research grants and advocacy</div>
             <div style="font-size:12px;color:var(--ink3);margin-top:2px;">Funding scientific breakthroughs for 135,000 Australians with blood cancer</div>
           </div>
-          <div style="text-align:right">
+          <div>
             <div class="br-val">$4.36M</div>
             <div class="br-pct">20.2% of mission spend</div>
           </div>
@@ -778,14 +804,14 @@ nav{
             <div class="br-label">UWA Endowed Chair in Blood Cancer Research</div>
             <div style="font-size:12px;color:var(--ink3);margin-top:2px;">Permanent research position, $3M matched by UWA</div>
           </div>
-          <div style="text-align:right">
+          <div>
             <div class="br-val">$3M</div>
             <div class="br-pct">13.9% of mission spend</div>
           </div>
         </div>
         <div class="breakdown-row" style="background:rgba(181,131,26,0.06);border-radius:6px;padding:14px 12px;margin-top:8px;border:none;">
           <div class="br-label" style="font-weight:600;color:var(--ink)">Total mission expenditure FY25</div>
-          <div style="text-align:right">
+          <div>
             <div class="br-val" style="font-size:26px;">$21.6M</div>
             <div class="br-pct">Audited. Source: Leukaemia Foundation FY25 Accounts</div>
           </div>
@@ -808,8 +834,8 @@ nav{
       <!-- SERVICE INSTANCES -->
       <div class="output-section reveal">
         <div class="output-heading">
-          <div class="output-title">Service instances funded</div>
           <div class="output-count" id="countInstances">413</div>
+          <div class="output-title">Service instances funded</div>
         </div>
         <p class="output-desc">
           At $339 per service instance (FY25 audited: $13.5M across 39,800 instances),
@@ -823,8 +849,8 @@ nav{
       <!-- ACCOMMODATION NIGHTS -->
       <div class="output-section reveal">
         <div class="output-heading">
-          <div class="output-title">Nights of accommodation</div>
           <div class="output-count" id="countNights">389</div>
+          <div class="output-title">Nights of accommodation</div>
         </div>
         <p class="output-desc">
           At $360 per night (derived from $13.5M patient support across 39,800 service instances,
@@ -838,8 +864,8 @@ nav{
       <!-- FINANCIAL ASSISTANCE -->
       <div class="output-section reveal">
         <div class="output-heading">
-          <div class="output-title">Financial assistance awards</div>
           <div class="output-count" id="countAwards">215</div>
+          <div class="output-title">Financial assistance awards</div>
         </div>
         <p class="output-desc">
           In FY24, 866 individuals received financial assistance covering pharmaceuticals
