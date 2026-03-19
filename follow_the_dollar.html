@@ -7,20 +7,43 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #f5f2ec;
-  --bg2: #ede9e0;
-  --bg3: #e4dfd4;
-  --ink: #1a1814;
-  --ink2: #3d3a33;
-  --ink3: #7a7268;
-  --gold: #b5831a;
-  --gold2: #d4a843;
-  --gold-light: #f0e4c0;
-  --red: #c0392b;
-  --teal: #1a7a62;
-  --teal-light: #d4ede7;
-  --border: rgba(26,24,20,0.1);
-  --border2: rgba(26,24,20,0.18);
+  --bg:      #000000;
+  --bg2:     #08080a;
+  --bg3:     #101014;
+  --border:  rgba(255,255,255,0.06);
+  --border2: rgba(255,255,255,0.1);
+  --blue:    #3b82f6;
+  --blue2:   #60a5fa;
+  --blue-deep:#1d4ed8;
+  --text:    #f8fafc;
+  --muted:   #94a3b8;
+  --muted2:  #64748b;
+  --red:     #ef4444;
+  --gold:    #d4a843;
+  --gold2:   #f0c866;
+  --gold-light: rgba(212,168,67,0.15);
+  --teal:    #2ccfa0;
+  --teal-light: rgba(44,207,160,0.1);
+  --ink: var(--text);
+  --ink2: var(--muted);
+  --ink3: var(--muted2);
+}
+
+:root[data-theme="light"] {
+  --bg:      #ffffff;
+  --bg2:     #f8fafc;
+  --bg3:     #f1f5f9;
+  --border:  rgba(0,0,0,0.08);
+  --border2: rgba(0,0,0,0.12);
+  --blue:    #2563eb;
+  --blue2:   #3b82f6;
+  --blue-deep:#1e40af;
+  --text:    #0f172a;
+  --muted:   #475569;
+  --muted2:  #1e293b;
+  --red:     #dc2626;
+  --gold-light: rgba(212,168,67,0.1);
+  --teal-light: rgba(44,207,160,0.08);
 }
 
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
@@ -94,6 +117,7 @@ body {
 .slider-wrap { margin-bottom: 32px; }
 #amtSlider {
   -webkit-appearance: none;
+  appearance: none;
   width: 100%;
   height: 3px;
   background: rgba(255,255,255,0.15);
@@ -104,6 +128,7 @@ body {
 }
 #amtSlider::-webkit-slider-thumb {
   -webkit-appearance: none;
+  appearance: none;
   width: 18px; height: 18px;
   border-radius: 50%;
   background: var(--gold2);
@@ -527,9 +552,57 @@ body {
   transition: opacity 0.65s ease, transform 0.65s ease;
 }
 .reveal.vis { opacity:1; transform:none; }
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  padding:18px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(0,0,0,0.8);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  color: #fff;
+}
+[data-theme="light"] nav { background:rgba(255,255,255,0.8); color: var(--text); }
+.nav-mark{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;color:var(--gold);text-transform:uppercase;}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{font-size:12px;font-weight:500;letter-spacing:.06em;color:var(--muted);text-decoration:none;text-transform:uppercase;transition:color .2s;}
+.nav-links a:hover{color:var(--text);}
+.theme-toggle{background:transparent;border:1px solid var(--border2);border-radius:20px;padding:6px 12px;color:var(--muted);cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:10px;display:flex;align-items:center;gap:6px;transition:all .2s;margin-left:20px;}
+.theme-toggle:hover{border-color:var(--gold);color:var(--text);}
+[data-theme="light"] .theme-toggle .moon-icon, [data-theme="dark"] .theme-toggle .sun-icon { display: none; }
 </style>
 </head>
 <body>
+
+<nav>
+  <div class="nav-mark">CFC x Social Justice 2026</div>
+  <ul class="nav-links">
+    <li><a href="index.html">Back to Home</a></li>
+  </ul>
+  <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Light/Dark Mode">
+    <span class="sun-icon">☀️ Light</span>
+    <span class="moon-icon">🌙 Dark</span>
+  </button>
+</nav>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme') || 'dark';
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  }
+
+  (function() {
+    const saved = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialTheme = saved || (prefersDark ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', initialTheme);
+  })();
+</script>
+
+<div style="height: 60px;"></div>
 
 <div class="cursor" id="cursor"></div>
 
