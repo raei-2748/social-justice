@@ -180,14 +180,6 @@ nav{
 .scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--royal),transparent);animation:pulse 2.2s ease-in-out infinite;}
 /* legacy scroll-hint kept for non-hero usage */
 .scroll-hint{display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--muted);font-size:10px;letter-spacing:.15em;text-transform:uppercase;}
-@media(max-width:640px){
-  .hero-strip{grid-template-columns:1fr 1fr;}
-  .hero-scroll{display:none;}
-  .hero-title{font-size:clamp(52px,12vw,80px);}
-  .hero-dispatch{font-size:14px;}
-  .hero-inner{padding-left:24px;padding-right:24px;}
-}
-
 /* BAND */
 .band{
   padding:80px 72px;
@@ -223,8 +215,6 @@ nav{
 .slabel::after{content:'';display:block;height:1px;width:32px;background:currentColor;opacity:.4;}
 .sheading{font-family:'Fraunces',serif;font-size:clamp(40px,5vw,72px);font-weight:700;line-height:1.05;letter-spacing:-.015em;margin-bottom:20px;font-optical-sizing:auto;}
 .sintro{font-size:16px;color:var(--muted);line-height:1.75;max-width:540px;margin-bottom:72px;}
-@media(max-width:640px){.section{padding:80px 24px;}}
-
 /* YEAR GRID */
 .year-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;background:transparent;margin-bottom:72px;}
 .ycell{background:var(--bg2);padding:48px 40px;border:1px solid var(--border);position:relative;transition:background .25s,border-color .25s;}
@@ -341,15 +331,11 @@ nav{
   letter-spacing:.28em;color:var(--muted2);text-transform:uppercase;
   white-space:nowrap;padding:0 20px;
 }
-@media(max-width:640px){.act-break{padding:0 24px;}}
-
 /* FOOTER */
 footer{border-top:1px solid var(--border);padding:48px 72px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
 .fmark{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted2);letter-spacing:.06em;}
 .flink{font-size:12px;color:var(--royal2);text-decoration:none;transition:opacity .2s;}
 .flink:hover{opacity:.7;}
-@media(max-width:640px){footer{padding:40px 24px;}}
-
 /* REVEAL */
 .reveal{opacity:0;transform:translateY(40px);transition:opacity .85s ease,transform .85s ease;}
 .reveal.vis{opacity:1;transform:none;}
@@ -1144,6 +1130,77 @@ footer{border-top:1px solid var(--border);padding:48px 72px;display:flex;align-i
 .reveal.vis { opacity:1; transform:none; }
 
 #follow-dollar { position: relative; width: 100%; }
+
+/* ============================================================
+   MOBILE — max-width: 640px  (single consolidated block)
+   ============================================================ */
+@media(max-width:640px){
+
+  /* NAV */
+  nav { padding: 14px 20px; }
+  .nav-links { display: none; }   /* hide links on mobile; scroll anchors still work */
+
+  /* HERO */
+  .hero-inner { padding: 80px 24px 0; }
+  .hero-title  { font-size: clamp(44px, 12vw, 72px); line-height: .92; }
+  .hero-strip  { grid-template-columns: 1fr 1fr; }
+  .hero-scroll { display: none; }
+  .hero-dispatch { font-size: 14px; padding-left: 14px; }
+  .hero-strip .hero-stat { border-right: none; border-bottom: 1px solid var(--border2); }
+  .hero-strip .hero-stat:nth-child(1) { border-right: 1px solid var(--border2); }
+
+  /* BAND */
+  .band { padding: 60px 24px; }
+  .band-inner { grid-template-columns: 1fr; gap: 20px; }
+  .band-counter { font-size: clamp(48px, 14vw, 80px); }
+
+  /* GENERAL SECTIONS */
+  .section { padding: 80px 24px; }
+  .sheading { font-size: clamp(28px, 8vw, 52px); }
+  .section#growth .header-gs,
+  .section#community .header-cp { padding-left: 24px; padding-right: 24px; }
+
+  /* DATA / STORY SECTION */
+  .year-grid { grid-template-columns: 1fr; }
+  .ins-grid { grid-template-columns: 1fr; }
+  .ins-card:first-child { grid-row: span 1; }
+
+  /* GROWTH SECTION */
+  .header-gs { padding: 60px 24px 36px; }
+  .main { grid-template-columns: 1fr; padding: 0 24px 80px; gap: 32px; }
+  .progress-wrap { padding: 0 24px 8px; }
+
+  /* COMMUNITY SECTION */
+  .header-cp { padding: 60px 24px 36px; }
+  .canvas-wrap { padding: 0 24px 16px; }
+  .legend { padding: 0 24px 12px; }
+  .axis-wrap { padding: 0 24px 32px; }
+  .insight-strip { grid-template-columns: 1fr 1fr; padding: 0 24px; }
+  .bottom-section { grid-template-columns: 1fr; padding: 0 24px 24px; }
+
+  /* FOLLOW THE DOLLAR */
+  .page-wrap { grid-template-columns: 1fr; }
+  .sticky-calc { display: none; }
+  #cursor { display: none; }
+  .beat-hook,
+  .beat,
+  .beat-grid,
+  .beat-scale { padding: 60px 24px; }
+  .hook-number { font-size: clamp(40px, 12vw, 72px); }
+  .hook-statement { font-size: clamp(22px, 6vw, 36px); }
+
+  /* NEXT SECTION */
+  .next-grid { grid-template-columns: 1fr; }
+
+  /* EFFICIENCY */
+  .eff-grid { grid-template-columns: 1fr; }
+
+  /* ACT BREAKS */
+  .act-break { padding: 0 24px; }
+
+  /* FOOTER */
+  footer { padding: 40px 24px; }
+}
 
 </style>
 </head>
@@ -2015,15 +2072,15 @@ function buildDistBars(yr) {
 function updateStats(yr) {
   const s = STATS[yr];
   document.getElementById('yearHeading').textContent = yr;
-  document.getElementById('yearHeading').style.color = s.color;
+  document.getElementById('yearHeading').style.color = s.colorHex;
   document.getElementById('statTotal').textContent = s.total;
-  document.getElementById('statTotal').style.color = s.color;
+  document.getElementById('statTotal').style.color = s.colorHex;
   document.getElementById('statPart').textContent = s.participants;
-  document.getElementById('statPart').style.color = s.color;
+  document.getElementById('statPart').style.color = s.colorHex;
   document.getElementById('statMedian').textContent = s.median;
-  document.getElementById('statMedian').style.color = s.color;
+  document.getElementById('statMedian').style.color = s.colorHex;
   document.getElementById('statTop10').textContent = s.top10;
-  document.getElementById('statTop10').style.color = s.color;
+  document.getElementById('statTop10').style.color = s.colorHex;
   document.getElementById('insightHead').textContent = s.heading;
   document.getElementById('insightBody').textContent = s.body;
 
