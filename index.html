@@ -6,7 +6,7 @@
 <title>Knox World's Greatest Shave - The Complete Story</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,300;1,9..144,700&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,300;1,9..144,700&family=Cormorant+Garamond:ital,wght@1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 /* --- PRES STYLES --- */
@@ -170,6 +170,16 @@ nav{
 }
 .hero-title .t-light{font-weight:300;font-style:italic;color:var(--muted2);display:block;}
 .hero-title .t-accent{color:var(--royal2);}
+.hero-tagline-note{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:clamp(16px,1.5vw,20px);
+  color:var(--muted);
+  line-height:1.6;
+  max-width:560px;
+  margin-top:28px;
+  opacity:0;animation:riseIn .6s .55s ease forwards;
+}
 .hero-strip{
   position:relative;z-index:2;
   display:grid;grid-template-columns:1fr 1fr 1fr auto;
@@ -1171,6 +1181,7 @@ footer{border-top:1px solid var(--border);padding:48px 72px;display:flex;align-i
   .insight-strip { padding: 0 48px; }
   .bottom-section { padding: 0 48px 24px; }
   .page-wrap { grid-template-columns: 1fr; }
+  .narrative { min-width: 0; overflow-x: hidden; }
   .sticky-calc {
     position: relative;
     top: 0;
@@ -1179,6 +1190,7 @@ footer{border-top:1px solid var(--border);padding:48px 72px;display:flex;align-i
     border-top: 1px solid var(--border2);
     padding: 60px 48px;
   }
+  .icon-grid { width: 100%; }
   .beat-hook,
   .beat,
   .beat-grid,
@@ -1193,7 +1205,7 @@ footer{border-top:1px solid var(--border);padding:48px 72px;display:flex;align-i
 
   /* NAV */
   nav { padding: 14px 20px; }
-  .nav-links { display: none; }   /* hide links on mobile; scroll anchors still work */
+  .nav-links { display: none !important; }
 
   /* HERO */
   .hero-inner { padding: 80px 24px 0; }
@@ -1248,6 +1260,12 @@ footer{border-top:1px solid var(--border);padding:48px 72px;display:flex;align-i
   .hook-statement { font-size: clamp(22px, 6vw, 36px); }
   .calc-amount { font-size: 32px; }
   .mission-breakdown { padding: 24px 20px; }
+  .breakdown-row { display: block !important; }
+  .breakdown-row > div { width: 100% !important; margin-bottom: 12px; }
+  .br-pct { text-align: left; }
+  .beat-title { max-width: 100% !important; }
+  .split-mission, .split-cost { font-size: 0 !important; }
+  .icon-grid { max-height: 240px; }
 
   /* NEXT SECTION */
   .next-grid { grid-template-columns: 1fr; }
@@ -1271,9 +1289,9 @@ footer{border-top:1px solid var(--border);padding:48px 72px;display:flex;align-i
   <div class="nav-mark">Knox Grammar / WGS 2026</div>
   <ul class="nav-links">
     <li><a href="#story">The Story</a></li>
-    <li><a href="#growth">Growth</a></li>
     <li><a href="#community">Community</a></li>
-    <li><a href="#follow-dollar">The Dollar</a></li>
+    <li><a href="#follow-dollar">Follow the Dollar</a></li>
+    <li><a href="#efficiency">Impact</a></li>
     <li><a href="#next">What's Next</a></li>
   </ul>
   <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Light/Dark Mode">
@@ -1313,16 +1331,17 @@ footer{border-top:1px solid var(--border);padding:48px 72px;display:flex;align-i
     <h1 class="hero-title">
       Three years.<br>
       <span class="t-light">One community.</span><br>
-      <span class="t-accent">$365k</span> raised.
+      <span class="t-accent">$375k</span> raised.
     </h1>
+    <p class="hero-tagline-note">This year, a family relocated from regional New South Wales to stay near their child's hospital. Knox paid for their accommodation.</p>
   </div>
   <div class="hero-strip">
     <div class="hero-stat">
-      <div class="hero-stat-num">~$140k</div>
+      <div class="hero-stat-num">$149,348</div>
       <div class="hero-stat-lbl">2026 total</div>
     </div>
     <div class="hero-stat">
-      <div class="hero-stat-num">+13%</div>
+      <div class="hero-stat-num">+21%</div>
       <div class="hero-stat-lbl">vs last year</div>
     </div>
     <div class="hero-stat">
@@ -1338,7 +1357,7 @@ footer{border-top:1px solid var(--border);padding:48px 72px;display:flex;align-i
 
 <div class="band">
   <div class="band-inner">
-    <div class="band-counter" id="bigCount">$365,590</div>
+    <div class="band-counter" id="bigCount">$374,938</div>
     <div class="band-right">
       <p class="band-tag">Combined / 2024 &ndash; 2026</p>
       <p class="band-sub">Three consecutive World's Greatest Shave campaigns. Knox Grammar School, Wahroonga.</p>
@@ -1348,8 +1367,8 @@ footer{border-top:1px solid var(--border);padding:48px 72px;display:flex;align-i
 
 <div class="section" id="story">
   <p class="slabel reveal">The Numbers</p>
-  <h2 class="sheading reveal">2026 is tracking<br>structurally ahead.</h2>
-  <p class="sintro reveal">At the same point in the campaign, Knox 2026 raised 31% more than 2025. This is not a coincidence. It is compounding.</p>
+  <h2 class="sheading reveal">2026 closed<br>at a new record.</h2>
+  <p class="sintro reveal">Knox 2026 closed at $149,348 — a new record. Up 47% from the 2024 baseline and 21% above 2025. This is not a coincidence. It is compounding.</p>
 
   <div class="year-grid reveal-stagger reveal">
     <div class="ycell">
@@ -1366,9 +1385,9 @@ footer{border-top:1px solid var(--border);padding:48px 72px;display:flex;align-i
     </div>
     <div class="ycell">
       <div class="ycell-year">2026 / Year Three</div>
-      <div class="ytotal">~$140,000</div>
-      <div class="ydelta ydelta-up">+13% vs 2025</div>
-      <div class="ydesc">2026 was 31% ahead of 2025 at the same campaign point.</div>
+      <div class="ytotal">$149,348</div>
+      <div class="ydelta ydelta-up">+21% vs 2025</div>
+      <div class="ydesc">2026 closed at $149,348 — a new record and 47% above the 2024 baseline.</div>
     </div>
   </div>
 
@@ -1539,7 +1558,7 @@ footer{border-top:1px solid var(--border);padding:48px 72px;display:flex;align-i
   <div class="insight-banner">
     <div class="insight-icon">38% <span style="font-size:24px;color:var(--muted)">to</span> 28%</div>
     <div class="insight-text">
-      <strong>The base is getting wider, not just taller.</strong> In 2024, the top 10 fundraisers accounted for 38% of all donations. By 2026 that share fell to 28%. The growth is not coming from a few big donors. It is coming from the whole community giving more. That is a more durable, more meaningful trend than a rising total alone.
+      <strong>The base is getting wider, not just taller.</strong> The top 10 fundraisers carried 38% of all donations in 2024. By 2026 that share fell to 28% — not because the top gave less, but because the rest gave more. That is a more durable, more meaningful trend than a rising total alone.
     </div>
   </div>
 </div>
@@ -1700,10 +1719,10 @@ footer{border-top:1px solid var(--border);padding:48px 72px;display:flex;align-i
     <div class="beat-grid">
       <div class="grid-intro">
         <p class="beat-tag reveal">What Knox's contribution becomes</p>
-        <h2 class="beat-title reveal">Each dot below<br><em>is a person.</em></h2>
+        <h2 class="beat-title reveal">What the money<br><em>makes possible.</em></h2>
         <p class="beat-body reveal" style="margin-bottom:0">
           Use the calculator on the right to adjust the donation amount.
-          Every dot updates. Each one represents a real service instance,
+          Every icon updates. Each one represents a real service instance,
           a real family, a real night of care. Hover to see what it means.
         </p>
       </div>
@@ -1776,7 +1795,7 @@ footer{border-top:1px solid var(--border);padding:48px 72px;display:flex;align-i
         </div>
         <div class="scale-cell">
           <div class="scale-num">$10k</div>
-          <div class="scale-lbl"><strong>Knox raised in 2018.</strong> Eight years later: $148,000. Philanthropic culture, once embedded, compounds.</div>
+          <div class="scale-lbl"><strong>Knox raised in 2018.</strong> Eight years later: $149,348. Philanthropic culture, once embedded, compounds.</div>
         </div>
         <div class="scale-cell">
           <div class="scale-num">135,000</div>
@@ -1802,7 +1821,8 @@ footer{border-top:1px solid var(--border);padding:48px 72px;display:flex;align-i
         Impact estimates (service instance cost, accommodation night cost, financial assistance award value)
         are derived from the Foundation's own reported expenditure divided by reported service volumes.
         All illustrative hover descriptions are representative, not individual case studies.
-        This page was prepared by Capital Finance Club, Knox Grammar School, March 2026.
+        This page was prepared by Capital Finance Club, Knox Grammar School, March 2026.<br>
+        <em>Derivation note: the fundraising cost ratio of 37.2% is $10,859,420 divided by $29,214,929 (total fundraising revenue per FY25 audited accounts).</em>
       </div>
     </div>
 
@@ -1880,18 +1900,18 @@ footer{border-top:1px solid var(--border);padding:48px 72px;display:flex;align-i
   <p class="sintro reveal">CFC members went beyond the cause and read the annual report. Here is the FY2024-25 breakdown, in plain terms.</p>
   <div class="eff-grid reveal">
     <div class="eff-card">
-      <div class="eff-hdg">Revenue and allocation</div>
+      <div class="eff-hdg">Revenue and allocation <span style="font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--muted);font-weight:400;">FY2024-25 Audited</span></div>
       <div class="bar-row">
-        <div class="bar-lbls"><span>Mission programs</span><span>$21.6M / 55%</span></div>
+        <div class="bar-lbls"><span>Mission programs</span><span>$21.63M / 55.2%</span></div>
         <div class="bar-track"><div class="bar-fill bblue" data-w="55"></div></div>
       </div>
       <div class="bar-row">
-        <div class="bar-lbls"><span>Fundraising and admin</span><span>$15.6M / 40%</span></div>
-        <div class="bar-track"><div class="bar-fill bblue2" data-w="40"></div></div>
+        <div class="bar-lbls"><span>Fundraising costs</span><span>$14.58M / 37.2%</span></div>
+        <div class="bar-track"><div class="bar-fill bblue2" data-w="37"></div></div>
       </div>
         <div class="bar-row">
-          <div class="bar-lbls"><span>Operating surplus</span><span>$1.9M / 5%</span></div>
-          <div class="bar-track"><div class="bar-fill bgray" data-w="5"></div></div>
+          <div class="bar-lbls"><span>Operating surplus</span><span>$2.99M / 7.6%</span></div>
+          <div class="bar-track"><div class="bar-fill bgray" data-w="8"></div></div>
         </div>
       <div class="eff-rev">
         <div class="eff-rev-lbl">Total revenue FY24-25</div>
@@ -1900,8 +1920,8 @@ footer{border-top:1px solid var(--border);padding:48px 72px;display:flex;align-i
       </div>
     </div>
     <div class="eff-stack">
-      <div class="trend-card"><strong>The trend that matters.</strong> In FY23-24, the Foundation ran a <span class="tbad">$5.8M deficit.</span> In FY24-25, it flipped to a <span class="tgood">$4.9M surplus.</span> Fundraising costs fell while revenue grew 30%. Each dollar raised now costs less to raise.</div>
-      <div class="verdict"><strong>CFC verdict:</strong> Based on the FY24-25 financials, the Leukaemia Foundation is financially stable and improving. 55% of revenue reaching the mission directly is reasonable for a national charity of this scale. Worth monitoring whether that ratio improves.</div>
+      <div class="trend-card"><strong>The trend that matters.</strong> In FY23-24, the Foundation ran a <span class="tbad">$5.8M deficit.</span> In FY24-25, it flipped to a <span class="tgood">$4.9M surplus.</span> Fundraising costs fell from $15.6M to $14.58M while revenue grew 30%. Each dollar raised now costs less to raise.</div>
+      <div class="verdict"><strong>CFC verdict:</strong> Based on the BDO-audited FY24-25 accounts (October 2025), the Leukaemia Foundation is financially stable and improving. 55.2% of revenue reaching the mission directly is reasonable for a national charity of this scale. Worth monitoring whether that ratio improves.</div>
       <div class="q-card">
         <div class="q-lbl">Key open question</div>
         <div class="q-txt">Is growth driven by <em>more participants</em> or <em>larger average donations?</em> The answer determines how sustainable the trajectory really is.</div>
@@ -1916,11 +1936,11 @@ footer{border-top:1px solid var(--border);padding:48px 72px;display:flex;align-i
   <p class="slabel reveal">Coming Up</p>
   <h2 class="sheading reveal">The campaign is not<br>over yet.</h2>
   <p class="sintro reveal">World's Greatest Shave is on 20 March, two days from now. Here is what Social Justice has planned for the rest of term and beyond.</p>
-  <div class="next-grid reveal reveal-stagger">
+  <div class="next-grid reveal reveal-stagger" style="grid-template-columns:repeat(3,1fr);">
     <div class="ncard nblue">
       <div class="ndate">20 March 2026 / This Friday</div>
       <div class="ntitle">World's Greatest Shave</div>
-      <div class="nbody">The shave event itself. Knox 2026 is tracking to close at approximately $140,000, a new record.</div>
+      <div class="nbody">The shave event itself. Knox 2026 closed at $149,348 — a new record.</div>
     </div>
     <div class="ncard">
       <div class="ndate">Last 2-3 weeks of Term 1</div>
@@ -1941,6 +1961,11 @@ footer{border-top:1px solid var(--border);padding:48px 72px;display:flex;align-i
       <div class="ndate">4 September 2026</div>
       <div class="ntitle">Legacy Day</div>
       <div class="nbody">Honouring the legacy of Australian veterans and their families. Jersey Day on the same date.</div>
+    </div>
+    <div class="ncard" style="border-color:var(--jade);background:var(--jade-glow);">
+      <div class="ndate" style="color:var(--jade2);">Active partnership</div>
+      <div class="ntitle">Te-Kworo Foundation</div>
+      <div class="nbody">Supporting education and opportunity in South Sudan. Learn more at <a href="https://te-kworofoundation.org" target="_blank" rel="noopener" style="color:var(--jade2);text-decoration:none;">te-kworofoundation.org</a>.</div>
     </div>
   </div>
 </div>
@@ -2056,7 +2081,7 @@ const cEl=document.getElementById('bigCount');
 new IntersectionObserver((entries)=>{
   if(entries[0].isIntersecting){
     const s=Date.now();
-    (function step(){const t=Math.min((Date.now()-s)/1800,1),e=1-Math.pow(1-t,3);cEl.textContent='$'+Math.floor(e*365590).toLocaleString();if(t<1)requestAnimationFrame(step);})();
+    (function step(){const t=Math.min((Date.now()-s)/1800,1),e=1-Math.pow(1-t,3);cEl.textContent='$'+Math.floor(e*374938).toLocaleString();if(t<1)requestAnimationFrame(step);})();
   }
 },{threshold:.5}).observe(cEl);
 
@@ -2735,7 +2760,7 @@ const splitObs = new IntersectionObserver((entries) => {
 splitObs.observe(document.getElementById('splitTrack'));
 
 // INIT
-update(140000);
+update(149348);
 
 
 })();
