@@ -426,25 +426,29 @@ body {
 }
 .icon-grid.expanded { max-height: none; }
 .icon-dot {
-  width: 18px; height: 18px;
-  border-radius: 50%;
+  width: 14px; height: 14px;
+  display: flex; align-items: center; justify-content: center;
   background: var(--teal-light);
-  border: 1px solid rgba(26,122,98,0.2);
+  border: none;
+  border-radius: 2px;
   cursor: pointer;
-  transition: background 0.15s, transform 0.15s;
+  transition: all 0.15s;
   position: relative;
   flex-shrink: 0;
+  color: var(--teal);
 }
+.icon-dot svg { width: 100%; height: 100%; fill: currentColor; }
 .icon-dot:hover {
+  color: #fff;
   background: var(--teal);
-  transform: scale(1.3);
+  transform: scale(1.4);
   z-index: 10;
 }
 .icon-dot.gold-dot {
+  color: var(--gold);
   background: var(--gold-light);
-  border-color: rgba(181,131,26,0.25);
 }
-.icon-dot.gold-dot:hover { background: var(--gold2); }
+.icon-dot.gold-dot:hover { color: #fff; background: var(--gold); }
 .icon-dot.faded { opacity: 0.25; }
 .icon-dot[data-tip]:hover::after {
   content: attr(data-tip);
@@ -939,37 +943,45 @@ const TIPS_AWARDS = [
   "Home care equipment for recovery"
 ];
 
-function buildGrid(containerId, count, tips, colorClass, maxVisible) {
+function buildGrid(containerId, count, tips, colorClass) {
   const container = document.getElementById(containerId);
   const existing = container.querySelectorAll('.icon-dot').length;
   if (existing === count) return;
 
   container.innerHTML = '';
-  const show = Math.min(count, maxVisible);
-  for (let i = 0; i < show; i++) {
+  const PERSON_SVG = '<svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>';
+  
+  for (let i = 0; i < count; i++) {
     const dot = document.createElement('div');
     dot.className = 'icon-dot ' + colorClass;
+    dot.innerHTML = PERSON_SVG;
     const tip = tips[i % tips.length] + ' (illustrative)';
     dot.setAttribute('data-tip', tip);
-    dot.style.animationDelay = (i * 8) + 'ms';
+    dot.style.animationDelay = (i * 2) + 'ms';
     dot.style.animation = 'dotPop 0.3s ease forwards';
     dot.style.opacity = '0';
     container.appendChild(dot);
-    setTimeout(() => dot.style.opacity = '1', i * 8);
+    setTimeout(() => dot.style.opacity = '1', i * 2);
   }
 }
 
 function toggleGrid(gridId, hintId) {
   const grid = document.getElementById(gridId);
   const hint = document.getElementById(hintId);
-  if (grid.classList.contains('expanded')) {
-    grid.classList.remove('expanded');
-    const total = parseInt(grid.dataset.total || 0);
-    const shown = grid.querySelectorAll('.icon-dot').length;
-    hint.textContent = '+' + (total - shown) + ' more. Click to expand.';
-  } else {
-    grid.classList.add('expanded');
+  grid.classList.toggle('expanded');
+  
+  const isExp = grid.classList.contains('expanded');
+  if (isExp) {
     hint.textContent = 'Click to collapse.';
+  } else {
+    const total = parseInt(grid.dataset.total || 0);
+    const shownCount = grid.querySelectorAll('.icon-dot').length;
+    const CONCEPTUAL_MAX = 200;
+    if (total > CONCEPTUAL_MAX) {
+      hint.textContent = '+' + (total - CONCEPTUAL_MAX).toLocaleString() + ' more. Click to expand.';
+    } else {
+      hint.textContent = '';
+    }
   }
 }
 window.toggleGrid = toggleGrid;
@@ -1006,22 +1018,24 @@ function update(amt) {
   document.getElementById('countNights').textContent = v.nights.toLocaleString();
   document.getElementById('countAwards').textContent = v.awards.toLocaleString();
 
-  // Rebuild grids (capped at 200 for performance)
-  const MAX = 200;
-  buildGrid('gridInstances', Math.min(v.instances, MAX), TIPS_INSTANCES, '', MAX);
-  buildGrid('gridNights', Math.min(v.nights, MAX), TIPS_NIGHTS, 'gold-dot', MAX);
-  buildGrid('gridAwards', Math.min(v.awards, MAX), TIPS_AWARDS, 'gold-dot', MAX);
+  // Rebuild grids (rendering all dots, CSS handles overflow)
+  const CONCEPTUAL_MAX = 200;
+  buildGrid('gridInstances', v.instances, TIPS_INSTANCES, '');
+  buildGrid('gridNights', v.nights, TIPS_NIGHTS, 'gold-dot');
+  buildGrid('gridAwards', v.awards, TIPS_AWARDS, 'gold-dot');
 
   // Overflow hints
   ['Instances','Nights','Awards'].forEach(name => {
     const total = v[name.toLowerCase() === 'instances' ? 'instances' : name.toLowerCase() === 'nights' ? 'nights' : 'awards'];
-    const shown = Math.min(total, MAX);
     const hint = document.getElementById('hint' + name);
     const grid = document.getElementById('grid' + name);
     grid.dataset.total = total;
-    if (total > MAX && !grid.classList.contains('expanded')) {
-      hint.textContent = '+' + (total - shown).toLocaleString() + ' more. Click to expand.';
-    } else if (total <= MAX) {
+    
+    if (grid.classList.contains('expanded')) {
+      hint.textContent = 'Click to collapse.';
+    } else if (total > CONCEPTUAL_MAX) {
+      hint.textContent = '+' + (total - CONCEPTUAL_MAX).toLocaleString() + ' more. Click to expand.';
+    } else {
       hint.textContent = '';
     }
   });
