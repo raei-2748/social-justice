@@ -478,28 +478,28 @@ body {
 .beat-scale {
   padding: 80px 64px;
   border-top: 1px solid var(--border);
-  background: var(--ink);
-  color: #fff;
+  background: var(--bg2);
+  color: var(--ink);
 }
 .beat-scale .beat-tag { color: var(--gold2); }
-.beat-scale .beat-title { color: #fff; }
-.beat-scale .beat-body { color: rgba(255,255,255,0.6); }
+.beat-scale .beat-title { color: var(--ink); }
+.beat-scale .beat-body { color: var(--ink3); }
 
 .scale-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1px;
-  background: rgba(255,255,255,0.08);
+  background: var(--border);
   border-radius: 12px;
   overflow: hidden;
   margin-top: 40px;
 }
 .scale-cell {
-  background: rgba(255,255,255,0.04);
+  background: var(--bg);
   padding: 32px 28px;
   transition: background 0.2s;
 }
-.scale-cell:hover { background: rgba(255,255,255,0.08); }
+.scale-cell:hover { background: var(--bg3); }
 .scale-num {
   font-family: 'Playfair Display', serif;
   font-size: 48px; font-weight: 900;
@@ -509,10 +509,10 @@ body {
 }
 .scale-lbl {
   font-size: 13px;
-  color: rgba(255,255,255,0.55);
+  color: var(--ink3);
   line-height: 1.6;
 }
-.scale-lbl strong { color: rgba(255,255,255,0.9); }
+.scale-lbl strong { color: var(--ink); }
 
 /* SOURCE FOOTER */
 .source-footer {
@@ -574,7 +574,47 @@ nav{
 .theme-toggle{background:transparent;border:1px solid var(--border2);border-radius:20px;padding:6px 12px;color:var(--muted);cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:10px;display:flex;align-items:center;gap:6px;transition:all .2s;margin-left:20px;}
 .theme-toggle:hover{border-color:var(--gold);color:var(--text);}
 [data-theme="light"] .theme-toggle .moon-icon, [data-theme="dark"] .theme-toggle .sun-icon { display: none; }
+
+@media (max-width: 1024px) {
+  .page-wrap {
+    grid-template-columns: 1fr;
+  }
+  .sticky-calc {
+    position: relative;
+    top: 64px;
+    height: auto;
+    border-left: none;
+    border-top: 1px solid var(--border);
+    padding: 60px 32px;
+  }
+  body { cursor: auto !important; }
+  .cursor { display: none !important; }
+}
+
+@media (max-width: 768px) {
+  .beat-hook, .beat, .beat-grid, .beat-scale, .source-footer {
+    padding: 60px 32px;
+  }
+  nav { padding: 12px 24px; }
+  .nav-mark { font-size: 9px; }
+  .hook-statement { font-size: 28px; }
+  .hook-number { font-size: 60px; }
+  .scale-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+  .beat-hook, .beat, .beat-grid, .beat-scale, .source-footer {
+    padding: 48px 20px;
+  }
+  .hook-statement { font-size: 22px; }
+  .hook-number { font-size: 42px; }
+  .calc-amount { font-size: 32px; }
+  .calc-outputs { gap: 8px; }
+  .mission-breakdown { padding: 20px; }
+  .br-val { font-size: 18px; }
+}
 </style>
+
 </head>
 <body>
 
@@ -781,7 +821,7 @@ nav{
           <div class="scale-num">135,000</div>
           <div class="scale-lbl"><strong>Australians currently living</strong> with blood cancer. By 2035 that number reaches 275,000.</div>
         </div>
-        <div class="scale-cell" style="grid-column:1/-1; background:rgba(181,131,26,0.08); border-top:1px solid rgba(181,131,26,0.15);">
+        <div class="scale-cell" style="grid-column:1/-1; background:var(--teal-light); border-top:1px solid var(--teal);">
           <div class="scale-num" style="font-size:36px;">63c</div>
           <div class="scale-lbl" style="max-width:520px;">
             <strong>Of every dollar Knox raised in 2026 reached the mission directly</strong>, up from 54 cents the year before.
