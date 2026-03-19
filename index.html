@@ -122,6 +122,10 @@ nav{
 .theme-toggle{background:transparent;border:1px solid var(--border2);border-radius:20px;padding:6px 12px;color:var(--muted);cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:10px;display:flex;align-items:center;gap:6px;transition:all .2s;margin-left:20px;}
 .theme-toggle:hover{border-color:var(--royal);color:var(--text);}
 [data-theme="light"] .theme-toggle .moon-icon, [data-theme="dark"] .theme-toggle .sun-icon { display: none; }
+[data-theme="light"] nav {
+  background: rgba(250,250,248,0.92);
+  border-bottom-color: rgba(0,0,0,0.08);
+}
 
 /* HERO */
 .hero{
@@ -621,6 +625,18 @@ footer{border-top:1px solid var(--border);padding:48px 72px;display:flex;align-i
   --blue-glow: rgba(37,99,235,0.08);
   --teal-light: rgba(37,99,235,0.06);
 }
+[data-theme="light"] .calc-label { color: var(--muted); }
+[data-theme="light"] .calc-sublabel { color: var(--muted2); }
+[data-theme="light"] .calc-out { background: rgba(0,0,0,0.04); }
+[data-theme="light"] .calc-out:hover { background: rgba(0,0,0,0.08); }
+[data-theme="light"] .calc-out-val { color: var(--text); }
+[data-theme="light"] .calc-out-lbl { color: var(--muted); }
+[data-theme="light"] .calc-out-icon { opacity: 0.25; }
+[data-theme="light"] .calc-source { color: var(--muted2); }
+[data-theme="light"] #amtSlider { background: rgba(0,0,0,0.12); }
+[data-theme="light"] .slider-range { color: var(--muted2); }
+[data-theme="light"] .beat-scale { background: var(--bg3); }
+[data-theme="light"] .beat-scale .beat-body { color: var(--muted); }
 
 
 
@@ -831,7 +847,7 @@ footer{border-top:1px solid var(--border);padding:48px 72px;display:flex;align-i
   animation: riseIn 0.8s 0.8s ease forwards;
 }
 .hook-number span { color: var(--gold); }
-.hook-#follow-dollar {
+.hook-body {
   font-size: 16px;
   color: var(--ink3);
   max-width: 520px;
@@ -880,7 +896,7 @@ footer{border-top:1px solid var(--border);padding:48px 72px;display:flex;align-i
   max-width: 560px;
 }
 .beat-title em { font-style: italic; color: var(--blue2); }
-.beat-#follow-dollar {
+.beat-body {
   font-size: 15px;
   color: var(--ink2);
   max-width: 520px;
@@ -1055,7 +1071,7 @@ footer{border-top:1px solid var(--border);padding:48px 72px;display:flex;align-i
 }
 .beat-scale .beat-tag { color: var(--gold2); }
 .beat-scale .beat-title { color: #fff; }
-.beat-scale .beat-#follow-dollar { color: rgba(255,255,255,0.6); }
+.beat-scale .beat-body { color: rgba(255,255,255,0.6); }
 
 .scale-grid {
   display: grid;
@@ -1130,6 +1146,33 @@ footer{border-top:1px solid var(--border);padding:48px 72px;display:flex;align-i
 .reveal.vis { opacity:1; transform:none; }
 
 #follow-dollar { position: relative; width: 100%; }
+
+/* ============================================================
+   TABLET — max-width: 900px
+   ============================================================ */
+@media(max-width:900px){
+  nav { padding: 14px 28px; }
+  .hero-inner { padding: 120px 48px 0; }
+  .hero-title  { font-size: clamp(56px, 10vw, 100px); }
+  .band { padding: 72px 48px; }
+  .section { padding: 100px 48px; }
+  .section#growth .header-gs,
+  .section#community .header-cp { padding-left: 48px; padding-right: 48px; }
+  .header-gs { padding: 72px 48px 40px; }
+  .main { grid-template-columns: 1fr; padding: 0 48px 100px; gap: 40px; }
+  .progress-wrap { padding: 0 48px 8px; }
+  .canvas-wrap { padding: 0 48px 24px; }
+  .legend { padding: 0 48px 12px; }
+  .axis-wrap { padding: 0 48px 48px; }
+  .insight-strip { padding: 0 48px; }
+  .bottom-section { padding: 0 48px 24px; }
+  .page-wrap { grid-template-columns: 1fr 320px; }
+  .beat-hook,
+  .beat,
+  .beat-grid,
+  .beat-scale { padding: 72px 48px; }
+  .scroll-cue { left: 48px; }
+}
 
 /* ============================================================
    MOBILE — max-width: 640px  (single consolidated block)
@@ -1914,29 +1957,33 @@ const chart=new Chart(document.getElementById('mc').getContext('2d'),{
     interaction:{mode:'index',intersect:false},
     plugins:{
       legend:{display:false},
-      tooltip:{backgroundColor:'var(--bg3)',borderColor:'var(--border)',borderWidth:1,titleColor:'var(--text)',bodyColor:'var(--muted)',padding:12,
+      tooltip:{backgroundColor:'#131320',borderColor:'rgba(255,255,255,0.055)',borderWidth:1,titleColor:'#f0ece4',bodyColor:'#8892a4',padding:12,
         callbacks:{label:c=>c.parsed.y===null?null:'  '+c.dataset.label+': $'+c.parsed.y.toLocaleString()}}
     },
     scales:{
-      x:{ticks:{color:'var(--muted)',font:{size:11,family:'Plus Jakarta Sans'}},grid:{color:'var(--border)'},border:{color:'var(--border2)'}},
-      y:{ticks:{color:'var(--muted)',font:{size:11,family:'JetBrains Mono'},callback:v=>'$'+(v/1000).toFixed(0)+'k'},grid:{color:'var(--border)'},border:{color:'var(--border2)'}}
+      x:{ticks:{color:'#8892a4',font:{size:11,family:'Plus Jakarta Sans'}},grid:{color:'rgba(255,255,255,0.04)'},border:{color:'rgba(255,255,255,0.08)'}},
+      y:{ticks:{color:'#8892a4',font:{size:11,family:'JetBrains Mono'},callback:v=>'$'+(v/1000).toFixed(0)+'k'},grid:{color:'rgba(255,255,255,0.04)'},border:{color:'rgba(255,255,255,0.08)'}}
     }
   }
 });
 
 function updateChartThemes(theme) {
   const isLight = theme === 'light';
-  const muted = isLight ? '#475569' : '#94a3b8';
-  const border = isLight ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.03)';
-  
+  const muted   = isLight ? '#52586a' : '#8892a4';
+  const grid    = isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.04)';
+  const axisLine= isLight ? 'rgba(0,0,0,0.10)' : 'rgba(255,255,255,0.08)';
+
   [chart, lineChart].forEach(c => {
     if(!c) return;
     c.options.scales.x.ticks.color = muted;
     c.options.scales.y.ticks.color = muted;
-    c.options.scales.x.grid.color = border;
-    c.options.scales.y.grid.color = border;
-    c.options.plugins.tooltip.backgroundColor = isLight ? '#f4f4f0' : '#0c0c12';
-    c.options.plugins.tooltip.titleColor = isLight ? '#0f172a' : '#ece8df';
+    c.options.scales.x.grid.color = grid;
+    c.options.scales.y.grid.color = grid;
+    c.options.scales.x.border.color = axisLine;
+    c.options.scales.y.border.color = axisLine;
+    c.options.plugins.tooltip.backgroundColor = isLight ? '#eceee8' : '#0c0c12';
+    c.options.plugins.tooltip.titleColor = isLight ? '#1a1a24' : '#f0ece4';
+    c.options.plugins.tooltip.bodyColor = isLight ? '#52586a' : '#8892a4';
     c.update();
   });
   
@@ -1955,7 +2002,9 @@ function tog(idx,btn){
 const ro=new IntersectionObserver((entries)=>{
   entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('vis'),i*80);ro.unobserve(e.target);}});
 },{threshold:.06,rootMargin:'0px 0px -60px 0px'});
-document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+// Observe all .reveal elements outside the FTD section (FTD has its own observer)
+const ftdEl=document.getElementById('follow-dollar');
+document.querySelectorAll('.reveal').forEach(el=>{if(!ftdEl||!ftdEl.contains(el))ro.observe(el);});
 
 const barObs=new IntersectionObserver((entries)=>{
   entries.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll('.bar-fill').forEach(b=>b.style.width=b.dataset.w+'%');barObs.unobserve(e.target);}});
@@ -2016,9 +2065,9 @@ const lineChart = new Chart(ctx, {
   data: {
     labels: DAILY.labels,
     datasets: [
-      { label:'2024', data:DAILY['2024'], borderColor:'#475569', backgroundColor:'rgba(71,85,105,0.05)', borderWidth:1.5, pointRadius:2, tension:.4, fill:false },
-      { label:'2025', data:DAILY['2025'], borderColor:'#3b82f6', backgroundColor:'rgba(59,130,246,0.05)', borderWidth:1.5, pointRadius:2, tension:.4, fill:false },
-      { label:'2026', data:DAILY['2026'], borderColor:'#60a5fa', backgroundColor:'rgba(96,165,250,0.08)', borderWidth:2.5, pointRadius:3, tension:.4, fill:false, spanGaps:false }
+      { label:'2024', data:DAILY['2024'], borderColor:'#64748b', backgroundColor:'rgba(100,116,139,0.05)', borderWidth:1.5, pointRadius:2, tension:.4, fill:false },
+      { label:'2025', data:DAILY['2025'], borderColor:'#3b5bdb', backgroundColor:'rgba(59,91,219,0.05)', borderWidth:1.5, pointRadius:2, tension:.4, fill:false },
+      { label:'2026', data:DAILY['2026'], borderColor:'#748ffc', backgroundColor:'rgba(116,143,252,0.08)', borderWidth:2.5, pointRadius:3, tension:.4, fill:false, spanGaps:false }
     ]
   },
   options: {
@@ -2027,14 +2076,14 @@ const lineChart = new Chart(ctx, {
     plugins:{
       legend:{ display:false },
       tooltip:{
-        backgroundColor:'var(--bg3)', borderColor:'var(--border)', borderWidth:1,
-        titleColor:'var(--text)', bodyColor:'var(--muted)', padding:10,
+        backgroundColor:'#131320', borderColor:'rgba(255,255,255,0.055)', borderWidth:1,
+        titleColor:'#f0ece4', bodyColor:'#8892a4', padding:10,
         callbacks:{ label: c => c.parsed.y===null?null:'  '+c.dataset.label+': $'+c.parsed.y.toLocaleString() }
       }
     },
     scales:{
-      x:{ ticks:{color:'var(--muted)',font:{size:10,family:'Plus Jakarta Sans'}}, grid:{color:'var(--border)'}, border:{color:'var(--border2)'} },
-      y:{ ticks:{color:'var(--muted)',font:{size:10,family:'JetBrains Mono'},callback:v=>'$'+(v/1000).toFixed(0)+'k'}, grid:{color:'var(--border)'}, border:{color:'var(--border2)'} }
+      x:{ ticks:{color:'#8892a4',font:{size:10,family:'Plus Jakarta Sans'}}, grid:{color:'rgba(255,255,255,0.04)'}, border:{color:'rgba(255,255,255,0.08)'} },
+      y:{ ticks:{color:'#8892a4',font:{size:10,family:'JetBrains Mono'},callback:v=>'$'+(v/1000).toFixed(0)+'k'}, grid:{color:'rgba(255,255,255,0.04)'}, border:{color:'rgba(255,255,255,0.08)'} }
     },
     animation:{ duration:600 }
   }
@@ -2581,16 +2630,16 @@ document.getElementById('amtSlider').addEventListener('input', function() {
   update(parseInt(this.value));
 });
 
-// SCROLL REVEAL
-const ro = new IntersectionObserver((entries) => {
+// SCROLL REVEAL — FTD only (global observer already handles non-FTD elements)
+const ftdRevealObs = new IntersectionObserver((entries) => {
   entries.forEach((e, i) => {
     if (e.isIntersecting) {
       setTimeout(() => e.target.classList.add('vis'), i * 80);
-      ro.unobserve(e.target);
+      ftdRevealObs.unobserve(e.target);
     }
   });
-}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+}, { threshold: 0.08, rootMargin: '0px 0px -50px 0px' });
+document.getElementById('follow-dollar').querySelectorAll('.reveal').forEach(el => ftdRevealObs.observe(el));
 
 // SPLIT BAR ANIMATION
 const splitObs = new IntersectionObserver((entries) => {
